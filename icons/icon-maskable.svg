@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Full-bleed background; artwork kept inside the central safe zone so Android can crop it to any shape. -->
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#4f46e5"/>
+      <stop offset="0.6" stop-color="#7c3aed"/>
+      <stop offset="1" stop-color="#db2777"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" fill="url(#g)"/>
+  <rect x="146" y="176" width="220" height="160" rx="24" fill="#ffffff"/>
+  <rect x="146" y="210" width="220" height="30" fill="#c4b5fd"/>
+  <circle cx="320" cy="296" r="17" fill="#7c3aed"/>
+</svg>

@@ -1,0 +1,515 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#5b45e8" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <title>Expense Manager</title>
+    <link rel="icon" type="image/svg+xml" href="icons/icon.svg" />
+    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+    <link rel="stylesheet" href="styles.css" />
+    <!-- Apply the saved theme before the page paints, so there's no flash. -->
+    <script>
+      try {
+        const t = localStorage.getItem('myExpenses.theme');
+        if (t) document.documentElement.dataset.theme = t;
+      } catch {}
+    </script>
+  </head>
+  <body>
+    <!-- Big header on Home; compact (back · title · theme · avatar) on other pages. -->
+    <header id="hero" class="hero">
+      <div class="hero-inner">
+        <a id="hero-back" href="#/" class="glass-btn round hero-back" aria-label="Back">
+          <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" /></svg>
+        </a>
+        <h1 id="page-title" class="page-title"></h1>
+
+        <a href="#/" class="hero-brand">
+          <span class="hero-title"><span aria-hidden="true">💰</span> Expense Manager</span>
+          <span class="hero-subtitle">Track your money, simply</span>
+          <span id="status" class="status"></span>
+        </a>
+
+        <div class="hero-user">
+          <button id="theme-btn" class="glass-btn round" type="button" aria-label="Switch theme"></button>
+
+          <button id="signin-btn" class="btn btn-white btn-sm" type="button" title="Sign in with Google">
+            <svg viewBox="0 0 48 48" width="18" height="18" aria-hidden="true">
+              <path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z" />
+              <path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z" />
+              <path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z" />
+              <path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z" />
+            </svg>
+            <span>Sign in with Google</span>
+          </button>
+
+          <div id="user-info" class="user-info" hidden>
+            <span class="avatar-wrap">
+              <span id="user-avatar" class="user-avatar"></span>
+              <span id="online-dot" class="online-dot"></span>
+            </span>
+            <span id="user-name" class="user-name"></span>
+            <button id="logout-btn" class="glass-btn" type="button">Logout</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+      <!-- Home -->
+      <section id="view-home" class="view view-wide" hidden>
+        <div class="promo">
+          <p>✨ Manage your expenses easily, take them anywhere and share them with anyone.</p>
+          <button id="install-btn" class="btn btn-gradient btn-sm" type="button" hidden>📲 Install app</button>
+        </div>
+
+        <nav class="action-grid" aria-label="Main">
+          <a href="#/lists" class="action-card">
+            <span class="action-icon" aria-hidden="true">📋</span>
+            <span class="action-text">
+              <span class="action-title">View Your Expenses</span>
+              <span id="home-lists" class="action-sub"></span>
+            </span>
+          </a>
+          <a href="#/shared" class="action-card">
+            <span class="action-icon" aria-hidden="true">👥</span>
+            <span class="action-text">
+              <span class="action-title">Shared with you</span>
+              <span id="home-shared" class="action-sub"></span>
+            </span>
+          </a>
+          <a href="#/lists/new" class="action-card">
+            <span class="action-icon" aria-hidden="true">➕</span>
+            <span class="action-text">
+              <span class="action-title">Create New Expense</span>
+              <span class="action-sub">Start a new expense list</span>
+            </span>
+          </a>
+        </nav>
+
+        <hr class="gradient-divider" />
+
+        <h2 class="section-title"><span aria-hidden="true">⚡</span> Quick access</h2>
+        <div id="favorites"></div>
+      </section>
+
+      <!-- All lists -->
+      <section id="view-lists" class="view" hidden>
+        <div class="toolbar">
+          <span id="lists-count" class="muted"></span>
+        </div>
+        <div id="lists" class="list-cards"></div>
+      </section>
+
+      <!-- One list and its entries -->
+      <section id="view-list" class="view" hidden>
+        <!-- Toolbar: month picker + search, then edit / import-export / view mode / settings. -->
+        <div class="card list-tools">
+          <div class="tools-row">
+            <button id="month-prev" class="tools-btn" type="button" aria-label="Previous month" title="Previous month">
+              <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M16 4 6 12l10 8z" fill="currentColor" /></svg>
+            </button>
+            <button id="month-btn" class="input month-btn" type="button" aria-haspopup="dialog" title="Pick a month">
+              <span id="month-label"></span> <span class="month-caret" aria-hidden="true">▾</span>
+            </button>
+            <button id="month-next" class="tools-btn" type="button" aria-label="Next month" title="Next month">
+              <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M8 4l10 8-10 8z" fill="currentColor" /></svg>
+            </button>
+            <button id="filter-btn" class="tools-btn filter-btn" type="button" aria-label="Search and filter" title="Search & filter">🔍<span id="filter-count" class="filter-count" hidden></span></button>
+          </div>
+          <div class="tools-grid">
+            <button class="tools-btn" type="button" data-soon="Edit" aria-label="Edit" title="Edit">✏️</button>
+            <button id="export-btn" class="tools-btn" type="button" aria-label="Import or export" title="Import / export">📤</button>
+            <button id="view-mode-btn" class="tools-btn" type="button" aria-label="View mode" title="View mode">📊</button>
+            <button class="tools-btn" type="button" data-soon="Settings" aria-label="Settings" title="Settings">⚙️</button>
+          </div>
+        </div>
+        <p id="list-access" class="access-note" hidden></p>
+        <!-- Active filters (tap ✕ to clear). -->
+        <div id="filter-bar" class="filter-bar" hidden>
+          <span id="filter-summary" class="filter-summary"></span>
+          <button id="filter-clear" class="filter-clear" type="button">✕ Clear</button>
+        </div>
+        <a id="add-entry-btn" href="#" class="btn btn-gradient">+ Add entry</a>
+        <section id="entries" class="list"></section>
+
+        <!-- Floating total of the checked rows. -->
+        <div id="selection-bar" class="selection-bar" role="status" hidden>
+          <div class="sel-info">
+            <div class="sel-total"><span id="sel-count" class="sel-count"></span><span class="sel-total-label">Total:</span> <strong id="sel-total"></strong></div>
+            <div id="sel-breakdown" class="sel-breakdown" hidden></div>
+          </div>
+          <div class="sel-actions">
+          <button id="sel-delete" class="sel-delete" type="button" aria-label="Delete selected entries" title="Delete selected">
+            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M4 7h16M10 11v6M14 11v6M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2l1-12M9 7V4h6v3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <button id="sel-clear" class="sel-clear" type="button" aria-label="Clear selection" title="Clear selection">✕</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Lists other people shared with you -->
+      <section id="view-shared" class="view" hidden>
+        <div id="shared" class="list-cards"></div>
+      </section>
+
+      <!-- Create / edit a list -->
+      <section id="view-list-form" class="view" hidden>
+        <form id="list-form" class="card expense-form" novalidate>
+          <label class="field">
+            <span class="field-label">Name <span class="required" aria-hidden="true">*</span></span>
+            <input id="list-name" class="input" type="text" maxlength="80" placeholder="e.g. Goa Trip, My Credit Card" required />
+          </label>
+          <div class="field">
+            <span class="field-label">Type <span class="muted optional">(optional · default Daily expenses)</span></span>
+            <div id="kinds" class="kind-grid" role="radiogroup" aria-label="Type"></div>
+          </div>
+          <p id="list-error" class="banner banner-error" hidden></p>
+          <button id="list-submit" class="btn btn-gradient" type="submit">Create list</button>
+        </form>
+      </section>
+    </main>
+
+    <footer class="footer">Made with <span aria-label="love">❤️</span> by Subho</footer>
+
+    <!-- Bottom sheets: slide up from the bottom; close with Cancel/Done, Esc or a tap outside. -->
+
+    <!-- Confirm before deleting / removing / signing out. -->
+    <dialog id="confirm-sheet" class="dialog sheet" aria-labelledby="confirm-title">
+      <div class="sheet-handle" aria-hidden="true"></div>
+      <!-- What is being deleted: its icon and name (lists / entries / people). -->
+      <div id="confirm-subject" class="sheet-subject" hidden>
+        <span id="confirm-subject-icon" class="sheet-subject-icon" aria-hidden="true"></span>
+        <strong id="confirm-subject-name" class="sheet-subject-name"></strong>
+        <span id="confirm-subject-meta" class="muted small"></span>
+      </div>
+      <div class="sheet-hero">
+        <span id="confirm-icon" class="sheet-icon" aria-hidden="true"></span>
+        <h3 id="confirm-title"></h3>
+        <p id="confirm-message"></p>
+      </div>
+      <div class="row sheet-actions">
+        <button class="btn btn-ghost grow" type="button" data-close="cancel">Cancel</button>
+        <button id="confirm-ok" class="btn btn-danger grow" type="button" data-close="ok">Delete</button>
+      </div>
+    </dialog>
+
+    <!-- Add / edit an entry (opened from "+ Add entry" or ✏️ Edit). -->
+    <dialog id="entry-form-sheet" class="dialog sheet" aria-labelledby="ef-title">
+      <div class="sheet-handle" aria-hidden="true"></div>
+      <div class="ef-head">
+        <div class="ef-titles">
+          <h3 id="ef-title">New entry</h3>
+          <span id="ef-list" class="muted small"></span>
+        </div>
+        <button class="ef-close" type="button" data-close="cancel" aria-label="Close">✕</button>
+      </div>
+      <!-- New: an entry (money in / out) or a note (summary, balance, reminder…) shown as a row in the list. -->
+      <div id="ef-tabs" class="io-tabs ef-tabs" role="tablist">
+        <button id="ef-tab-entry" class="io-tab" type="button" role="tab" data-ef-tab="entry">💸 Entry</button>
+        <button id="ef-tab-note" class="io-tab" type="button" role="tab" data-ef-tab="note">📝 Note</button>
+      </div>
+      <form id="entry-form" class="expense-form entry-sheet-form" novalidate>
+        <!-- ₹ [ −/+ | amount ]: one button toggles spent (−) / received (+) -->
+        <div id="amount-row" class="amount-row">
+          <span class="currency" id="currency-symbol">₹</span>
+          <div class="amount-group">
+            <button id="dir-toggle" type="button" class="dir-toggle-btn"><span id="dir-sign" aria-hidden="true">−</span></button>
+            <input id="amount" class="amount-input" type="number" inputmode="decimal" step="0.01" min="0" placeholder="0" aria-label="Amount" />
+          </div>
+        </div>
+        <div class="row">
+          <label class="field grow">
+            <span class="field-label">Date</span>
+            <input id="date" class="input" type="date" required />
+          </label>
+          <label class="field grow">
+            <span class="field-label">Time</span>
+            <input id="time" class="input" type="time" />
+          </label>
+        </div>
+        <label class="field">
+          <span class="field-label">Purpose <span class="required" aria-hidden="true">*</span></span>
+          <span class="input-with-icon">
+            <span id="purpose-icon" class="input-icon" aria-hidden="true"></span>
+            <input id="purpose" class="input" type="text" maxlength="200" placeholder="What was it for? e.g. Dinner at Barbeque Nation" required />
+          </span>
+        </label>
+        <div class="field">
+          <span class="field-label">Category</span>
+          <div id="categories" class="chips" role="radiogroup" aria-label="Category"></div>
+        </div>
+        <div class="field">
+          <span class="field-head">
+            <span id="pay-via-label" class="field-label">Pay via</span>
+            <button type="button" class="add-btn" data-manage="pay" aria-label="Add or edit payment methods" title="Add or edit payment methods">＋</button>
+          </span>
+          <div id="pay-via" class="pill-group" role="radiogroup" aria-labelledby="pay-via-label"></div>
+        </div>
+        <div class="field">
+          <span class="field-head">
+            <span id="paid-by-label" class="field-label">Paid by</span>
+            <button type="button" class="add-btn" data-manage="people" aria-label="Add or edit names" title="Add or edit names">＋</button>
+          </span>
+          <div id="paid-by" class="pill-group" role="radiogroup" aria-labelledby="paid-by-label"></div>
+        </div>
+        <label class="field">
+          <span class="field-label">Note <span class="muted optional">(optional)</span></span>
+          <textarea id="note" class="input" rows="2" maxlength="500" placeholder="Any extra details"></textarea>
+        </label>
+        <p id="entry-error" class="banner banner-error" hidden></p>
+        <button id="entry-submit" class="btn btn-gradient" type="submit">Save entry</button>
+      </form>
+      <form id="note-form" class="expense-form entry-sheet-form" novalidate hidden>
+        <div class="row">
+          <label class="field grow">
+            <span class="field-label">Date</span>
+            <input id="n-date" class="input" type="date" required />
+          </label>
+          <label class="field grow">
+            <span class="field-label">Time</span>
+            <input id="n-time" class="input" type="time" />
+          </label>
+        </div>
+        <div class="field">
+          <span class="field-label">Note type</span>
+          <div id="n-types" class="note-types" role="radiogroup" aria-label="Note type"></div>
+        </div>
+        <label class="field">
+          <span class="field-label">Note <span class="required" aria-hidden="true">*</span></span>
+          <textarea id="n-text" class="input n-text" rows="6" maxlength="4000" placeholder="Write anything: a summary of the month, what's left in the bank, a reminder…&#10;&#10;The first line shows in the list; tap it there to read the rest."></textarea>
+        </label>
+        <p id="note-error" class="banner banner-error" hidden></p>
+        <button id="note-submit" class="btn btn-gradient" type="submit">Save note</button>
+      </form>
+    </dialog>
+
+    <!-- Full details of one entry (opened by tapping a row / its purpose). -->
+    <dialog id="entry-sheet" class="dialog sheet" aria-labelledby="es-purpose">
+      <div class="sheet-handle" aria-hidden="true"></div>
+      <div class="sheet-subject">
+        <span id="es-amount" class="es-amount"></span>
+        <strong id="es-purpose" class="sheet-subject-name"></strong>
+      </div>
+      <dl id="es-details" class="detail-list"></dl>
+      <div id="es-actions" class="row sheet-actions"></div>
+    </dialog>
+
+    <!-- Add / rename / delete payment methods or "paid by" names. -->
+    <dialog id="options-sheet" class="dialog sheet" aria-labelledby="opt-title">
+      <div class="sheet-handle" aria-hidden="true"></div>
+      <h3 id="opt-title"></h3>
+      <p id="opt-hint" class="muted small"></p>
+      <form id="opt-add" class="share-form" novalidate>
+        <input id="opt-input" class="input grow" type="text" maxlength="40" aria-label="New item" />
+        <button class="btn btn-gradient btn-sm" type="submit">Add</button>
+      </form>
+      <p id="opt-error" class="banner banner-error" hidden></p>
+      <ul id="opt-list" class="member-list"></ul>
+      <button class="btn btn-gradient sheet-full" type="button" data-close="done">Done</button>
+    </dialog>
+
+    <!-- Search & filter the entries of the month being viewed. -->
+    <dialog id="filter-sheet" class="dialog sheet" aria-labelledby="f-title">
+      <div class="sheet-handle" aria-hidden="true"></div>
+      <h3 id="f-title">🔍 Search &amp; filter</h3>
+      <form id="f-form" class="filter-form" novalidate>
+        <input id="f-text" class="input" type="search" placeholder="Search purpose, note, amount, name…" aria-label="Search" autocomplete="off" />
+        <div class="field">
+          <span class="field-label">Type</span>
+          <div id="f-type" class="pill-group" role="radiogroup" aria-label="Type"></div>
+        </div>
+        <div class="field">
+          <span class="field-label">Pay via</span>
+          <div id="f-via" class="via-groups" aria-label="Pay via"></div>
+        </div>
+        <div class="field">
+          <span class="field-label">Category</span>
+          <div id="f-cats" class="chips" aria-label="Category"></div>
+        </div>
+        <!-- Stays at the bottom of the sheet while the filters scroll. -->
+        <div class="sheet-footer">
+          <!-- EXPERIMENT: totals of the matching entries -->
+          <p id="f-totals" class="f-totals"></p>
+          <div class="row sheet-actions">
+            <button id="f-clear" class="btn btn-ghost grow" type="button">Clear all</button>
+            <button id="f-apply" class="btn btn-gradient grow" type="submit">Show entries</button>
+          </div>
+        </div>
+      </form>
+    </dialog>
+
+    <!-- Import / Export: two tabs in one sheet. -->
+    <dialog id="export-sheet" class="dialog sheet" aria-label="Import or export entries">
+      <div class="sheet-handle" aria-hidden="true"></div>
+      <div class="io-tabs" role="tablist">
+        <button id="io-tab-export" class="io-tab" type="button" role="tab" data-io-tab="export">📤 Export</button>
+        <button id="io-tab-import" class="io-tab" type="button" role="tab" data-io-tab="import">📥 Import</button>
+      </div>
+
+      <!-- Export entries as Excel / CSV / text / PDF. -->
+      <div id="io-export" class="export-form" role="tabpanel" aria-labelledby="io-tab-export">
+        <!-- 1. Columns -->
+        <div class="field">
+          <span class="field-label">Columns</span>
+          <div id="x-cols" class="pill-group" aria-label="Columns"></div>
+        </div>
+        <!-- 2. Rows: all (within a date range) or only the ticked rows -->
+        <div class="field">
+          <span class="field-label">Rows</span>
+          <div id="x-rows" class="pill-group" role="radiogroup" aria-label="Rows"></div>
+        </div>
+        <!-- 3. Date range (for "All rows") -->
+        <div class="field">
+          <span class="field-label">Range</span>
+          <div id="x-range" class="x-range" role="radiogroup" aria-label="Range"></div>
+          <div id="x-range-extra" class="row x-extra"></div>
+        </div>
+        <label id="x-filters-wrap" class="check" hidden>
+          <input id="x-filters" type="checkbox" checked />
+          <span>Apply current search &amp; filters</span>
+        </label>
+        <p id="x-summary" class="f-totals"></p>
+        <!-- 4. Export to: tap a format to download -->
+        <div class="field">
+          <span class="field-label">Export to</span>
+          <div id="x-formats" class="x-formats"></div>
+        </div>
+        <div class="x-foot">
+          <span></span>
+          <button class="x-close" type="button" data-close="cancel">Close</button>
+        </div>
+      </div>
+
+      <!-- Import entries from Excel / CSV / text. -->
+      <div id="io-import" class="export-form" role="tabpanel" aria-labelledby="io-tab-import" hidden>
+        <p class="muted small im-intro">Add entries to <b id="im-list"></b> from a file or pasted text.</p>
+        <p id="im-readonly" class="banner banner-error" hidden>You can only view this list, so you can't import into it.</p>
+        <label id="im-drop" class="im-drop">
+          <input id="im-file" type="file" accept=".xlsx,.csv,.tsv,.txt,text/csv,text/plain,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
+          <span class="im-drop-icon" aria-hidden="true">📥</span>
+          <strong id="im-drop-title">Choose a file</strong>
+          <span class="muted small">Excel · CSV · Text</span>
+        </label>
+        <div class="im-or" aria-hidden="true"><span>or paste text</span></div>
+        <textarea
+          id="im-text"
+          class="input im-text"
+          rows="8"
+          spellcheck="false"
+          aria-label="Paste entries"
+          placeholder="01/09/2026&#10;10:30am, 50000, Salary Received, Bank Transfer&#10;11:15am, 12000, Room rent, PhonePe UPI&#10;8:11pm, 300, Fish, PhonePe UPI&#10;&#10;02/09/2026&#10;5:30pm, 52, office evening snacks, PhonePe UPI&#10;6:56pm, 20, Tea, Kiwi UPI Debit"
+        ></textarea>
+        <button id="im-text-go" class="btn btn-ghost" type="button">📋 Read pasted text</button>
+        <p id="im-error" class="banner banner-error" hidden></p>
+        <div id="im-result" class="export-form" hidden>
+          <p id="im-found" class="im-found"></p>
+          <p id="im-cols" class="muted small im-cols"></p>
+          <div id="im-preview" class="im-preview"></div>
+          <label id="im-dupes-wrap" class="check" hidden>
+            <input id="im-skip-dupes" type="checkbox" checked />
+            <span id="im-dupes-label"></span>
+          </label>
+          <p id="im-summary" class="f-totals"></p>
+          <button id="im-go" class="btn btn-gradient sheet-full" type="button">📥 Import</button>
+        </div>
+        <div class="x-foot">
+          <button id="im-sample" class="x-close" type="button">⬇ Sample CSV</button>
+          <button class="x-close" type="button" data-close="cancel">Close</button>
+        </div>
+      </div>
+    </dialog>
+
+    <!-- View mode: how the list's entries are shown (more modes can be added to #vm-options). -->
+    <dialog id="view-sheet" class="dialog sheet" aria-labelledby="vm-title">
+      <div class="sheet-handle" aria-hidden="true"></div>
+      <h3 id="vm-title">📊 View mode</h3>
+      <div id="vm-options" class="vm-options" role="radiogroup" aria-labelledby="vm-title"></div>
+      <button class="btn btn-ghost sheet-full" type="button" data-close="cancel">Close</button>
+    </dialog>
+
+    <!-- Month calendar: pick any month of any year, or jump back to this month. -->
+    <dialog id="month-sheet" class="dialog sheet" aria-labelledby="ms-year">
+      <div class="sheet-handle" aria-hidden="true"></div>
+      <div class="ms-head">
+        <button id="ms-prev-year" class="tools-btn" type="button" aria-label="Previous year">
+          <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M16 4 6 12l10 8z" fill="currentColor" /></svg>
+        </button>
+        <h3><button id="ms-year" class="ms-year-btn" type="button" aria-label="Choose year"></button></h3>
+        <button id="ms-next-year" class="tools-btn" type="button" aria-label="Next year">
+          <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M8 4l10 8-10 8z" fill="currentColor" /></svg>
+        </button>
+      </div>
+      <div id="ms-grid" class="ms-grid"></div>
+      <div class="row sheet-actions">
+        <button class="btn btn-ghost grow" type="button" data-close="cancel">Close</button>
+        <button id="ms-today" class="btn btn-gradient grow" type="button">📅 This month</button>
+      </div>
+    </dialog>
+
+    <!-- Small popover that shows an entry's full note. -->
+    <div id="note-tip" class="note-tip" role="tooltip" hidden></div>
+
+    <!-- Share a list with friends by their Google email. -->
+    <dialog id="share-dialog" class="dialog sheet" aria-labelledby="share-title">
+      <div class="sheet-handle" aria-hidden="true"></div>
+      <div class="sheet-hero">
+        <span class="sheet-icon sheet-icon-share" aria-hidden="true">👥</span>
+        <h3 id="share-title">Share</h3>
+        <p class="muted small">Share with friends who can edit or only view expenses.</p>
+      </div>
+
+      <!-- Signed out: explain and offer sign-in. -->
+      <div id="share-signed-out" hidden>
+        <p class="sheet-note sheet-note-icon">
+          <span aria-hidden="true">🔒</span>
+          <span>Sign in to share this with your friends.</span>
+        </p>
+        <div class="row sheet-actions">
+          <button class="btn btn-ghost grow" type="button" data-close="cancel">Not now</button>
+          <button id="share-signin" class="btn btn-gradient grow" type="button">Sign in with Google</button>
+        </div>
+      </div>
+
+      <!-- Signed in: add people by email, change access, remove. -->
+      <div id="share-signed-in" hidden>
+        <form id="share-form" class="share-form" novalidate>
+          <input id="share-email" class="input grow" type="email" inputmode="email" autocomplete="email" placeholder="friend@gmail.com" aria-label="Friend's email" />
+          <select id="share-role" class="input" aria-label="Access">
+            <option value="view">👁 View</option>
+            <option value="edit">✏️ Edit</option>
+          </select>
+          <button class="btn btn-gradient btn-sm" type="submit">Add</button>
+        </form>
+        <p id="share-error" class="banner banner-error" hidden></p>
+        <p class="muted small">They'll see it under <b>Shared with you</b> after signing in with that Google email.</p>
+        <ul id="share-members" class="member-list"></ul>
+        <div class="row sheet-actions">
+          <button id="share-copy" class="btn btn-ghost grow" type="button">🔗 Copy link</button>
+          <button class="btn btn-gradient grow" type="button" data-close="done">Done</button>
+        </div>
+      </div>
+    </dialog>
+
+    <!-- Shown when the browser can't install with one tap: explains how to do it manually. -->
+    <dialog id="install-dialog" class="dialog sheet" aria-labelledby="install-title">
+      <div class="sheet-handle" aria-hidden="true"></div>
+      <h3 id="install-title">📲 Install Expense Manager</h3>
+      <div id="install-steps"></div>
+      <button class="btn btn-gradient sheet-full" type="button" data-close="ok">Got it</button>
+    </dialog>
+
+    <div id="toast" class="toast" role="status" hidden></div>
+
+    <!-- Plain scripts (not modules) so the page also works when opened directly from disk. -->
+    <script src="vendor/supabase.js"></script>
+    <script src="config.js"></script>
+    <script src="db.js"></script>
+    <script src="sync.js"></script>
+    <script src="export.js"></script>
+    <script src="import.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
