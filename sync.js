@@ -8,6 +8,7 @@ const Cloud = (() => {
 
   const client = configured
     ? window.supabase.createClient(cfg.SUPABASE_URL, cfg.SUPABASE_ANON_KEY, {
+        db: { schema: 'myexpenses' }, // OneDB: this app's tables live in the "myexpenses" schema
         auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true, flowType: 'pkce' },
       })
     : null;

@@ -88,8 +88,9 @@ If you add expenses without signing in, they move into your account the first ti
 
 ## Set up Supabase + Google sign-in
 
-1. Create a project at https://supabase.com.
-2. In **SQL Editor**, run [`supabase/schema.sql`](supabase/schema.sql).
+1. Use the **OneDB** Supabase project, shared with my other apps (see `OneDB/README.md` in the parent folder). This app's tables live in the `myexpenses` schema.
+2. In **SQL Editor**, run `OneDB/platform.sql` first, then [`supabase/schema.sql`](supabase/schema.sql).
+   Then add `myexpenses` under **Project Settings → Data API → Exposed schemas**.
 3. Turn on Google sign-in:
    - In Google Cloud Console → APIs & Services → Credentials, create an **OAuth client ID** (Web application).
      Under authorized redirect URIs, add the callback URL shown in Supabase → Authentication → Providers → Google

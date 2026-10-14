@@ -2,8 +2,8 @@
 // The anon key is safe to publish: Row Level Security (supabase/schema.sql) protects each user's data.
 // Never put the service_role key here.
 window.APP_CONFIG = {
-  SUPABASE_URL: '',      // e.g. 'https://abcdefgh.supabase.co'
-  SUPABASE_ANON_KEY: '', // e.g. 'eyJhbGciOi...'
+  SUPABASE_URL: 'https://knhhgslvuyiqaotlyvez.supabase.co',      // e.g. 'https://abcdefgh.supabase.co'
+  SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtuaGhnc2x2dXlpcWFvdGx5dmV6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE5NjM0MjgsImV4cCI6MjEwNzUzOTQyOH0.XNXJ9SlMVDRGeZ_usuqU27TGHA26l-UGjHVVz4PUgQ0', // e.g. 'eyJhbGciOi...'
   CURRENCY: 'INR',
   LOCALE: 'en-IN',
 };
