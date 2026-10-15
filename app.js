@@ -1005,12 +1005,12 @@
 
   // ---------- search & filter (applies to the month being viewed) ----------
 
-  const emptyFilters = () => ({ type: 'all', via: new Set(), cats: new Set(), text: '' });
-  const copyFilters = (f) => ({ type: f.type, via: new Set(f.via), cats: new Set(f.cats), text: f.text });
+  const emptyFilters = () => ({ type: 'all', via: new Set(), by: new Set(), cats: new Set(), text: '' });
+  const copyFilters = (f) => ({ type: f.type, via: new Set(f.via), by: new Set(f.by), cats: new Set(f.cats), text: f.text });
   let filters = emptyFilters(); // applied
   let draftFilters = emptyFilters(); // being edited in the sheet
 
-  const activeFilterCount = (f) => (f.type !== 'all') + f.via.size + f.cats.size + (f.text.trim() ? 1 : 0);
+  const activeFilterCount = (f) => (f.type !== 'all') + f.via.size + f.by.size + f.cats.size + (f.text.trim() ? 1 : 0);
 
   function matchesFilters(e, f) {
     if (f.type === 'spent' && e.direction === 'credit') return false;
@@ -1018,6 +1018,10 @@
     if (f.via.size) {
       const via = (e.pay_via || '').toLowerCase(); // "Credit card" and "Credit Card" are the same method
       if (![...f.via].some((v) => v.toLowerCase() === via)) return false;
+    }
+    if (f.by.size) {
+      const by = entryPaidBy(e).toLowerCase();
+      if (![...f.by].some((n) => n.toLowerCase() === by)) return false;
     }
     if (f.cats.size && !f.cats.has(e.category)) return false;
     const words = f.text.trim().toLowerCase().split(/\s+/).filter(Boolean);
@@ -1097,6 +1101,26 @@
       )
       .join('');
 
+    // Paid by: the names on this list's entries (plus your saved names), most used first.
+    const byCount = new Map(); // lower-case name → [name, count]
+    for (const e of entries) {
+      if (e.list_id !== currentListId || e.kind === 'note') continue;
+      const n = entryPaidBy(e);
+      if (!n || n === '—') continue;
+      const k = n.toLowerCase();
+      byCount.set(k, [byCount.get(k)?.[0] || n, (byCount.get(k)?.[1] || 0) + 1]);
+    }
+    for (const n of getOptions('people')) if (!byCount.has(n.toLowerCase())) byCount.set(n.toLowerCase(), [n, 0]);
+    const people = [...byCount.values()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], undefined, { sensitivity: 'base' }));
+    $('f-by').innerHTML = people.length
+      ? people
+          .map(([n, count]) => {
+            const on = [...draftFilters.by].some((x) => x.toLowerCase() === n.toLowerCase());
+            return `<button type="button" class="pill ${on ? 'is-on' : ''}" data-f-by="${escapeHtml(n)}" aria-pressed="${on}">${escapeHtml(n)}${count ? ` <span class="pill-count">${count}</span>` : ''}</button>`;
+          })
+          .join('')
+      : '<span class="muted small">No names yet.</span>';
+
     const usedCats = new Set(entries.filter((e) => e.list_id === currentListId).map((e) => e.category));
     const cats = [...CATEGORIES, ...RETIRED_CATEGORIES.filter((c) => usedCats.has(c.id))];
     // Same category chips as the entry form (here you can pick several).
@@ -1131,11 +1155,12 @@
   }
 
   function onFilterSheetClick(event) {
-    const t = event.target.closest('[data-f-type], [data-f-via], [data-f-cat]');
+    const t = event.target.closest('[data-f-type], [data-f-via], [data-f-by], [data-f-cat]');
     if (!t) return;
     if (t.dataset.fType) draftFilters.type = t.dataset.fType;
     const toggle = (set, v) => (set.has(v) ? set.delete(v) : set.add(v));
     if (t.dataset.fVia !== undefined) toggle(draftFilters.via, t.dataset.fVia);
+    if (t.dataset.fBy !== undefined) toggle(draftFilters.by, t.dataset.fBy);
     if (t.dataset.fCat) toggle(draftFilters.cats, t.dataset.fCat);
     renderFilterSheet();
   }
@@ -1151,6 +1176,7 @@
     const parts = [];
     if (f.type !== 'all') parts.push(f.type === 'spent' ? '− Spent' : '+ Received');
     if (f.via.size) parts.push([...f.via].map(escapeHtml).join(', '));
+    if (f.by.size) parts.push(`👤 ${[...f.by].map(escapeHtml).join(', ')}`);
     if (f.cats.size) parts.push([...f.cats].map((id) => `${categoryOf(id).icon} ${categoryOf(id).label}`).join(', '));
     if (f.text.trim()) parts.push(`“${escapeHtml(f.text.trim())}”`);
     return parts.join(' · ');
@@ -1943,7 +1969,7 @@
     { id: 'date', icon: '📅', name: 'date' },
     { id: 'amount', icon: CURRENCY_SYMBOL, name: 'amount', text: true },
     { id: 'category', icon: '🏷️', name: 'category' },
-    { id: 'by', icon: '🧑', name: 'paid by' },
+    { id: 'by', icon: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>', name: 'paid by', svg: true },
     { id: 'via', icon: '💳', name: 'pay via' },
   ];
   const SORT_LABELS = {
@@ -1981,9 +2007,14 @@
     toast(`↕ ${SORT_LABELS[sortMode]}`);
   }
 
+  /** ↺: back to the normal list — default order, and out of "day totals only". */
   function resetSort() {
     sortMode = DEFAULT_SORT;
-    storage((s) => s.removeItem(SORT_KEY));
+    daysOnly = false;
+    storage((s) => {
+      s.removeItem(SORT_KEY);
+      s.removeItem(DAYS_ONLY_KEY);
+    });
     renderListDetail();
     toast(`⟲ Back to ${SORT_LABELS[sortMode].toLowerCase()}`);
   }
@@ -2010,14 +2041,16 @@
     return [...rows].sort((a, b) => sign * compare(a, b) || byDate(a, b));
   }
 
-  /** The row of sort icons above the entries; the active one is highlighted with ▲ / ▼. */
+  const isNormalList = () => sortMode === DEFAULT_SORT && !daysOnly;
+
+  /** The row of sort icons above the entries; the active one is highlighted with ▲ / ▼ (all off in day totals). */
   function sortIconsHtml() {
     const [field, dir] = sortMode.split('-');
     return SORT_FIELDS.map((f) => {
-      const on = f.id === field;
-      const title = on ? SORT_LABELS[sortMode] : `Sort by ${f.name}`;
-      return `<button type="button" class="sort-icon${on ? ' is-on' : ''}" data-sort="${f.id}" title="${title}" aria-label="${title}" aria-pressed="${on}">
-        <span class="sort-glyph${f.text ? ' is-text' : ''}" aria-hidden="true">${f.icon}</span>${on ? `<span class="sort-ind" aria-hidden="true">${dir === 'asc' ? '▲' : '▼'}</span>` : ''}
+      const on = f.id === field && !daysOnly;
+      const title = daysOnly ? 'Sorting is off while showing day totals' : on ? SORT_LABELS[sortMode] : `Sort by ${f.name}`;
+      return `<button type="button" class="sort-icon${on ? ' is-on' : ''}" data-sort="${f.id}" title="${title}" aria-label="${title}" aria-pressed="${on}"${daysOnly ? ' disabled' : ''}>
+        <span class="sort-glyph${f.text ? ' is-text' : ''}${f.svg ? ' is-svg' : ''}" aria-hidden="true">${f.icon}</span>${on ? `<span class="sort-ind" aria-hidden="true">${dir === 'asc' ? '▲' : '▼'}</span>` : ''}
       </button>`;
     }).join('') + `
       <span class="sort-divider" aria-hidden="true"></span>
@@ -2205,7 +2238,7 @@
     }
     const listEntries = sortEntries(shown);
     // Notes of the same period (and day, in calendar view). Money filters hide them; a search still finds them.
-    const moneyFilters = filters.type !== 'all' || filters.via.size > 0 || filters.cats.size > 0;
+    const moneyFilters = filters.type !== 'all' || filters.via.size > 0 || filters.by.size > 0 || filters.cats.size > 0;
     const words = filters.text.trim().toLowerCase().split(/\s+/).filter(Boolean);
     const listNotes = moneyFilters
       ? []
@@ -2283,7 +2316,7 @@
       <div class="card entry-table${daysOnly ? ' is-days-only' : ''}">
         <div class="entry-head sort-head">
           <label class="row-check" aria-label="Select all"><input type="checkbox" id="select-all" /></label>
-            ${`<button type="button" class="sort-reset${sortMode === DEFAULT_SORT ? ' is-off' : ''}" data-sort-reset title="Reset to default order (date, oldest first)" aria-label="Reset sort"${sortMode === DEFAULT_SORT ? ' tabindex="-1" aria-hidden="true"' : ''}>
+            ${`<button type="button" class="sort-reset${isNormalList() ? ' is-off' : ''}" data-sort-reset title="Back to the normal list (all entries, date oldest first)" aria-label="Reset to normal view"${isNormalList() ? ' tabindex="-1" aria-hidden="true"' : ''}>
               <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 2.64-6.36"/><path d="M3 4v5h5"/></svg>
             </button>`}
           <div class="sort-icons" role="group" aria-label="Sort entries">${sortIconsHtml()}</div>
@@ -2330,7 +2363,7 @@
   let prependedOlder = false;
   let lastRenderKey = '';
   const compactNumber = new Intl.NumberFormat(LOCALE, { notation: 'compact', maximumFractionDigits: 1 });
-  const filterKey = (f) => [f.type, [...f.via].join(','), [...f.cats].join(','), f.text.trim()].join('~');
+  const filterKey = (f) => [f.type, [...f.via].join(','), [...f.by].join(','), [...f.cats].join(','), f.text.trim()].join('~');
 
   /** Long list: when scrolled near the older end, render more months (keeping the current row in place). */
   function onRowsScroll(event) {

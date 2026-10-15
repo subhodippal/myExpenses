@@ -5,6 +5,7 @@
   --text: #1f2937;
   --muted: #6b7280;
   --border: #e5e7eb;
+  --dialog-glow: 0 0 0 transparent; /* dark mode: a soft violet glow so popups stand off the dark page */
   --primary: #7c3aed;
   --primary-soft: #ede9fe;
   --on-primary: #ffffff;
@@ -34,12 +35,13 @@
     --text: #ece9fb;
     --muted: #a5a1c4;
     --border: #2c2848;
+    --dialog-glow: 0 0 0 1px rgb(167 139 250 / 0.38), 0 -3px 20px rgb(139 92 246 / 0.42), inset 0 1px 0 rgb(255 255 255 / 0.14);
     --primary: #a78bfa;
     --primary-soft: #2e2557;
     --on-primary: #ffffff;
     --accent-title: #c4b5fd;
     --heart: #f87171;
-    --hero: linear-gradient(180deg, #312e81 0%, #4c1d95 60%, #5b21b6 100%);
+    --hero: linear-gradient(180deg, #4f46e5 0%, #6d3df0 55%, #7c3aed 100%); /* same as light */
     --gradient: linear-gradient(90deg, #4f7cf0, #8b5cf6);
     --divider: linear-gradient(90deg, #3730a3, #6d28d9, #9d174d);
     --promo-bg: #1e1b4b;
@@ -60,12 +62,13 @@
   --text: #ece9fb;
   --muted: #a5a1c4;
   --border: #2c2848;
+  --dialog-glow: 0 0 0 1px rgb(167 139 250 / 0.38), 0 -3px 20px rgb(139 92 246 / 0.42), inset 0 1px 0 rgb(255 255 255 / 0.14);
   --primary: #a78bfa;
   --primary-soft: #2e2557;
   --on-primary: #ffffff;
   --accent-title: #c4b5fd;
   --heart: #f87171;
-  --hero: linear-gradient(180deg, #312e81 0%, #4c1d95 60%, #5b21b6 100%);
+  --hero: linear-gradient(180deg, #4f46e5 0%, #6d3df0 55%, #7c3aed 100%); /* same as light */
   --gradient: linear-gradient(90deg, #4f7cf0, #8b5cf6);
   --divider: linear-gradient(90deg, #3730a3, #6d28d9, #9d174d);
   --promo-bg: #1e1b4b;
@@ -308,8 +311,9 @@ button.avatar-wrap:focus-visible { outline: 2px solid var(--primary); outline-of
 /* ---------- One list ---------- */
 /* Toolbar: ◀ [month ▾] ▶ 🔍  /  ✏️ 📤 📊 ⚙️ */
 .list-tools { padding: 10px; display: flex; flex-direction: column; gap: 12px; }
-.tools-row { display: grid; grid-template-columns: 52px minmax(0, 1fr) 52px 52px; gap: 12px; }
-.tools-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+/* ◀ [month] ▶ | 📤 📊 🔍 — one row */
+.tools-row { display: grid; grid-template-columns: 44px minmax(0, 1fr) 44px 1px 44px 44px 44px; gap: 8px; align-items: center; }
+.tools-sep { width: 1px; height: 22px; background: var(--border); justify-self: center; }
 .tools-btn {
   height: 40px; border: 0; border-radius: 10px; background: var(--bg); color: var(--text);
   display: grid; place-items: center; font-size: 1rem; padding: 0;
@@ -553,7 +557,7 @@ button.avatar-wrap:focus-visible { outline: 2px solid var(--primary); outline-of
 .empty-icon { font-size: 2.4rem; }
 .dialog {
   width: min(420px, calc(100% - 32px)); border: 0; border-radius: 18px; padding: 22px;
-  background: var(--surface); color: var(--text); box-shadow: 0 20px 50px rgb(0 0 0 / 0.3);
+  background: var(--surface); color: var(--text); box-shadow: 0 20px 50px rgb(0 0 0 / 0.3), var(--dialog-glow);
 }
 .dialog::backdrop { background: rgb(15 13 26 / 0.55); backdrop-filter: blur(2px); }
 .dialog h3 { margin: 0 0 12px; font-size: 1.15rem; }
@@ -568,7 +572,7 @@ button.avatar-wrap:focus-visible { outline: 2px solid var(--primary); outline-of
 .dialog.sheet {
   margin: auto auto 0; width: 100%; max-width: min(560px, 100%); max-height: 88dvh; overflow: auto;
   border-radius: 22px 22px 0 0; padding: 10px 20px calc(env(safe-area-inset-bottom) + 20px);
-  box-shadow: 0 -12px 40px rgb(0 0 0 / 0.25);
+  box-shadow: 0 -12px 40px rgb(0 0 0 / 0.25), var(--dialog-glow);
 }
 .sheet[open] { animation: sheet-up 0.3s cubic-bezier(0.2, 0.8, 0.2, 1); }
 .sheet[open]::backdrop { animation: sheet-fade-in 0.3s ease; }
@@ -685,9 +689,14 @@ button.avatar-wrap:focus-visible { outline: 2px solid var(--primary); outline-of
 }
 .sort-icon:hover { background: var(--primary-soft); }
 .sort-icon.is-on { background: var(--primary-soft); border-color: var(--primary); color: var(--primary); }
+.sort-icon:disabled { opacity: 0.3; cursor: default; background: none; }
 .sort-glyph { font-size: 0.88rem; line-height: 1; filter: grayscale(0.35); opacity: 0.85; }
 .sort-icon.is-on .sort-glyph { filter: none; opacity: 1; }
 .sort-glyph.is-text { font-size: 0.92rem; font-weight: 800; }
+.sort-glyph.is-svg { filter: none; opacity: 1; display: grid; }
+.sort-glyph.is-svg svg { display: block; }
+/* entry count on a filter pill ("Subhodip 120") */
+.pill-count { font-size: 0.72em; font-weight: 600; opacity: 0.65; margin-left: 2px; }
 .sort-ind { font-size: 0.55rem; letter-spacing: 0; color: var(--primary); }
 .sort-svg { display: block; }
 .sort-divider { flex: 0 0 1px; align-self: stretch; margin: 4px 0; background: var(--border); }
@@ -754,14 +763,17 @@ body.list-mode .hero.compact #signin-btn { width: 34px; height: 34px; min-height
 body.list-mode .hero.compact .user-avatar { width: 32px; height: 32px; }
 body.list-mode .hero.compact .page-title { font-size: 1.05rem; }
 body.list-mode .container { padding-top: 10px; }
-body.list-mode #view-list { gap: 8px; }
+body.list-mode #view-list { gap: 12px; } /* a little breathing room between toolbar, + Add entry and the list */
 body.list-mode .list-tools { padding: 6px; gap: 8px; border-radius: 12px; }
-body.list-mode .tools-row { grid-template-columns: 42px minmax(0, 1fr) 42px 42px; gap: 8px; }
-body.list-mode .tools-grid { gap: 8px; }
+body.list-mode .tools-row { grid-template-columns: 38px minmax(0, 1fr) 38px 1px 38px 38px 38px; gap: 6px; }
+/* small phones: slimmer buttons so the month name keeps its room */
+@media (max-width: 400px) {
+  .tools-row, body.list-mode .tools-row { grid-template-columns: 34px minmax(0, 1fr) 34px 1px 34px 34px 34px; gap: 4px; }
+}
 body.list-mode .tools-btn { height: 32px; border-radius: 8px; font-size: 0.9rem; }
 body.list-mode .month-btn { height: 32px; min-height: 32px; font-size: 0.92rem; border-radius: 8px; }
 body.list-mode .filter-count { top: -4px; right: -4px; min-width: 16px; height: 16px; line-height: 16px; font-size: 0.6rem; }
-body.list-mode #add-entry-btn { min-height: 38px; padding: 6px 16px; font-size: 0.95rem; border-radius: 10px; }
+body.list-mode #add-entry-btn { min-height: 44px; padding: 8px 16px; font-size: 1.02rem; border-radius: 12px; }
 body.list-mode .filter-bar { padding: 5px 6px 5px 10px; }
 body.list-mode .access-note { padding: 6px 10px; }
 

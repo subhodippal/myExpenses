@@ -105,7 +105,7 @@
 
       <!-- One list and its entries -->
       <section id="view-list" class="view" hidden>
-        <!-- Toolbar: month picker + search, then edit / import-export / view mode / settings. -->
+        <!-- Toolbar, one row: ◀ month ▶ · import-export / view mode / search. -->
         <div class="card list-tools">
           <div class="tools-row">
             <button id="month-prev" class="tools-btn" type="button" aria-label="Previous month" title="Previous month">
@@ -117,13 +117,10 @@
             <button id="month-next" class="tools-btn" type="button" aria-label="Next month" title="Next month">
               <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M8 4l10 8-10 8z" fill="currentColor" /></svg>
             </button>
-            <button id="filter-btn" class="tools-btn filter-btn" type="button" aria-label="Search and filter" title="Search & filter">🔍<span id="filter-count" class="filter-count" hidden></span></button>
-          </div>
-          <div class="tools-grid">
-            <button class="tools-btn" type="button" data-soon="Edit" aria-label="Edit" title="Edit">✏️</button>
+            <span class="tools-sep" aria-hidden="true"></span>
             <button id="export-btn" class="tools-btn" type="button" aria-label="Import or export" title="Import / export">📤</button>
             <button id="view-mode-btn" class="tools-btn" type="button" aria-label="View mode" title="View mode">📊</button>
-            <button class="tools-btn" type="button" data-soon="Settings" aria-label="Settings" title="Settings">⚙️</button>
+            <button id="filter-btn" class="tools-btn filter-btn" type="button" aria-label="Search and filter" title="Search & filter">🔍<span id="filter-count" class="filter-count" hidden></span></button>
           </div>
         </div>
         <p id="list-access" class="access-note" hidden></p>
@@ -337,6 +334,10 @@
         <div class="field">
           <span class="field-label">Pay via</span>
           <div id="f-via" class="via-groups" aria-label="Pay via"></div>
+        </div>
+        <div class="field">
+          <span class="field-label">Paid by</span>
+          <div id="f-by" class="pill-group" aria-label="Paid by"></div>
         </div>
         <div class="field">
           <span class="field-label">Category</span>
