@@ -203,6 +203,63 @@
       if (e.target === sheet && outside) closeSheet(sheet);
     });
     for (const b of sheet.querySelectorAll('[data-close]')) b.addEventListener('click', () => closeSheet(sheet, b.dataset.close));
+    wireSheetDrag(sheet);
+  }
+
+  /**
+   * Pull a sheet down to close it. Starts only when nothing under the finger is scrolled
+   * (so pulling down still scrolls a long sheet back to its top first).
+   */
+  function wireSheetDrag(sheet) {
+    let drag = null;
+    const scrolled = (el) => {
+      for (; el && el !== sheet.parentNode; el = el.parentNode) if (el.scrollTop > 0) return true;
+      return false;
+    };
+    const reset = () => { sheet.style.transition = sheet.style.transform = ''; };
+    // .dragging switches the open animation off; it stays until the sheet closes, or the open animation would replay.
+    sheet.addEventListener('close', () => sheet.classList.remove('dragging', 'drag-closing'));
+    sheet.addEventListener('touchstart', (e) => {
+      if (e.touches.length !== 1 || sheet.classList.contains('closing') || scrolled(e.target)) return;
+      drag = { y0: e.touches[0].clientY, t0: Date.now(), dy: 0, active: false };
+    }, { passive: true });
+    sheet.addEventListener('touchmove', (e) => {
+      if (!drag) return;
+      const dy = e.touches[0].clientY - drag.y0;
+      if (!drag.active) {
+        if (dy < -4) { drag = null; return; } // pushing up = normal scrolling
+        if (dy < 8) return;
+        drag.active = true;
+        sheet.classList.add('dragging');
+        sheet.style.transition = 'none';
+      }
+      e.preventDefault();
+      drag.dy = Math.max(0, dy - 8);
+      sheet.style.transform = `translateY(${drag.dy}px)`;
+    }, { passive: false });
+    const end = () => {
+      if (!drag) return;
+      const { dy, t0, active } = drag;
+      drag = null;
+      if (!active) return;
+      const fling = dy > 40 && dy / (Date.now() - t0) > 0.6; // quick flick
+      if (dy > sheet.offsetHeight * 0.25 || dy > 140 || fling) {
+        if (reducedMotion()) { reset(); return sheet.close(''); }
+        sheet.style.transition = 'transform 0.2s ease-in';
+        sheet.style.transform = 'translateY(100%)';
+        sheet.classList.add('drag-closing');
+        setTimeout(() => {
+          sheet.close('');
+          reset();
+        }, 200);
+      } else {
+        sheet.style.transition = 'transform 0.2s ease';
+        sheet.style.transform = '';
+        setTimeout(reset, 200);
+      }
+    };
+    sheet.addEventListener('touchend', end);
+    sheet.addEventListener('touchcancel', () => { drag = null; reset(); });
   }
 
   /**
@@ -650,6 +707,27 @@
     }
   }
 
+  function openProfileSheet() {
+    const user = Cloud.user;
+    if (!user) return;
+    const name = user.user_metadata?.full_name || user.user_metadata?.name || user.email || '';
+    const avatar = user.user_metadata?.avatar_url || user.user_metadata?.picture;
+    $('profile-avatar').innerHTML = avatar
+      ? `<img src="${escapeHtml(avatar)}" alt="" referrerpolicy="no-referrer" />`
+      : escapeHtml(name.charAt(0).toUpperCase());
+    $('profile-name').textContent = name;
+    $('profile-email').textContent = user.email && user.email !== name ? user.email : '';
+    $('profile-badge').textContent = `Signed in with Google · ${lists.length} ${lists.length === 1 ? 'list' : 'lists'}`;
+    openSheet($('profile-sheet'));
+  }
+
+  async function onProfileLogout() {
+    closeSheet($('profile-sheet'));
+    // Unsynced changes would be lost: say so first. Otherwise Log out here is the confirmation.
+    if (pendingCount) return onLogoutClick();
+    await signOut();
+  }
+
   async function onLogoutClick() {
     const ok = await askSheet({
       icon: '👋',
@@ -661,6 +739,10 @@
       danger: pendingCount > 0,
     });
     if (!ok) return;
+    await signOut();
+  }
+
+  async function signOut() {
     await DB.clearAll();
     await Cloud.signOut();
     renderAccount();
@@ -1773,6 +1855,7 @@
     { id: 'month', icon: '📅', label: 'Month view', hint: 'One month at a time. Use ◀ ▶ or the month button to change month.' },
     { id: 'all', icon: '📜', label: 'Long list', hint: 'All months in one list, newest at the bottom like a chat. Scroll up for older months.' },
     { id: 'calendar', icon: '🗓️', label: 'Calendar', hint: 'Each day of the month with its total. Tap a day to see its entries.' },
+    { id: 'year', icon: '📆', label: 'Year view', hint: 'All 12 months of the year with each month’s total. Tap a month to see its entries.' },
   ];
   let viewMode = storage((s) => s.getItem(VIEW_KEY)) || 'month';
   if (!VIEW_MODES.some((m) => m.id === viewMode)) viewMode = 'month';
@@ -1872,8 +1955,9 @@
     'by-asc': 'Paid by: A → Z',
     'by-desc': 'Paid by: Z → A',
   };
-  let sortMode = storage((s) => s.getItem(SORT_KEY)) || 'date-asc';
-  if (!SORT_LABELS[sortMode]) sortMode = 'date-asc';
+  const DEFAULT_SORT = 'date-asc';
+  let sortMode = storage((s) => s.getItem(SORT_KEY)) || DEFAULT_SORT;
+  if (!SORT_LABELS[sortMode]) sortMode = DEFAULT_SORT;
 
   const sortColumn = (mode) => Object.keys(SORT_CYCLES).find((col) => SORT_CYCLES[col].includes(mode));
 
@@ -1884,6 +1968,13 @@
     storage((s) => s.setItem(SORT_KEY, sortMode));
     renderListDetail();
     toast(`↕ ${SORT_LABELS[sortMode]}`);
+  }
+
+  function resetSort() {
+    sortMode = DEFAULT_SORT;
+    storage((s) => s.removeItem(SORT_KEY));
+    renderListDetail();
+    toast(`⟲ Back to ${SORT_LABELS[sortMode].toLowerCase()}`);
   }
 
   const byDate = (a, b) => a.spent_on.localeCompare(b.spent_on) || entryTime(a).localeCompare(entryTime(b)) || a.created_at.localeCompare(b.created_at);
@@ -2051,7 +2142,13 @@
     // Long-list view shows every month, so ◀ ▶ are off and the button reads "All months (N)";
     // picking a month from it switches back to month view.
     const longList = viewMode === 'all';
-    $('month-label').textContent = longList ? `All months (${allEntries.length})` : `${shortMonth(month)} (${monthCounts.get(month) || 0})`;
+    const year = month.slice(0, 4);
+    const yearCount = [...monthCounts].reduce((t, [ym, n]) => t + (ym.startsWith(year) ? n : 0), 0);
+    $('month-label').textContent = longList
+      ? `All months (${allEntries.length})`
+      : viewMode === 'year'
+        ? `${year} (${yearCount})`
+        : `${shortMonth(month)} (${monthCounts.get(month) || 0})`;
     $('month-btn').classList.toggle('is-other-month', !longList && month !== currentMonth());
     $('month-prev').disabled = longList;
     $('month-next').disabled = longList;
@@ -2077,6 +2174,9 @@
       day = calendarDay(list.id, month, filtered);
       calendarHtml = calendarGridHtml(month, filtered, day);
       shown = filtered.filter((e) => e.spent_on === day);
+    } else if (viewMode === 'year') {
+      const inYear = allEntries.filter((e) => e.spent_on.startsWith(year) && matchesFilters(e, filters));
+      calendarHtml = yearGridHtml(year, inYear, month);
     }
     const listEntries = sortEntries(shown);
     // Notes of the same period (and day, in calendar view). Money filters hide them; a search still finds them.
@@ -2156,7 +2256,12 @@
       <div class="card entry-table">
         <div class="entry-head">
           <label class="row-check" aria-label="Select all"><input type="checkbox" id="select-all" /></label>
-          <button type="button" class="sort-btn" data-sort="amount" title="Sort: date / amount">Amount ${sortIndicator('amount')}</button>
+          <span class="sort-first">
+            ${`<button type="button" class="sort-reset${sortMode === DEFAULT_SORT ? ' is-off' : ''}" data-sort-reset title="Reset to default order (date, oldest first)" aria-label="Reset sort"${sortMode === DEFAULT_SORT ? ' tabindex="-1" aria-hidden="true"' : ''}>
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 2.64-6.36"/><path d="M3 4v5h5"/></svg>
+            </button>`}
+            <button type="button" class="sort-btn" data-sort="amount" title="Sort: date / amount">Amount ${sortIndicator('amount')}</button>
+          </span>
           <button type="button" class="sort-btn" data-sort="purpose" title="Sort: category">Purpose ${sortIndicator('purpose')}</button>
           <button type="button" class="sort-btn sort-right" data-sort="via" title="Sort: pay via / paid by">${sortIndicator('via')} Pay via</button>
         </div>
@@ -2357,6 +2462,48 @@
   }
 
   /** Monday-first month grid; each day shows its spent (red) and received (green) totals in short form. */
+  /** Year view: the 12 months of `year` with what was spent / received in each; `month` is highlighted. */
+  function yearGridHtml(year, yearEntries, month) {
+    const totals = new Map(); // 'YYYY-MM' → { out, in, n }
+    let yearOut = 0;
+    let yearIn = 0;
+    for (const e of yearEntries) {
+      const key = e.spent_on.slice(0, 7);
+      const t = totals.get(key) || { out: 0, in: 0, n: 0 };
+      if (e.direction === 'credit') {
+        t.in += e.amount;
+        yearIn += e.amount;
+      } else {
+        t.out += e.amount;
+        yearOut += e.amount;
+      }
+      t.n++;
+      totals.set(key, t);
+    }
+    const thisMonth = currentMonth();
+    const cells = Array.from({ length: 12 }, (_, i) => {
+      const key = `${year}-${pad2(i + 1)}`;
+      const t = totals.get(key);
+      const name = new Date(+year, i, 1).toLocaleDateString(LOCALE, { month: 'short' });
+      const cls = ['yr-cell', key === month ? 'is-selected' : '', key === thisMonth ? 'is-today' : '', t ? 'has-entries' : ''].join(' ');
+      const label = `${name} ${year}${t?.out ? `, spent ${money.format(t.out)}` : ''}${t?.in ? `, received ${money.format(t.in)}` : ''}${t ? `, ${t.n} ${t.n === 1 ? 'entry' : 'entries'}` : ''}`;
+      return `
+        <button type="button" class="${cls}" data-year-month="${key}" aria-label="${label}" title="${label}" aria-pressed="${key === month}">
+          <span class="yr-name">${name}</span>
+          ${t?.out ? `<span class="yr-out">−${moneyWhole.format(t.out)}</span>` : ''}
+          ${t?.in ? `<span class="yr-in">+${moneyWhole.format(t.in)}</span>` : ''}
+          ${t ? `<span class="yr-count">${t.n} ${t.n === 1 ? 'entry' : 'entries'}</span>` : ''}
+        </button>`;
+    }).join('');
+    return `
+      <div class="card cal-card">
+        <div class="yr-grid">${cells}</div>
+        <div class="cal-total muted small">
+          ${year}: <span class="amount-out">− ${money.format(yearOut)}</span> · <span class="amount-in">+ ${money.format(yearIn)}</span>
+        </div>
+      </div>`;
+  }
+
   function calendarGridHtml(month, monthEntriesList, day) {
     const [y, m] = month.split('-').map(Number);
     const daysInMonth = new Date(y, m, 0).getDate();
@@ -2510,12 +2657,15 @@
   async function onAction(event) {
     // Row checkboxes and sort headers have their own handlers (and must keep their default behaviour).
     if (event.target.closest('.row-check')) return;
+    const yearMonth = event.target.closest('[data-year-month]');
+    if (yearMonth) return showMonth(yearMonth.dataset.yearMonth);
     const calDay = event.target.closest('[data-cal-day]');
     if (calDay) {
       selectedDayByList.set(currentListId, calDay.dataset.calDay);
       selectedEntryIds.clear();
       return renderListDetail();
     }
+    if (event.target.closest('[data-sort-reset]')) return resetSort();
     const sortBtn = event.target.closest('[data-sort]');
     if (sortBtn) return cycleSort(sortBtn.dataset.sort);
     const btn = event.target.closest('[data-action]');
@@ -2654,13 +2804,14 @@
   function pillsHtml(kind, selected, attr) {
     const values = getOptions(kind);
     if (selected && !values.includes(selected)) values.push(selected);
-    if (!values.length) return '<span class="muted small">None yet. Tap ＋ to add.</span>';
+    // "＋ Add" sits at the end of the row and opens the add / rename / remove sheet.
+    const label = kind === 'pay' ? 'Add or edit payment methods' : 'Add or edit names';
     return values
       .map(
         (v) => `<button type="button" role="radio" ${attr}="${escapeHtml(v)}" aria-checked="${v === selected}"
           class="pill ${v === selected ? 'is-on' : ''}">${escapeHtml(v)}</button>`,
       )
-      .join('');
+      .join('') + `<button type="button" class="pill pill-add" data-manage="${kind}" aria-label="${label}" title="${label}">＋ Add</button>`;
   }
   const renderPayVia = () => ($('pay-via').innerHTML = pillsHtml('pay', selectedPayVia, 'data-pay-via'));
   const renderPaidBy = () => ($('paid-by').innerHTML = pillsHtml('people', selectedPaidBy, 'data-paid-by'));
@@ -3026,6 +3177,8 @@
     matchMedia('(prefers-color-scheme: dark)').addEventListener('change', renderThemeButton);
     $('signin-btn').addEventListener('click', onSignInClick);
     $('logout-btn').addEventListener('click', onLogoutClick);
+    $('profile-btn').addEventListener('click', openProfileSheet);
+    $('profile-logout').addEventListener('click', onProfileLogout);
     $('install-btn').addEventListener('click', onInstallClick);
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault(); // show our own "Install app" button instead of the browser's mini-bar
@@ -3091,6 +3244,12 @@
       renderNoteTypes();
     });
     $('list-form').addEventListener('submit', onListSubmit);
+    for (const id of ['pay-via', 'paid-by']) {
+      $(id).addEventListener('click', (e) => {
+        const add = e.target.closest('[data-manage]');
+        if (add) openOptionsSheet(add.dataset.manage);
+      });
+    }
     $('pay-via').addEventListener('click', (e) => {
       const pill = e.target.closest('[data-pay-via]');
       if (!pill) return;
@@ -3103,14 +3262,14 @@
       selectedPaidBy = pill.dataset.paidBy;
       renderPaidBy();
     });
-    for (const b of document.querySelectorAll('[data-manage]')) b.addEventListener('click', () => openOptionsSheet(b.dataset.manage));
     $('opt-add').addEventListener('submit', onOptionAdd);
     $('opt-list').addEventListener('change', onOptionRename);
     $('opt-list').addEventListener('click', onOptionDelete);
     $('es-actions').addEventListener('click', onEntrySheetAction);
     // List toolbar: month picker works now; the other buttons are placeholders for upcoming features.
-    $('month-prev').addEventListener('click', () => showMonth(addMonths(shownMonth(), -1)));
-    $('month-next').addEventListener('click', () => showMonth(addMonths(shownMonth(), 1)));
+    // ◀ ▶ step a month (a whole year in year view).
+    $('month-prev').addEventListener('click', () => showMonth(addMonths(shownMonth(), viewMode === 'year' ? -12 : -1)));
+    $('month-next').addEventListener('click', () => showMonth(addMonths(shownMonth(), viewMode === 'year' ? 12 : 1)));
     $('month-btn').addEventListener('click', openMonthSheet);
     $('filter-btn').addEventListener('click', openFilterSheet);
     $('view-mode-btn').addEventListener('click', openViewSheet);

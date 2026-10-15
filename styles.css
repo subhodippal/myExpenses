@@ -159,6 +159,23 @@ input, select, textarea { font: inherit; color: inherit; }
 
 .user-info { display: flex; align-items: center; gap: 10px; min-width: 0; }
 .avatar-wrap { position: relative; flex-shrink: 0; }
+button.avatar-wrap { border: 0; padding: 0; background: none; border-radius: 50%; cursor: pointer; display: block; }
+button.avatar-wrap:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+
+/* Profile sheet */
+.profile-hero { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px; margin: 4px 0 20px; }
+.profile-avatar {
+  width: 112px; height: 112px; border-radius: 50%; overflow: hidden; margin-bottom: 8px;
+  display: grid; place-items: center; font-size: 2.6rem; font-weight: 700;
+  background: var(--primary-soft); color: var(--primary);
+  box-shadow: 0 0 0 4px var(--surface), 0 0 0 6px var(--primary);
+}
+.profile-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.profile-name { font-size: 1.35rem; overflow-wrap: anywhere; }
+.profile-badge {
+  margin-top: 6px; padding: 4px 12px; border-radius: 999px; font-size: 0.82rem; font-weight: 600;
+  background: var(--primary-soft); color: var(--primary);
+}
 .user-avatar {
   width: 42px; height: 42px; border-radius: 50%; overflow: hidden;
   display: grid; place-items: center; font-weight: 700; font-size: 1.1rem;
@@ -290,9 +307,9 @@ input, select, textarea { font: inherit; color: inherit; }
 
 /* ---------- One list ---------- */
 /* Toolbar: ◀ [month ▾] ▶ 🔍  /  ✏️ 📤 📊 ⚙️ */
-.list-tools { padding: 10px; display: flex; flex-direction: column; gap: 8px; }
-.tools-row { display: grid; grid-template-columns: 44px minmax(0, 1fr) 44px 44px; gap: 8px; }
-.tools-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.list-tools { padding: 10px; display: flex; flex-direction: column; gap: 12px; }
+.tools-row { display: grid; grid-template-columns: 52px minmax(0, 1fr) 52px 52px; gap: 12px; }
+.tools-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
 .tools-btn {
   height: 40px; border: 0; border-radius: 10px; background: var(--bg); color: var(--text);
   display: grid; place-items: center; font-size: 1rem; padding: 0;
@@ -486,12 +503,6 @@ input, select, textarea { font: inherit; color: inherit; }
 .input-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 1.15rem; pointer-events: none; }
 
 /* Label with a small ＋ (manage options) button */
-.field-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
-.add-btn {
-  width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--border); background: var(--primary-soft);
-  color: var(--primary); font-weight: 800; font-size: 0.95rem; line-height: 1; display: grid; place-items: center; padding: 0;
-}
-.add-btn:hover { filter: brightness(0.96); }
 .opt-name {
   flex: 1; min-width: 0; border: 0; background: transparent; color: var(--text); font: inherit; font-size: 0.95rem;
   padding: 6px 4px; border-radius: 8px;
@@ -563,6 +574,9 @@ input, select, textarea { font: inherit; color: inherit; }
 .sheet[open]::backdrop { animation: sheet-fade-in 0.3s ease; }
 .sheet.closing { animation: sheet-down 0.22s ease-in forwards; }
 .sheet.closing::backdrop { animation: sheet-fade-out 0.22s ease-in forwards; }
+/* pulled down to close: the drag moves the sheet itself, so the open animation must not replay */
+.sheet.dragging, .sheet.drag-closing { animation: none; }
+.sheet.drag-closing::backdrop { animation: sheet-fade-out 0.2s ease-in forwards; }
 @keyframes sel-bar-up { from { transform: translate(-50%, calc(100% + 24px)); opacity: 0; } to { transform: translate(-50%, 0); opacity: 1; } }
 @keyframes sheet-up { from { transform: translateY(100%); } to { transform: none; } }
 @keyframes sheet-down { from { transform: none; } to { transform: translateY(100%); } }
@@ -671,6 +685,15 @@ input, select, textarea { font: inherit; color: inherit; }
 .sort-right { justify-content: flex-end; text-align: right; }
 .sort-ind { font-size: 0.68rem; letter-spacing: 0; color: var(--primary); }
 .sort-ind.is-idle { color: var(--muted); opacity: 0.6; }
+/* ↺ back to the default order, just after the select-all box — only shown while another sort is on */
+.sort-first { display: flex; align-items: center; gap: 6px; min-width: 0; }
+.sort-reset {
+  flex: 0 0 auto; padding: 2px; margin-left: -4px; border: 0; background: none; cursor: pointer;
+  display: grid; place-items: center; color: var(--primary); border-radius: 6px;
+}
+.sort-reset:hover { background: var(--primary-soft); }
+/* on the default order it keeps its space (invisible), so AMOUNT doesn't jump when it appears */
+.sort-reset.is-off { visibility: hidden; pointer-events: none; }
 
 /* Row checkboxes */
 .row-check { display: grid; place-items: center; align-self: center; cursor: pointer; }
@@ -726,9 +749,9 @@ body.list-mode .hero.compact .user-avatar { width: 32px; height: 32px; }
 body.list-mode .hero.compact .page-title { font-size: 1.05rem; }
 body.list-mode .container { padding-top: 10px; }
 body.list-mode #view-list { gap: 8px; }
-body.list-mode .list-tools { padding: 6px; gap: 6px; border-radius: 12px; }
-body.list-mode .tools-row { grid-template-columns: 36px minmax(0, 1fr) 36px 36px; gap: 6px; }
-body.list-mode .tools-grid { gap: 6px; }
+body.list-mode .list-tools { padding: 6px; gap: 8px; border-radius: 12px; }
+body.list-mode .tools-row { grid-template-columns: 42px minmax(0, 1fr) 42px 42px; gap: 8px; }
+body.list-mode .tools-grid { gap: 8px; }
 body.list-mode .tools-btn { height: 32px; border-radius: 8px; font-size: 0.9rem; }
 body.list-mode .month-btn { height: 32px; min-height: 32px; font-size: 0.92rem; border-radius: 8px; }
 body.list-mode .filter-count { top: -4px; right: -4px; min-width: 16px; height: 16px; line-height: 16px; font-size: 0.6rem; }
@@ -775,6 +798,24 @@ body.list-mode .access-note { padding: 6px 10px; }
 .cal-out { color: var(--error); }
 .cal-in { color: var(--ok); }
 .cal-total { text-align: center; padding: 6px 0 2px; }
+
+/* Year view: 12 month tiles, 3 across (4 on wider screens) — about half the screen, the list gets the rest */
+.yr-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 5px; }
+@media (min-width: 560px) { .yr-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.yr-cell {
+  min-height: 62px; border-radius: 10px; border: 1px solid transparent; background: var(--bg); padding: 5px 3px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; cursor: pointer; min-width: 0; overflow: hidden;
+}
+.yr-cell:hover { border-color: var(--primary); }
+.yr-cell.is-today { border-color: var(--primary); }
+.yr-cell.is-selected { background: var(--primary-soft); border-color: var(--primary); box-shadow: inset 0 0 0 1px var(--primary); }
+.yr-name { font-size: 0.78rem; font-weight: 800; color: var(--text); line-height: 1.15; }
+.yr-cell:not(.has-entries) .yr-name { color: var(--muted); font-weight: 600; }
+.yr-out, .yr-in { font-size: 0.68rem; font-weight: 700; line-height: 1.15; white-space: nowrap; font-variant-numeric: tabular-nums; max-width: 100%; overflow: hidden; text-overflow: ellipsis; }
+.yr-out { color: var(--error); }
+.yr-in { color: var(--ok); }
+.yr-count { font-size: 0.58rem; color: var(--muted); line-height: 1.2; }
+
 /* Month totals under the rows (stays put while the rows scroll) */
 .entry-foot { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); flex-shrink: 0; border-top: 1px solid var(--border); background: var(--bg); }
 .ef-cell { display: flex; flex-direction: column; align-items: center; gap: 1px; padding: 8px 4px; min-width: 0; }
@@ -841,6 +882,9 @@ body.list-mode .access-note { padding: 6px 10px; }
 .via-count { font-size: 0.72rem; color: var(--muted); font-weight: 500; font-variant-numeric: tabular-nums; }
 .pill { border: 1px solid var(--border); background: var(--bg); border-radius: 999px; padding: 7px 14px; font-size: 0.85rem; }
 .pill.is-on { border-color: var(--primary); background: var(--primary-soft); color: var(--primary); font-weight: 700; }
+/* ＋ Add at the end of Pay via / Paid by: dashed, so it reads as an action, not an option */
+.pill.pill-add { border: 1px dashed var(--primary); background: transparent; color: var(--primary); font-weight: 600; }
+.pill.pill-add:hover { background: var(--primary-soft); }
 textarea.input { resize: vertical; min-height: 64px; font: inherit; line-height: 1.4; }
 
 /* Very narrow phones */

@@ -46,10 +46,10 @@
           </button>
 
           <div id="user-info" class="user-info" hidden>
-            <span class="avatar-wrap">
+            <button id="profile-btn" class="avatar-wrap" type="button" aria-label="Your profile" title="Your profile">
               <span id="user-avatar" class="user-avatar"></span>
               <span id="online-dot" class="online-dot"></span>
-            </span>
+            </button>
             <span id="user-name" class="user-name"></span>
             <button id="logout-btn" class="glass-btn" type="button">Logout</button>
           </div>
@@ -196,6 +196,25 @@
       </div>
     </dialog>
 
+    <!-- Your profile (tap your photo in the header): who's signed in, and Log out. -->
+    <dialog id="profile-sheet" class="dialog sheet" aria-labelledby="profile-title">
+      <div class="sheet-handle" aria-hidden="true"></div>
+      <div class="ef-head">
+        <div class="ef-titles"><h3 id="profile-title">Your profile</h3></div>
+        <button class="ef-close" type="button" data-close="cancel" aria-label="Close">✕</button>
+      </div>
+      <div class="profile-hero">
+        <span id="profile-avatar" class="profile-avatar"></span>
+        <strong id="profile-name" class="profile-name"></strong>
+        <span id="profile-email" class="muted"></span>
+        <span id="profile-badge" class="profile-badge"></span>
+      </div>
+      <div class="row sheet-actions">
+        <button class="btn btn-ghost grow" type="button" data-close="cancel">Cancel</button>
+        <button id="profile-logout" class="btn btn-danger grow" type="button">Log out</button>
+      </div>
+    </dialog>
+
     <!-- Add / edit an entry (opened from "+ Add entry" or ✏️ Edit). -->
     <dialog id="entry-form-sheet" class="dialog sheet" aria-labelledby="ef-title">
       <div class="sheet-handle" aria-hidden="true"></div>
@@ -242,17 +261,11 @@
           <div id="categories" class="chips" role="radiogroup" aria-label="Category"></div>
         </div>
         <div class="field">
-          <span class="field-head">
-            <span id="pay-via-label" class="field-label">Pay via</span>
-            <button type="button" class="add-btn" data-manage="pay" aria-label="Add or edit payment methods" title="Add or edit payment methods">＋</button>
-          </span>
+          <span id="pay-via-label" class="field-label">Pay via</span>
           <div id="pay-via" class="pill-group" role="radiogroup" aria-labelledby="pay-via-label"></div>
         </div>
         <div class="field">
-          <span class="field-head">
-            <span id="paid-by-label" class="field-label">Paid by</span>
-            <button type="button" class="add-btn" data-manage="people" aria-label="Add or edit names" title="Add or edit names">＋</button>
-          </span>
+          <span id="paid-by-label" class="field-label">Paid by</span>
           <div id="paid-by" class="pill-group" role="radiogroup" aria-labelledby="paid-by-label"></div>
         </div>
         <label class="field">
