@@ -675,20 +675,26 @@ button.avatar-wrap:focus-visible { outline: 2px solid var(--primary); outline-of
 .entry-row:hover { background: var(--bg); }
 .entry-row.is-selected { background: var(--primary-soft); }
 
-/* Sortable headers: tap to cycle the order; the active one shows ▲/▼ */
-.sort-btn {
-  border: 0; background: none; padding: 4px 0; text-align: left; cursor: pointer; white-space: nowrap; min-width: 0;
-  font-size: 0.68rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted);
-  display: inline-flex; align-items: center; gap: 4px;
+/* Sort bar: ☐ ↺ | 📅  ₹  🏷️  👤  💳 — tap an icon to sort by it, again to flip ▲ / ▼ */
+.entry-head.sort-head { display: flex; gap: 8px; }
+.sort-icons { flex: 1; min-width: 0; display: flex; align-items: center; justify-content: space-between; gap: 4px; }
+.sort-icon {
+  flex: 1 1 0; max-width: 64px; height: 28px; min-height: 0; padding: 0 6px; border-radius: 999px; cursor: pointer;
+  border: 1px solid transparent; background: none; color: var(--muted);
+  display: inline-flex; align-items: center; justify-content: center; gap: 2px;
 }
-.sort-btn:hover { color: var(--primary); }
-.sort-right { justify-content: flex-end; text-align: right; }
-.sort-ind { font-size: 0.68rem; letter-spacing: 0; color: var(--primary); }
-.sort-ind.is-idle { color: var(--muted); opacity: 0.6; }
+.sort-icon:hover { background: var(--primary-soft); }
+.sort-icon.is-on { background: var(--primary-soft); border-color: var(--primary); color: var(--primary); }
+.sort-glyph { font-size: 0.88rem; line-height: 1; filter: grayscale(0.35); opacity: 0.85; }
+.sort-icon.is-on .sort-glyph { filter: none; opacity: 1; }
+.sort-glyph.is-text { font-size: 0.92rem; font-weight: 800; }
+.sort-ind { font-size: 0.55rem; letter-spacing: 0; color: var(--primary); }
+.sort-svg { display: block; }
+.sort-divider { flex: 0 0 1px; align-self: stretch; margin: 4px 0; background: var(--border); }
+
 /* ↺ back to the default order, just after the select-all box — only shown while another sort is on */
-.sort-first { display: flex; align-items: center; gap: 6px; min-width: 0; }
 .sort-reset {
-  flex: 0 0 auto; padding: 2px; margin-left: -4px; border: 0; background: none; cursor: pointer;
+  flex: 0 0 auto; padding: 2px; border: 0; background: none; cursor: pointer;
   display: grid; place-items: center; color: var(--primary); border-radius: 6px;
 }
 .sort-reset:hover { background: var(--primary-soft); }

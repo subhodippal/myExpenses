@@ -1935,14 +1935,17 @@
     }).join('');
   }
 
-  // ---------- sorting (tap a column header to cycle its orders) ----------
+  // ---------- sorting (tap an icon to sort by it; tap it again to flip ▲ / ▼) ----------
 
   const SORT_KEY = 'myExpenses.entrySort';
-  const SORT_CYCLES = {
-    amount: ['date-asc', 'date-desc', 'amount-asc', 'amount-desc'],
-    purpose: ['category-asc', 'category-desc'],
-    via: ['via-asc', 'via-desc', 'by-asc', 'by-desc'],
-  };
+  const CURRENCY_SYMBOL = moneyWhole.formatToParts(0).find((p) => p.type === 'currency')?.value || '₹';
+  const SORT_FIELDS = [
+    { id: 'date', icon: '📅', name: 'date' },
+    { id: 'amount', icon: CURRENCY_SYMBOL, name: 'amount', text: true },
+    { id: 'category', icon: '🏷️', name: 'category' },
+    { id: 'by', icon: '🧑', name: 'paid by' },
+    { id: 'via', icon: '💳', name: 'pay via' },
+  ];
   const SORT_LABELS = {
     'date-asc': 'Date: oldest first',
     'date-desc': 'Date: newest first',
@@ -1959,12 +1962,20 @@
   let sortMode = storage((s) => s.getItem(SORT_KEY)) || DEFAULT_SORT;
   if (!SORT_LABELS[sortMode]) sortMode = DEFAULT_SORT;
 
-  const sortColumn = (mode) => Object.keys(SORT_CYCLES).find((col) => SORT_CYCLES[col].includes(mode));
+  // Day totals only: each day collapses to one line with its total (tap the icon again to expand).
+  const DAYS_ONLY_KEY = 'myExpenses.daysOnly';
+  let daysOnly = storage((s) => s.getItem(DAYS_ONLY_KEY)) === '1';
 
-  function cycleSort(column) {
-    const cycle = SORT_CYCLES[column];
-    const i = cycle.indexOf(sortMode);
-    sortMode = i === -1 ? cycle[0] : cycle[(i + 1) % cycle.length];
+  function toggleDaysOnly() {
+    daysOnly = !daysOnly;
+    storage((s) => (daysOnly ? s.setItem(DAYS_ONLY_KEY, '1') : s.removeItem(DAYS_ONLY_KEY)));
+    renderListDetail();
+    toast(daysOnly ? '📊 Day totals only' : '📋 All entries');
+  }
+
+  function toggleSort(field) {
+    const [current, dir] = sortMode.split('-');
+    sortMode = current === field ? `${field}-${dir === 'asc' ? 'desc' : 'asc'}` : `${field}-asc`;
     storage((s) => s.setItem(SORT_KEY, sortMode));
     renderListDetail();
     toast(`↕ ${SORT_LABELS[sortMode]}`);
@@ -1999,12 +2010,22 @@
     return [...rows].sort((a, b) => sign * compare(a, b) || byDate(a, b));
   }
 
-  /** Small indicator next to a header: what it sorts by now (or ↕ when another column is active). */
-  function sortIndicator(column) {
-    if (sortColumn(sortMode) !== column) return '<span class="sort-ind is-idle" aria-hidden="true">↕</span>';
+  /** The row of sort icons above the entries; the active one is highlighted with ▲ / ▼. */
+  function sortIconsHtml() {
     const [field, dir] = sortMode.split('-');
-    const prefix = { date: '📅', amount: '₹', category: '🏷️', via: '💵', by: '👤' }[field] || '';
-    return `<span class="sort-ind" aria-hidden="true">${prefix}${dir === 'asc' ? '▲' : '▼'}</span>`;
+    return SORT_FIELDS.map((f) => {
+      const on = f.id === field;
+      const title = on ? SORT_LABELS[sortMode] : `Sort by ${f.name}`;
+      return `<button type="button" class="sort-icon${on ? ' is-on' : ''}" data-sort="${f.id}" title="${title}" aria-label="${title}" aria-pressed="${on}">
+        <span class="sort-glyph${f.text ? ' is-text' : ''}" aria-hidden="true">${f.icon}</span>${on ? `<span class="sort-ind" aria-hidden="true">${dir === 'asc' ? '▲' : '▼'}</span>` : ''}
+      </button>`;
+    }).join('') + `
+      <span class="sort-divider" aria-hidden="true"></span>
+      <button type="button" class="sort-icon${daysOnly ? ' is-on' : ''}" data-days-only title="${daysOnly ? 'Show all entries' : 'Show day totals only'}" aria-label="${daysOnly ? 'Show all entries' : 'Show day totals only'}" aria-pressed="${daysOnly}">
+        <svg class="sort-svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true">${daysOnly
+          ? '<path d="M4 6h16M4 10h16M4 14h16M4 18h16"/>'
+          : '<path d="M4 7h16M4 17h16"/><path d="M9 11.5l3 2.5 3-2.5" stroke-linejoin="round"/>'}</svg>
+      </button>`;
   }
 
   // ---------- selecting rows → floating total ----------
@@ -2017,17 +2038,17 @@
     $('entries').classList.toggle('has-selection', chosen.length > 0);
     const all = document.getElementById('select-all');
     if (all) {
-      const boxes = [...document.querySelectorAll('#entries .entry-row .row-check input')];
-      const checked = boxes.filter((b) => b.checked).length;
-      all.checked = boxes.length > 0 && checked === boxes.length;
-      all.indeterminate = checked > 0 && checked < boxes.length;
+      const ids = visibleEntryIds();
+      const checked = ids.filter((id) => selectedEntryIds.has(id)).length;
+      all.checked = ids.length > 0 && checked === ids.length;
+      all.indeterminate = checked > 0 && checked < ids.length;
     }
     // Day headers: ticked when all of that day's entries are, half when some are.
     for (const dayBox of document.querySelectorAll('#entries .day-sep input[data-day-check]')) {
-      const boxes = [...document.querySelectorAll(`#entries .entry-row .row-check input[data-day="${dayBox.dataset.dayCheck}"]`)];
-      const checked = boxes.filter((b) => b.checked).length;
-      dayBox.checked = boxes.length > 0 && checked === boxes.length;
-      dayBox.indeterminate = checked > 0 && checked < boxes.length;
+      const ids = dayBox.dataset.ids.split(',');
+      const checked = ids.filter((id) => selectedEntryIds.has(id)).length;
+      dayBox.checked = checked === ids.length;
+      dayBox.indeterminate = checked > 0 && checked < ids.length;
     }
     if (!chosen.length) return;
     $('sel-delete').hidden = !chosen.some(canDeleteEntry);
@@ -2049,23 +2070,27 @@
     $('sel-breakdown').hidden = !(out && inn);
   }
 
+  /** Ids of the entries in the list right now: from the rows, or from the day headers in "day totals only". */
+  function visibleEntryIds() {
+    const rows = [...document.querySelectorAll('#entries .entry-row .row-check input')].map((b) => b.dataset.id);
+    if (rows.length || !daysOnly) return rows;
+    return [...document.querySelectorAll('#entries .day-sep input[data-ids]')].flatMap((b) => b.dataset.ids.split(','));
+  }
+
   function onRowCheck(event) {
     const box = event.target.closest('.row-check input, #select-all');
     if (!box) return;
-    if (box.dataset.dayCheck) {
-      // A day header: tick / untick every entry of that day.
-      for (const b of document.querySelectorAll(`#entries .entry-row .row-check input[data-day="${box.dataset.dayCheck}"]`)) {
-        b.checked = box.checked;
-        if (box.checked) selectedEntryIds.add(b.dataset.id);
-        else selectedEntryIds.delete(b.dataset.id);
-        b.closest('.entry-row').classList.toggle('is-selected', box.checked);
-      }
-    } else if (box.id === 'select-all') {
-      for (const b of document.querySelectorAll('#entries .entry-row .row-check input')) {
-        b.checked = box.checked;
-        if (box.checked) selectedEntryIds.add(b.dataset.id);
-        else selectedEntryIds.delete(b.dataset.id);
-        b.closest('.entry-row').classList.toggle('is-selected', box.checked);
+    if (box.dataset.dayCheck || box.id === 'select-all') {
+      // A day header (or select-all): tick / untick every entry of that day (or of the list).
+      // Goes by id, so it also works in "day totals only", where the entry rows aren't shown.
+      for (const id of box.id === 'select-all' ? visibleEntryIds() : box.dataset.ids.split(',')) {
+        if (box.checked) selectedEntryIds.add(id);
+        else selectedEntryIds.delete(id);
+        const b = document.querySelector(`#entries .entry-row .row-check input[data-id="${id}"]`);
+        if (b) {
+          b.checked = box.checked;
+          b.closest('.entry-row').classList.toggle('is-selected', box.checked);
+        }
       }
     } else {
       if (box.checked) selectedEntryIds.add(box.dataset.id);
@@ -2199,7 +2224,7 @@
     for (const id of [...selectedEntryIds]) if (!listEntries.some((e) => e.id === id)) selectedEntryIds.delete(id);
 
     // Re-rendering the same view (e.g. after a sync) keeps the scroll position; a new view starts fresh.
-    const renderKey = [list.id, viewMode, longList ? '' : month, day, sortMode, filterKey(filters)].join('|');
+    const renderKey = [list.id, viewMode, longList ? '' : month, day, sortMode, daysOnly, filterKey(filters)].join('|');
     const oldRows = document.querySelector('#entries .entry-rows');
     const keep =
       oldRows && renderKey === lastRenderKey
@@ -2245,6 +2270,8 @@
         : '';
       const html = visible.map((g) => monthSeparatorHtml(g.key, g.items) + rowsWithDayHeaders(g.items)).join('');
       body = asc ? hint + html : html + hint;
+    } else if (daysOnly) {
+      body = rowsWithDayHeaders(sortMode === 'date-desc' ? rows : [...rows].sort(byDate));
     } else if (sortMode.startsWith('date-') && viewMode !== 'calendar') {
       body = rowsWithDayHeaders(rows); // date order: a thin header above each day
     } else {
@@ -2253,17 +2280,13 @@
 
     // The header stays put; only the rows scroll.
     $('entries').innerHTML = `${calendarHtml}
-      <div class="card entry-table">
-        <div class="entry-head">
+      <div class="card entry-table${daysOnly ? ' is-days-only' : ''}">
+        <div class="entry-head sort-head">
           <label class="row-check" aria-label="Select all"><input type="checkbox" id="select-all" /></label>
-          <span class="sort-first">
             ${`<button type="button" class="sort-reset${sortMode === DEFAULT_SORT ? ' is-off' : ''}" data-sort-reset title="Reset to default order (date, oldest first)" aria-label="Reset sort"${sortMode === DEFAULT_SORT ? ' tabindex="-1" aria-hidden="true"' : ''}>
               <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 2.64-6.36"/><path d="M3 4v5h5"/></svg>
             </button>`}
-            <button type="button" class="sort-btn" data-sort="amount" title="Sort: date / amount">Amount ${sortIndicator('amount')}</button>
-          </span>
-          <button type="button" class="sort-btn" data-sort="purpose" title="Sort: category">Purpose ${sortIndicator('purpose')}</button>
-          <button type="button" class="sort-btn sort-right" data-sort="via" title="Sort: pay via / paid by">${sortIndicator('via')} Pay via</button>
+          <div class="sort-icons" role="group" aria-label="Sort entries">${sortIconsHtml()}</div>
         </div>
         <ul class="entry-rows">${body}</ul>
         ${viewMode === 'month' ? monthFooterHtml(listEntries) : ''}
@@ -2405,7 +2428,7 @@
       const day = items[i].spent_on;
       let j = i;
       while (j < items.length && items[j].spent_on === day) j++;
-      html += daySeparatorHtml(day, items.slice(i, j)) + items.slice(i, j).map(rowHtml).join('');
+      html += daySeparatorHtml(day, items.slice(i, j)) + (daysOnly ? '' : items.slice(i, j).map(rowHtml).join(''));
       i = j;
     }
     return html;
@@ -2424,9 +2447,10 @@
     const label = `${weekday}, ${d}/${pad2(m)}/${String(y).slice(-2)}`;
     const isToday = day === todayISO();
     const hasEntries = items.some((e) => e.kind !== 'note');
+    const ids = items.filter((e) => e.kind !== 'note').map((e) => e.id).join(',');
     return `
       <li class="day-sep ${isToday ? 'is-today' : ''}" aria-label="${label}">
-        ${hasEntries ? `<label class="row-check day-check" aria-label="Select all entries of ${label}"><input type="checkbox" data-day-check="${day}" /></label>` : '<span class="day-check" aria-hidden="true"></span>'}
+        ${hasEntries ? `<label class="row-check day-check" aria-label="Select all entries of ${label}"><input type="checkbox" data-day-check="${day}" data-ids="${ids}" /></label>` : '<span class="day-check" aria-hidden="true"></span>'}
         <span class="day-name">${label}${isToday ? ' <span class="day-today">Today</span>' : ''}</span>
         <span class="day-totals">${out ? `<span class="amount-out">− ${money.format(out)}</span>` : ''}${out && inn ? ' · ' : ''}${inn ? `<span class="amount-in">+ ${money.format(inn)}</span>` : ''}</span>
       </li>`;
@@ -2666,8 +2690,9 @@
       return renderListDetail();
     }
     if (event.target.closest('[data-sort-reset]')) return resetSort();
+    if (event.target.closest('[data-days-only]')) return toggleDaysOnly();
     const sortBtn = event.target.closest('[data-sort]');
-    if (sortBtn) return cycleSort(sortBtn.dataset.sort);
+    if (sortBtn) return toggleSort(sortBtn.dataset.sort);
     const btn = event.target.closest('[data-action]');
     if (!btn) return;
     event.preventDefault();
