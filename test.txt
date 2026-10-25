@@ -1,1542 +1,1239 @@
-# Monthly Expenses – All months
-# Sent ₹21,22,127.22 · Received ₹2,82,294.76 · Net ₹-18,39,832.46
-# Each line: Time, Amount, Purpose, Pay via, Note   (+amount = received; fields with commas are in "quotes")
+27/09/2022
+7:42pm, 11025, FLIPKART INTERNET PRIVATE BANGALORE IN, ICICI Coral Credit card
 
-01/01/2026
-2:23pm, 530, Paid to THE GROCERY JUNCTION, PhonePe UPI
-2:28pm, 40, Paid to THE GROCERY JUNCTION, PhonePe UPI
-5:04pm, 312.9, Paid to CONNAUGHT PLAZA REST, PhonePe UPI
-6:47pm, 85, Paid to Sompal, PhonePe UPI
+16/10/2022
+10:05am, +1, NEFT PAYMENT RECEIVED, ICICI Coral Credit card
 
-03/01/2026
-7:43pm, 120, Paid to MD MOKIM, PhonePe UPI
-8:03pm, 30, Paid to Mr MANOJ KUMAR YADAV, PhonePe UPI
-8:17pm, 394, Paid to THE GROCERY JUNCTION, PhonePe UPI
+18/10/2022
+12:31pm, +10, UPI Payment Received, ICICI Coral Credit card
 
-04/01/2026
-10:55am, 80, Paid to Khushi Medicos, PhonePe UPI
-4:01pm, 40, Paid to M S MANOJ KUMAR AGGARWAL, PhonePe UPI
+21/10/2022
+6:18pm, +11014, UPI Payment Received, ICICI Coral Credit card
 
-05/01/2026
-12:58pm, 4000, Add money UPI Lite, PhonePe UPI
-12:58pm, 240, Paid to MD KALIM AKHTER, PhonePe UPI
-1:14pm, 450, Paid to Siti Cable Internet | Newtown, PhonePe UPI
-3:36pm, 237.3, Paid to ETERNAL LIMITED, PhonePe UPI
-3:42pm, 11000, Transfer to XXXXXXX3253, PhonePe UPI
-3:43pm, 12000, Paid to Mr Nitish Ranjan Deb, PhonePe UPI
-9:12pm, 259.35, Paid to Dominos Pizza, PhonePe UPI
+04/11/2022
+9:26pm, 2284, Swiggy Bengaluru IN, ICICI Coral Credit card
 
-06/01/2026
-8:11pm, 180, Paid to SANDIP BAGUI, PhonePe UPI
-8:52pm, 251, Paid to ZOMATO, PhonePe UPI
+15/11/2022
+11:48am, 2909, CRED BANGALORE IN, ICICI Coral Credit card
 
-07/01/2026
-2:32pm, 75, Paid to Mojnu Mollick, PhonePe UPI
-7:46pm, 190, Paid to AKHANKHA HOME DELIVERY, PhonePe UPI
-7:53pm, 76, Paid to SWASTIKA SWEETS, PhonePe UPI
+28/11/2022
+5:10pm, +5193, UPI Payment Received, ICICI Coral Credit card
 
-09/01/2026
-1:14pm, 40, Paid to Irfan Khan, PhonePe UPI
+07/02/2023
+3:22pm, 1238, DREAMPLUG TECHNOLOGI BANGALORE IN, ICICI Coral Credit card
 
-11/01/2026
-10:14am, 35, Paid to SANDIP BAGUI, PhonePe UPI
-11:48am, 85, Paid to Indian Railways UTS, PhonePe UPI
-12:07pm, 126, Paid to INDRAJIT DAS, PhonePe UPI
-4:33pm, 624, Paid to TRIPTI MOTO PRIVATE LIMITED, PhonePe UPI
-4:54pm, 38, Paid to BISHU TEA STALL, PhonePe UPI
-5:50pm, 24, Paid to ANITA HAZRA, PhonePe UPI
-9:31pm, 770, Paid to Payel Kayal | CG | QA, PhonePe UPI
+10/02/2023
+8:54pm, 1222, AMAZON PAY INDIA PRIVATET BANGALORE IN, ICICI Coral Credit card
 
-17/01/2026
-12:17pm, 5000, Transfer to XXXXXXXXXX71, PhonePe UPI
-12:52pm, 220, Paid to MUKHERJEE FILLING ST, PhonePe UPI
-9:30pm, 390, Paid to KORNIKA RESORT, PhonePe UPI
-9:39pm, +350, Received from SUDIPTA KUMAR SAHA, PhonePe UPI
+01/03/2023
+10:40am, +2460, NEFT PAYMENT RECEIVED, ICICI Coral Credit card
+
+05/03/2023
+1:15pm, 2410, Ms Radhashyam Agarwala BIRBHUM IN, ICICI Coral Credit card
+
+06/03/2023
+4:47pm, 204.26, Atyeti Robotics Pvt Lt Virar IN, ICICI Coral Credit card
+
+07/03/2023
+6:32pm, 6205, ANUPAM EMPORIUM PVT LT BIRBHUM IN, ICICI Coral Credit card
+
+14/03/2023
+9:12pm, 5653, FLIPKART WWW.FLIPKART. IN, ICICI Coral Credit card
+9:20pm, 1063, Paytm_FlipkartInternet BANGALORE IN, ICICI Coral Credit card
+
+25/03/2023
+11:05am, 1710, Flipkart Payments BANGALORE IN, ICICI Coral Credit card
+
+27/03/2023
+7:30pm, +15535.26, UPI Payment Received, ICICI Coral Credit card
+
+28/03/2023
+2:44pm, 587, DREAMPLUG TECHNOLOGI BANGALORE IN, ICICI Coral Credit card
+
+09/04/2023
+5:36pm, 4321, MANMOHINI TEXTILE PVT LTD BOLPUR IN, ICICI Coral Credit card
+
+03/05/2023
+10:12am, +6618, "INFINITY PAYMENT RECEIVED for ICICI Coral Credit card, THANK YOU", ICICI Coral Credit card
+
+12/05/2023
+1:58pm, 2430, DREAMPLUG TECHNOLOGI BANGALORE IN, ICICI Coral Credit card
+
+14/05/2023
+8:21pm, 707, Flipkart Payments BANGALORE IN, ICICI Coral Credit card
+8:35pm, 2249, Paytm_FlipkartInternet BANGALORE IN, ICICI Coral Credit card
+
+15/05/2023
+11:16am, 2367, Flipkart Payments BANGALORE IN, ICICI Coral Credit card
+11:29am, 236, Flipkart Payments BANGALORE IN, ICICI Coral Credit card
+
+22/05/2023
+9:47pm, 567, Flipkart Payments BANGALORE IN, ICICI Coral Credit card
+
+28/05/2023
+4:03pm, 237, Flipkart Inter Banglor Banglore IN, ICICI Coral Credit card
+
+01/06/2023
+9:30am, +8793, "INFINITY PAYMENT RECEIVED for ICICI Coral Credit card, THANK YOU", ICICI Coral Credit card
+
+03/06/2023
+6:52pm, 2276, VISHAL MEGA MART BOLPUR IN, ICICI Coral Credit card
+
+02/07/2023
+10:25am, +2276, "INFINITY PAYMENT RECEIVED for ICICI Coral Credit card, THANK YOU", ICICI Coral Credit card
+
+31/10/2023
+8:08pm, 10490, AMAZON PAY INDIA PRIVATET Bangalore IN, ICICI Coral Credit card
+
+17/11/2023
+11:40am, +10490, "INFINITY PAYMENT RECEIVED for ICICI Coral Credit card, THANK YOU", ICICI Coral Credit card
+
+24/01/2024
+3:14pm, +2, AMAZON MUMBAI IN (refund), ICICI Coral Credit card
+3:15pm, 2, AMAZON MUMBAI IN, ICICI Coral Credit card
+
+25/01/2024
+7:27pm, 1583, AMAZON PAY INDIA Pvt Ltd Bangalore IN, ICICI Coral Credit card
+7:28pm, 2, AMAZON MUMBAI IN, ICICI Coral Credit card
+
+28/01/2024
+5:45pm, 1631, MANMOHINI TEXTILE PVT LTD BOLPUR IN, ICICI Coral Credit card
+
+05/02/2024
+10:18am, +3216, "INFINITY PAYMENT RECEIVED for ICICI Coral Credit card, THANK YOU", ICICI Coral Credit card
+
+15/02/2024
+9:02pm, 198, AMAZON PAY INDIA PRIVATET Bangalore IN, ICICI Coral Credit card
+9:06pm, 399, AMAZON PAY INDIA PRIVATET Bangalore IN, ICICI Coral Credit card
+
+23/02/2024
+12:37pm, +597, "INFINITY PAYMENT RECEIVED for ICICI Coral Credit card, THANK YOU", ICICI Coral Credit card
+
+16/03/2024
+8:49pm, 164.62, IRCTC MOBILE APP WWW.IRCTCTOUR IN, ICICI Coral Credit card
+
+20/03/2024
+2:10pm, +85, IRCTC MOBILE APP WWW.IRCTCTOUR IN (refund), ICICI Coral Credit card
+
+22/03/2024
+7:55pm, 665, AMAZON PAY INDIA PRIVATET Bangalore IN, ICICI Coral Credit card
+
+23/03/2024
+11:22am, +665, AMAZON PAY INDIA PRIVATET Bangalore IN (refund), ICICI Coral Credit card
+
+27/03/2024
+9:38pm, 192.07, ZOMATO INTERNET PRIV WWW.HYPERPURE IN, ICICI Coral Credit card
+
+01/04/2024
+10:12am, 499, IND*AMAZON HTTP://WWW.AM IN, ICICI Amazon pay credit card
+10:20am, 699, IND*AMAZON HTTP://WWW.AM IN, ICICI Amazon pay credit card
+
+03/04/2024
+4:35pm, +399, IND*AMAZON HTTP://WWW.AM IN (refund), ICICI Amazon pay credit card
+
+05/04/2024
+10:46am, +271.69, "INFINITY PAYMENT RECEIVED for ICICI Coral Credit card, THANK YOU", ICICI Coral Credit card
+
+13/04/2024
+5:19pm, 3390, MULCHAND AGARWALA BIRBHUM IN, ICICI Coral Credit card
+
+14/04/2024
+10:57pm, 164.62, IRCTC MOBILE APP WWW.IRCTCTOUR IN, ICICI Coral Credit card
+
+18/04/2024
+8:33pm, 22440.87, AMAZON PAY INDIA PRIVATET Bangalore IN, ICICI Coral Credit card
+
+20/04/2024
+9:01am, 199, Processing Fee 199 : 0%, ICICI Coral Credit card
+9:01am, 35.82, IGST-CI@18%, ICICI Coral Credit card
+9:02am, 299.02, Interest Amount Amortization <1/6>, ICICI Coral Credit card
+9:02am, 53.82, IGST-CI@18%, ICICI Coral Credit card
+9:03am, 3617.48, Principal Amount Amortization <1/6>, ICICI Coral Credit card
+9:03am, +22440.87, AMAZON PAY INDIA PRIVATET Bangalore IN (converted to EMI), ICICI Coral Credit card
+7:48pm, 525, Minis BANGALORE IN, ICICI Amazon pay credit card
+
+21/04/2024
+9:15pm, 164.62, IRCTC MOBILE APP WWW.IRCTCTOUR IN, ICICI Amazon pay credit card
+
+22/04/2024
+11:02am, 4485.1, IND*AMAZON HTTP://WWW.AM IN, ICICI Amazon pay credit card
+11:30am, +3794, IND*AMAZON HTTP://WWW.AM IN (refund), ICICI Amazon pay credit card
+11:31am, +199, IND*AMAZON HTTP://WWW.AM IN (refund), ICICI Amazon pay credit card
+12:05pm, 4231, IND*AMAZON HTTP://WWW.AM IN, ICICI Amazon pay credit card
+
+24/04/2024
+8:40pm, 33390, IND*AMAZON HTTP://WWW.AM IN, ICICI Amazon pay credit card
+
+30/04/2024
+10:25am, +34544.62, "INFINITY PAYMENT RECEIVED for ICICI Amazon pay Credit card, THANK YOU", ICICI Amazon pay credit card
+12:20pm, +7759.76, "INFINITY PAYMENT RECEIVED for ICICI Coral Credit card, THANK YOU", ICICI Coral Credit card
+
+10/05/2024
+7:41pm, 316, GROFERS INDIA PRIVATE BANGALORE IN, ICICI Coral Credit card
+
+13/05/2024
+11:09pm, 164.62, IRCTC MOBILE APP WWW.IRCTCTOUR IN, ICICI Coral Credit card
+
+17/05/2024
+9:10pm, 9277, Flipkart Internet PVT LTD Bangalore IN, ICICI Amazon pay credit card
+
+19/05/2024
+1:22pm, +9277, Flipkart Internet PVT LTD Bangalore IN (refund), ICICI Amazon pay credit card
+
+20/05/2024
+9:01am, 250.82, Interest Amount Amortization <2/6>, ICICI Coral Credit card
+9:01am, 45.15, IGST-CI@18%, ICICI Coral Credit card
+9:02am, 3665.68, Principal Amount Amortization <2/6>, ICICI Coral Credit card
+
+27/05/2024
+6:26pm, 68.5, IRCTC MOBILE APP WWW.IRCTCTOUR IN, ICICI Coral Credit card
+
+28/05/2024
+11:45am, +38802.72, UPI Payment Received, ICICI Amazon pay credit card
+9:46pm, +480.62, UPI payment received, ICICI Coral Credit card
+
+11/06/2024
+1:58pm, 1785, MANMOHINI TEXTILE PVT LTD BIRBHUM IN, ICICI Coral Credit card
+6:58pm, 576, STYLE BAAZAR BOLPUR BOLPUR IN, ICICI Coral Credit card
+
+20/06/2024
+12:46pm, 201.98, Interest Amount Amortization <3/6>, ICICI Coral Credit card
+9:28pm, 36.36, IGST-CI@18%, ICICI Coral Credit card
+10:43pm, 3714.52, Principal Amount Amortization <3/6>, ICICI Coral Credit card
+
+28/06/2024
+11:21am, +6391.15, UPI Payment Received, ICICI Coral Credit card
+
+29/06/2024
+10:26am, 27838.81, POLICY BAZAAR INSURANCE W Gurgaon IN, ICICI Coral Credit card
+
+02/07/2024
+11:52am, +27838.81, POLICY BAZAAR INSURANCE W Gurgaon IN, ICICI Coral Credit card, converted to EMI
+1:40pm, 199, POLICY BAZAAR INSURANCE W Gurgaon IN, ICICI Coral Credit card
+2:43pm, 35.82, IGST-CI@18%, ICICI Coral Credit card
+3:47pm, 370.95, Interest Amount Amortization <1/18>POLICY BAZAAR INSURANCE, ICICI Coral Credit card
+6:55pm, 66.77, IGST-CI@18%, ICICI Coral Credit card
+7:07pm, 1378.77, Principal Amount Amortization <1/18>POLICY BAZAAR INSURANC, ICICI Coral Credit card
+
+04/07/2024
+8:15pm, +6004.17, "INFINITY PAYMENT RECEIVED, THANK YOU", ICICI Coral Credit card
+
+15/07/2024
+5:43pm, 4947, MANMOHINI TEXTILE PVT LTD BIRBHUM IN, ICICI Coral Credit card
+
+20/07/2024
+9:07am, 152.48, Interest Amount Amortization <4/6>, ICICI Coral Credit card
+9:53am, 27.45, IGST-CI@18%, ICICI Coral Credit card
+5:11pm, 3764.02, Principal Amount Amortization <4/6>, ICICI Coral Credit card
+
+02/08/2024
+1:09pm, 352.58, Interest Amount Amortization <2/18>POLICY BAZAAR INSURANCE, ICICI Coral Credit card
+1:21pm, 63.46, IGST-CI@18%, ICICI Coral Credit card
+2:07pm, 1397.14, Principal Amount Amortization <2/18>POLICY BAZAAR INSURANC, ICICI Coral Credit card
+
+05/08/2024
+12:40pm, +10704.13, "INFINITY PAYMENT RECEIVED, THANK YOU", ICICI Coral Credit card
+
+10/08/2024
+6:18pm, 4911, IND*AMAZON.IN BILL P HTTP://WWW.AM IN, ICICI Amazon pay credit card
+
+12/08/2024
+8:52pm, 1019, MYNTRA DESIGNS PRIVATE L Bangalore IN, ICICI Amazon pay credit card
+
+15/08/2024
+3:27pm, 2099, IND*AMAZON HTTP://WWW.AM IN, ICICI Amazon pay credit card
+
+19/08/2024
+9:06pm, 41913.68, Ultron Commerce Pvt Ltd New Delhi IN, ICICI Coral Credit card
+
+20/08/2024
+8:10am, 102.32, Interest Amount Amortization <5/6>, ICICI Coral Credit card
+3:52pm, 18.42, IGST-CI@18%, ICICI Coral Credit card
+8:46pm, 3814.18, Principal Amount Amortization <5/6>, ICICI Coral Credit card
+
+22/08/2024
+9:30am, +41913.68, Ultron Commerce Pvt Ltd New Delhi IN, ICICI Coral Credit card, converted to EMI
+1:24pm, 199, Ultron Commerce Pvt Ltd New Delhi IN, ICICI Coral Credit card
+1:54pm, 35.82, IGST-CI@18%, ICICI Coral Credit card
+2:15pm, 558.5, Interest Amount Amortization <1/6>Ultron Commerce Pvt Ltd, ICICI Coral Credit card
+7:09pm, 100.53, IGST-CI@18%, ICICI Coral Credit card
+7:12pm, 6756.5, Principal Amount Amortization <1/6>Ultron Commerce Pvt Ltd, ICICI Coral Credit card
+
+30/08/2024
+9:13am, +11585.27, "INFINITY PAYMENT RECEIVED, THANK YOU", ICICI Coral Credit card
+10:40am, +8029, "INFINITY PAYMENT RECEIVED for ICICI Amazon pay Credit card, THANK YOU", ICICI Amazon pay credit card
+
+02/09/2024
+7:12pm, 333.96, Interest Amount Amortization <3/18>POLICY BAZAAR INSURANCE, ICICI Coral Credit card
+9:45pm, 60.11, IGST-CI@18%, ICICI Coral Credit card
+10:06pm, +394.07, Payment Received UPI, ICICI Coral Credit card
+
+07/09/2024
+9:33pm, 1799, IND*AMAZON HTTP://WWW.AM IN, ICICI Amazon pay credit card
+
+20/09/2024
+8:07am, 51.51, Interest Amount Amortization <6/6>, ICICI Coral Credit card
+6:55pm, 9.27, IGST-CI@18%, ICICI Coral Credit card
+7:23pm, 3864.99, Principal Amount Amortization <6/6>, ICICI Coral Credit card
+
+22/09/2024
+8:58am, 468.47, Interest Amount Amortization <2/6>Ultron Commerce Pvt Ltd, ICICI Coral Credit card
+4:33pm, 84.33, IGST-CI@18%, ICICI Coral Credit card
+5:42pm, 6846.53, Principal Amount Amortization <2/6>Ultron Commerce Pvt Ltd, ICICI Coral Credit card
+
+30/09/2024
+7:05pm, 888, IND*AMAZON HTTP://WWW.AM IN, ICICI Amazon pay credit card
+
+01/10/2024
+10:15am, +1799, "INFINITY PAYMENT RECEIVED for ICICI Amazon pay Credit card, THANK YOU", ICICI Amazon pay credit card
+8:48pm, 473, Flipkart Internet Priv Bangalore IN, ICICI Amazon pay credit card
+
+02/10/2024
+12:30pm, 8315, MANMOHINI TEXTILE PVT LTD BOLPUR IN, ICICI Amazon pay credit card
+1:05pm, 2049, MANMOHINI FASHION BIRBHUM IN, ICICI Amazon pay credit card
+2:08pm, 315.1, Interest Amount Amortization <4/18>POLICY BAZAAR INSURANCE, ICICI Coral Credit card
+4:32pm, 56.72, IGST-CI@18%, ICICI Coral Credit card
+7:14pm, 1434.62, Principal Amount Amortization <4/18>POLICY BAZAAR INSURANC, ICICI Coral Credit card
+9:12pm, 557.65, IND*AMAZON HTTP://WWW.AM IN, ICICI Amazon pay credit card
+9:18pm, 399, IND*AMAZON HTTP://WWW.AM IN, ICICI Amazon pay credit card
+
+15/10/2024
+8:26pm, 715, Jubilant Foodworks Lim Noida IN, ICICI Amazon pay credit card
+
+19/10/2024
+11:50pm, 16551, IND*AMAZON HTTP://WWW.AM IN, ICICI Amazon pay credit card
+
+22/10/2024
+9:01am, 377.24, Interest Amount Amortization <3/6> Ultron Commerce Pvt Ltd, ICICI Coral Credit card
+9:08am, 67.9, IGST-CI@18%, ICICI Coral Credit card
+9:10am, 6937.76, Principal Amount Amortization – <3/6>Ultron Commerce Pvt Ltd, ICICI Coral Credit card
+
+25/10/2024
+10:35am, +13396.65, "INFINITY PAYMENT RECEIVED for ICICI Amazon pay Credit card, THANK YOU", ICICI Amazon pay credit card
+11:34am, +13131.54, "INFINITY PAYMENT RECEIVED for ICICI Coral Credit card, THANK YOU", ICICI Coral Credit card
+
+27/10/2024
+6:40am, 200, INDIGO GURGAON IN, ICICI Amazon pay credit card
+
+30/10/2024
+11:18am, 10790, CHRISTIAN MEDICAL COLL VELLORE IN, ICICI Amazon pay credit card
+
+02/11/2024
+9:01am, 295.98, Interest Amount Amortization <5/18> POLICY BAZAAR INSURANCE, ICICI Coral Credit card
+9:02am, 1453.74, Principal Amount Amortization <5/18> POLICY BAZAAR INSURANCE, ICICI Coral Credit card
+9:02am, 53.28, IGST-CI@18%, ICICI Coral Credit card
+
+05/11/2024
+10:20am, +27541, "INFINITY PAYMENT RECEIVED for ICICI Amazon pay Credit card, THANK YOU", ICICI Amazon pay credit card
+10:48am, +13131.54, "INFINITY PAYMENT RECEIVED for ICICI Coral Credit card, THANK YOU", ICICI Coral Credit card
+
+06/11/2024
+9:45am, 195, CHRISTIAN MEDICAL COLLEGE VELLORE IN, ICICI Amazon pay credit card
+10:30am, 1915, CHRISTIAN MEDICAL COLLEGE VELLORE IN, ICICI Amazon pay credit card
+
+07/11/2024
+12:14pm, 2064.27, CHRISTIAN MEDICAL COLL VELLORE IN, ICICI Amazon pay credit card
+12:40pm, 99.54, CHRISTIAN MEDICAL COLL VELLORE IN, ICICI Amazon pay credit card
+
+12/11/2024
+8:05pm, 795, Blinkit BANGALORE IN, ICICI Amazon pay credit card
+
+16/11/2024
+5:20pm, 440, DISHA EYE HOSPITALS PVT L KOLKATA IN, ICICI Amazon pay credit card
+
+19/11/2024
+6:55pm, 568, SHIVANUJA EYE CARE PHA KOLKATTA IN, ICICI Amazon pay credit card
+
+22/11/2024
+9:01am, 284.79, Interest Amount Amortization <4/6> Ultron Commerce Pvt Ltd, ICICI Coral Credit card
+9:02am, 7030.21, Principal Amount Amortization <4/6> Ultron Commerce Pvt Ltd, ICICI Coral Credit card
+9:02am, 51.26, IGST-CI@18%, ICICI Coral Credit card
+
+26/11/2024
+4:10pm, 4474, MANMOHINI TEXTILE PVT LTD BOLPUR IN, ICICI Amazon pay credit card
+
+28/11/2024
+2:02pm, 1, EGENCIA INDIA CYBS 3 GURUGRAM IN, ICICI Amazon pay credit card
+2:03pm, +1, EGENCIA INDIA CYBS 3 GURUGRAM IN (refund), ICICI Amazon pay credit card
+
+29/11/2024
+1:35pm, 499, MANMOHINI TEXTILE PVT LTD BIRBHUM IN, ICICI Amazon pay credit card
+7:50pm, +5068.81, UPI Payment Received, ICICI Amazon pay credit card
+
+02/12/2024
+9:01am, 1473.11, Principal Amount Amortization <6/18> POLICY BAZAAR INSURANCE, ICICI Coral Credit card
+9:01am, 49.79, IGST-CI@18%, ICICI Coral Credit card
+9:02am, 276.61, Interest Amount Amortization <6/18> POLICY BAZAAR INSURANCE, ICICI Coral Credit card
+
+14/12/2024
+3:15pm, 4275, MGM MARK WHITEFIELD BANGALORE IN, ICICI Amazon pay credit card
+3:22pm, 58240, MGM MARK WHITEFIELD BANGALORE IN, ICICI Amazon pay credit card
+4:16pm, 2, Dreamfolks Services Pr Gurgaon IN, ICICI Coral Credit card
+
+22/12/2024
+9:01am, 34.4, IGST-CI@18%, ICICI Coral Credit card
+9:01am, 7123.88, Principal Amount Amortization <5/6> Ultron Commerce Pvt Ltd, ICICI Coral Credit card
+9:02am, 191.12, Interest Amount Amortization <5/6> Ultron Commerce Pvt Ltd, ICICI Coral Credit card
+
+25/12/2024
+10:48am, 988, IND*AMAZON.IN GROCER HTTP://WWW.AM IN, ICICI Amazon pay credit card
+
+26/12/2024
+1:27pm, +5220.13, BBPS Payment received for ICICI Coral Credit card, ICICI Coral Credit card
+
+28/12/2024
+11:25am, +68496, BBPS Payment received for ICICI Amazon pay Credit card, ICICI Amazon pay credit card
+
+02/01/2025
+9:01am, 256.98, Interest Amount Amortization <7/18> POLICY BAZAAR INSURANCE, ICICI Coral Credit card
+9:01am, 46.26, IGST-CI@18%, ICICI Coral Credit card
+9:02am, 1492.74, Principal Amount Amortization <7/18> POLICY BAZAAR INSURANCE, ICICI Coral Credit card
+
+22/01/2025
+9:01am, 17.31, IGST-CI@18%, ICICI Coral Credit card
+9:01am, 7218.8, Principal Amount Amortization <6/6> Ultron Commerce Pvt Ltd, ICICI Coral Credit card
+9:02am, 96.19, Interest Amount Amortization <6/6> Ultron Commerce Pvt Ltd, ICICI Coral Credit card
+
+29/01/2025
+10:05am, +988, BBPS Payment received for ICICI Amazon pay Credit card, ICICI Amazon pay credit card
+11:52am, +9147.38, BBPS Payment received for ICICI Coral Credit card, ICICI Coral Credit card
+9:40pm, 2815, IND*AMAZON HTTP://WWW.AM IN, ICICI Amazon pay credit card
+
+02/02/2025
+9:01am, 1512.63, Principal Amount Amortization <8/18> POLICY BAZAAR INSURANCE, ICICI Coral Credit card
+9:01am, 42.68, IGST-CI@18%, ICICI Coral Credit card
+9:02am, 237.09, Interest Amount Amortization <8/18> POLICY BAZAAR INSURANCE, ICICI Coral Credit card
+
+03/02/2025
+8:15pm, 2138, IND*AMAZON HTTP://WWW.AM IN, ICICI Amazon pay credit card
+
+17/02/2025
+1:10pm, 3728, IND*AMAZON HTTP://WWW.AM IN, ICICI Amazon pay credit card
+6:45pm, 449, AMAZONIN GURGAON IN, ICICI Amazon pay credit card
+
+20/02/2025
+7:30pm, 376, BLINKIT GURGAON IN, ICICI Amazon pay credit card
+
+25/02/2025
+8:20pm, 208, BLINK COMMERCE PVT LTD BANGALORE IN, ICICI Amazon pay credit card
+
+26/02/2025
+9:05am, 209, IND*AMAZON RECHARGES HTTPS://WWW.A IN, ICICI Amazon pay credit card
+
+28/02/2025
+10:37am, +9124.7, BBPS Payment received for ICICI Coral Credit card, ICICI Coral Credit card
+11:40am, +4953, BBPS Payment received for ICICI Amazon pay Credit card, ICICI Amazon pay credit card
+
+02/03/2025
+9:01am, 1532.78, Principal Amount Amortization <9/18> POLICY BAZAAR INSURANCE, ICICI Coral Credit card
+9:01am, 39.05, IGST-CI@18%, ICICI Coral Credit card
+9:02am, 216.94, Interest Amount Amortization <9/18> POLICY BAZAAR INSURANCE, ICICI Coral Credit card
+5:35pm, 3215, MANMOHINI TEXTILE PVT LTD BIRBHUM IN, ICICI Amazon pay credit card
+
+09/03/2025
+4:20pm, 2912, MANMOHINI TEXTILE PVT LTD BIRBHUM IN, ICICI Amazon pay credit card
+8:55pm, 1976, RAZ*SASTASUNDAR Kolkata WB IN, ICICI Amazon pay credit card
+
+10/03/2025
+9:10pm, 467, IND*AMAZON HTTP://WWW.AM IN, ICICI Amazon pay credit card
+9:16pm, 329, IND*AMAZON HTTP://WWW.AM IN, ICICI Amazon pay credit card
+
+29/03/2025
+12:05pm, +13869, BBPS Payment received for ICICI Amazon pay Credit card, ICICI Amazon pay credit card
+12:44pm, +1788.77, BBPS Payment received for ICICI Coral Credit card, ICICI Coral Credit card
+
+01/04/2025
+10:22am, 1177, IND*AMAZON HTTP://WWW.AM IN, ICICI Amazon pay credit card
+10:35am, 4649, IND*AMAZON HTTP://WWW.AM IN, ICICI Amazon pay credit card
+
+02/04/2025
+9:01am, 196.51, Interest Amount Amortization <10/18> POLICY BAZAAR INSURANCE, ICICI Coral Credit card
+9:01am, 1553.21, Principal Amount Amortization <10/18> POLICY BAZAAR INSURANCE, ICICI Coral Credit card
+9:02am, 35.37, IGST-CI@18%, ICICI Coral Credit card
+
+04/04/2025
+7:12pm, 260, IND*AMAZON.IN GROCER HTTP://WWW.AM IN, ICICI Amazon pay credit card
+7:18pm, 987, IND*AMAZON.IN GROCER HTTP://WWW.AM IN, ICICI Amazon pay credit card
+
+24/04/2025
+9:30pm, 489, IND*AMAZON HTTP://WWW.AM IN, ICICI Amazon pay credit card
+
+26/04/2025
+8:17pm, 469, AMAZON PAY INDIA PRIVATE WWW.AMAZON.IN IN, ICICI Coral Credit card
+
+29/04/2025
+11:03am, +1785.09, BBPS Payment received for ICICI Coral Credit card, ICICI Coral Credit card
+11:15am, +7073, BBPS Payment received for ICICI Amazon pay Credit card, ICICI Amazon pay credit card
+
+02/05/2025
+9:01am, 175.81, Interest Amount Amortization <11/18> POLICY BAZAAR INSURANCE, ICICI Coral Credit card
+9:01am, 1573.91, Principal Amount Amortization <11/18> POLICY BAZAAR INSURANCE, ICICI Coral Credit card
+9:02am, 31.65, IGST-CI@18%, ICICI Coral Credit card
+
+16/05/2025
+8:42pm, 1539, IND*AMAZON HTTP://WWW.AM IN, ICICI Amazon pay credit card
+
+20/05/2025
+7:25pm, 798, IND*AMAZON HTTP://WWW.AM IN, ICICI Amazon pay credit card
+
+29/05/2025
+6:10pm, 1150, IND*AMAZON HTTP://WWW.AM IN, ICICI Amazon pay credit card
+6:14pm, 265.05, IND*AMAZON HTTP://WWW.AM IN, ICICI Amazon pay credit card
+
+31/05/2025
+10:29am, +2250.37, BBPS Payment received for ICICI Coral Credit card, ICICI Coral Credit card
+10:50am, +489, BBPS Payment received for ICICI Amazon pay Credit card, ICICI Amazon pay credit card
+
+02/06/2025
+9:01am, 1594.88, Principal Amount Amortization <12/18> POLICY BAZAAR INSURANCE, ICICI Coral Credit card
+9:01am, 154.84, Interest Amount Amortization <12/18> POLICY BAZAAR INSURANCE, ICICI Coral Credit card
+9:02am, 27.87, IGST-CI@18%, ICICI Coral Credit card
+
+20/06/2025
+5:45pm, 3661, MANMOHINI TEXTILE PVT LTD BOLPUR IN, ICICI Amazon pay credit card
+
+23/06/2025
+9:20pm, 1033, IND*AMAZON HTTP://WWW.AM IN, ICICI Amazon pay credit card
+
+24/06/2025
+8:35pm, 1504, IND*AMAZON HTTP://WWW.AM IN, ICICI Amazon pay credit card
+
+27/06/2025
+12:30pm, +3752.05, BBPS Payment received for ICICI Amazon pay Credit card, ICICI Amazon pay credit card
+1:36pm, +1777.59, BBPS Payment received for ICICI Coral Credit card, ICICI Coral Credit card
+
+29/06/2025
+4:50pm, 5437, MANMOHINI TEXTILE PVT LTD BOLPUR IN, ICICI Amazon pay credit card
+
+02/07/2025
+9:01am, 133.59, Interest Amount Amortization <13/18> POLICY BAZAAR INSURANCE, ICICI Coral Credit card
+9:01am, 1616.13, Principal Amount Amortization <13/18> POLICY BAZAAR INSURANCE, ICICI Coral Credit card
+9:02am, 24.05, IGST-CI@18%, ICICI Coral Credit card
+
+11/07/2025
+10:05pm, 3853.37, IND*AMAZON HTTP://WWW.AM IN, ICICI Amazon pay credit card
+10:12pm, 1249.75, IND*AMAZON HTTP://WWW.AM IN, ICICI Amazon pay credit card
+
+12/07/2025
+2:40pm, +163, Flipkart Bengaluru IN (refund), ICICI Amazon pay credit card
+
+14/07/2025
+8:55pm, 738, Flipkart Bengaluru IN, ICICI Amazon pay credit card
+
+15/07/2025
+9:35pm, 877, IND*AMAZON HTTP://WWW.AM IN, ICICI Amazon pay credit card
+
+16/07/2025
+7:58pm, 239, Flipkart Bengaluru IN, ICICI Coral Credit card
+
+17/07/2025
+3:15pm, +601.4, IND*AMAZON HTTP://WWW.AM IN (refund), ICICI Amazon pay credit card
+
+26/07/2025
+10:41am, +2012.77, "INFINITY PAYMENT RECEIVED for ICICI Coral Credit card, THANK YOU", ICICI Coral Credit card
+10:45am, +17588.72, "INFINITY PAYMENT RECEIVED for ICICI Amazon pay Credit card, THANK YOU", ICICI Amazon pay credit card
+
+02/08/2025
+9:01am, 1637.66, Principal Amount Amortization <14/18> POLICY BAZAAR INSURANCE, ICICI Coral Credit card
+9:01am, 20.17, IGST-CI@18%, ICICI Coral Credit card
+9:02am, 112.06, Interest Amount Amortization <14/18> POLICY BAZAAR INSURANCE, ICICI Coral Credit card
+
+04/08/2025
+7:40pm, 643, IND*AMAZON HTTP://WWW.AM IN, ICICI Amazon pay credit card
+
+11/08/2025
+11:20am, 5389, IND*AMAZON.IN BILL P HTTP://WWW.AM IN, ICICI Amazon pay credit card
+
+30/08/2025
+12:15pm, +1769.89, BBPS Payment received for ICICI Coral Credit card, ICICI Coral Credit card
+12:25pm, +6032, BBPS Payment received for ICICI Amazon pay Credit card, ICICI Amazon pay credit card
+
+02/09/2025
+9:01am, 1659.49, Principal Amount Amortization <15/18> POLICY BAZAAR INSURANCE, ICICI Coral Credit card
+9:01am, 16.24, IGST-CI@18%, ICICI Coral Credit card
+9:02am, 90.23, Interest Amount Amortization <15/18> POLICY BAZAAR INSURANCE, ICICI Coral Credit card
+
+08/09/2025
+8:30pm, 384, AMAZON PAY IN E COMMERC BANGALORE IN, ICICI Amazon pay credit card
+
+09/09/2025
+7:15pm, 781, AMAZON PAY IN GROCERY BANGALORE IN, ICICI Amazon pay credit card
+
+20/09/2025
+5:28pm, 1974, MANMOHINI TEXTILE PVT LTD BOLPUR IN, ICICI Coral Credit card
+
+23/09/2025
+11:10am, +1165, BBPS Payment received for ICICI Amazon pay Credit card, ICICI Amazon pay credit card
+11:19am, +3739.96, "INFINITY PAYMENT RECEIVED for ICICI Coral Credit card, THANK YOU", ICICI Coral Credit card
+
+02/10/2025
+9:01am, 12.26, IGST-CI@18%, ICICI Coral Credit card
+9:01am, 1681.6, Principal Amount Amortization <16/18> POLICY BAZAAR INSURANCE, ICICI Coral Credit card
+9:02am, 68.12, Interest Amount Amortization <16/18> POLICY BAZAAR INSURANCE, ICICI Coral Credit card
+
+27/10/2025
+9:44pm, 7079, BHARATMATRIMONY GURGAON IN, ICICI Coral Credit card
+
+31/10/2025
+10:52am, +1761.98, "INFINITY PAYMENT RECEIVED for ICICI Coral Credit card, THANK YOU", ICICI Coral Credit card
+
+02/11/2025
+9:01am, 8.23, IGST-CI@18%, ICICI Coral Credit card
+9:01am, 45.71, Interest Amount Amortization <17/18> POLICY BAZAAR INSURANCE, ICICI Coral Credit card
+9:02am, 1704.01, Principal Amount Amortization <17/18> POLICY BAZAAR INSURANCE, ICICI Coral Credit card
+
+12/11/2025
+10:30am, 4864, AMAZON PAY IN UTILITY BANGALORE IN, ICICI Amazon pay credit card
+
+15/11/2025
+6:37pm, 2437, RELIANCE SMART BOLPUR IN, ICICI Coral Credit card
+
+20/11/2025
+9:05pm, 2443, AMAZON PAY IN E COMMERC BANGALORE IN, ICICI Amazon pay credit card
+
+24/11/2025
+8:50pm, 8784, AMAZON PAY IN E COMMERC BANGALORE IN, ICICI Amazon pay credit card
+
+28/11/2025
+12:08pm, +8836.95, BBPS Payment received for ICICI Coral Credit card, ICICI Coral Credit card
+12:15pm, +4864, BBPS Payment received for ICICI Amazon pay Credit card, ICICI Amazon pay credit card
+
+29/11/2025
+7:12pm, 1373.78, RELIANCE SMART BOLPUR IN, ICICI Coral Credit card
+
+02/12/2025
+9:01am, 23.02, Interest Amount Amortization <18/18> POLICY BAZAAR INSURANCE, ICICI Coral Credit card
+9:01am, 4.14, IGST-CI@18%, ICICI Coral Credit card
+9:02am, 1726.63, Principal Amount Amortization <18/18> POLICY BAZAAR INSURANCE, ICICI Coral Credit card
+
+07/12/2025
+5:05pm, 1016, RELIANCE SMART BOLPUR IN, ICICI Coral Credit card
+6:40pm, 5024, MANMOHINI TEXTILE PVT LTD BIRBHUM IN, ICICI Coral Credit card
+
+23/12/2025
+10:58am, +11604.57, BBPS Payment received for ICICI Coral Credit card, ICICI Coral Credit card
+
+31/12/2025
+11:35am, +11227, BBPS Payment received for ICICI Amazon pay Credit card, ICICI Amazon pay credit card
 
 18/01/2026
-12:49pm, 85, Paid to Indian Railways UTS, PhonePe UPI
-7:43pm, 137, Paid to SANDIP BAGUI, PhonePe UPI
+7:55pm, 1403, AMAZON PAY IN E COMMERC BANGALORE IN, ICICI Amazon pay credit card
 
 20/01/2026
-1:51pm, 86, Paid to JHARNA TALUKDAR, PhonePe UPI
-6:02pm, 153, Paid to NAZRUL STORES, PhonePe UPI
-6:10pm, 179, Paid to DUM KA BIRYANI, PhonePe UPI
+1:10pm, 6504, AMAZON PAY IN E COMMERC BANGALORE IN, ICICI Amazon pay credit card
+1:25pm, 5022, AMAZON PAY IN E COMMERC BANGALORE IN, ICICI Amazon pay credit card
+6:40pm, +4573.55, AMAZON PAY IN E COMMERC BANGALORE IN (refund), ICICI Amazon pay credit card
 
 22/01/2026
-8:40pm, 175.35, Paid to Dominos Pizza, PhonePe UPI
-
-23/01/2026
-6:03am, 75, Paid to Indian Railways UTS, PhonePe UPI
-6:41am, 280, Paid to JASIM ALI SARDAR, PhonePe UPI
-4:04pm, 938, Paid to Cristallo Resort, PhonePe UPI
-4:06pm, 429, Paid to Cristallo Resort, PhonePe UPI
-
-24/01/2026
-3:22pm, 4000, Paid to Bolpur Motor Training School, PhonePe UPI
-3:23pm, 3000, Paid to Bolpur Motor Training School, PhonePe UPI
-6:10pm, 10000, Transfer to XXXXXXXXXX71, PhonePe UPI
-6:34pm, 2850, Paid to BHABATARAN DAS, PhonePe UPI
-6:36pm, +4000, Received from SUDIPTA KUMAR SAHA, PhonePe UPI
-7:49pm, +800, Received from SUBRATA DAS, PhonePe UPI
-
-25/01/2026
-5:12pm, 60, Paid to Indian Railways UTS, PhonePe UPI
-8:31pm, 15, Paid to KALIPRASAD DUTTA, PhonePe UPI
+9:15pm, 159, AMAZON PAY IN E COMMERC BANGALORE IN, ICICI Amazon pay credit card
+9:22pm, 899, AMAZON PAY IN E COMMERC BANGALORE IN, ICICI Amazon pay credit card
 
 26/01/2026
-12:28pm, 26, Paid to Gita Mondal, PhonePe UPI
-6:03pm, 350, Paid to AISHWARYA, PhonePe UPI
-6:03pm, 1100, Paid to AISHWARYA, PhonePe UPI
-7:29pm, 1100, Paid to MS LOKNATH MEDICINE, PhonePe UPI
-8:59pm, 86, Paid to AVIJIT MALAKAR, PhonePe UPI
+6:14pm, 746, STYLE BAAZAR BOLPUR BIRBHUM IN, ICICI Coral Credit card
+
+27/01/2026
+4:05pm, +159, AMAZON PAY IN E COMMERC BANGALORE IN (refund), ICICI Amazon pay credit card
 
 28/01/2026
-6:20am, 35, Paid to Indian Railways UTS, PhonePe UPI
-11:44am, 238.15, Paid to IRCTC Rail APP, PhonePe UPI
-7:40pm, 50, Paid to Om Sai Variety Corner, PhonePe UPI
-
-29/01/2026
-1:55pm, 80, Paid to ALIMUDDIN HALDER, PhonePe UPI
-7:49pm, 40, Paid to Irfan Khan, PhonePe UPI
-
-30/01/2026
-11:08am, 4974.81, Add money UPI Lite, PhonePe UPI
-11:29am, 34000, Transfer to XXXXXXX3253, PhonePe UPI
-11:30am, 50000, Transfer to XXXXXX9388, PhonePe UPI
-11:31am, 50000, Paid to Mr Syamapada Pal, PhonePe UPI
-
-31/01/2026
-5:07pm, 180, Paid to PANKAJ DAS, PhonePe UPI
-10:01pm, 170, Paid to SHEKHAR DAS, PhonePe UPI
-10:02pm, +100, Received from SHEKHAR DAS, PhonePe UPI
-
-01/02/2026
-11:52am, 121, Paid to Deep Mondal, PhonePe UPI
-5:48pm, 100, Paid to NEW BAHARA SWEETS, PhonePe UPI
-7:42pm, 115, Paid to TARA MAMA ICECREAM @FOOD, PhonePe UPI
+8:10pm, 275, AMAZON PAY IN GROCERY BANGALORE IN, ICICI Amazon pay credit card
 
 02/02/2026
-8:17pm, 84, Paid to STYLE BAAZAR BOLPUR, PhonePe UPI
-8:31pm, 478, Paid to STYLE BAAZAR BOLPUR, PhonePe UPI
-8:45pm, 220, Paid to MUKHERJEE FILLING ST, PhonePe UPI
-
-03/02/2026
-10:32am, 30, Paid to MANOJ DAS, PhonePe UPI
-11:30am, 60, Paid to SUROJIT MALAKAR, PhonePe UPI
-1:52pm, 10, Paid to BHOLA TEA STALL, PhonePe UPI
-
-04/02/2026
-2:46am, 237.25, Paid to IRCTC Rail APP, PhonePe UPI
-
-05/02/2026
-8:36am, 700, Paid to MRITYUNJOY PHARMACY 1, PhonePe UPI
-9:28am, 1660, Paid to MRITYUNJOY PHARMACY 1, PhonePe UPI
-
-06/02/2026
-4:26pm, 90, Paid to Indian Railways UTS, PhonePe UPI
-4:47pm, 548, Paid to Md Saddam Hussain, PhonePe UPI
-5:21pm, 15, Paid to Parma Yadab, PhonePe UPI
-8:24pm, 200, Paid to M S Lokenath Medical, PhonePe UPI
-9:27pm, 12000, Paid to Mr Nitish Ranjan Deb, PhonePe UPI
-
-07/02/2026
-12:47pm, 20000, Paid to SRINIKA PALACE, PhonePe UPI
-1:04pm, 90, Paid to KISHOR SEN, PhonePe UPI
-1:09pm, 29, Paid to JMT ICE CREAM, PhonePe UPI
-1:13pm, 12, Paid to MS LOKNATH MEDICINE, PhonePe UPI
-5:57pm, 40, Paid to RAHUL SHAW, PhonePe UPI
-9:48pm, 2001, Paid to Camera Partha Guin Tapas Kanti Guin, PhonePe UPI
-
-08/02/2026
-1:36am, 239, Paid to Jio Prepaid Recharges, PhonePe UPI
-6:56pm, 29, Paid to Tea zone, PhonePe UPI
-7:04pm, 21, Paid to MANGALI SINGH, PhonePe UPI
+9:25pm, 744, AMAZON PAY IN E COMMERC BANGALORE IN, ICICI Amazon pay credit card
 
 09/02/2026
-12:51pm, 50, Paid to GITANJALI TEA STALL, PhonePe UPI
-
-10/02/2026
-6:25pm, 175, Paid to SRESTHO VANDAR, PhonePe UPI
-7:29pm, 10, Paid to satyanarayan nurshary, PhonePe UPI
-7:45pm, 20, Paid to ASHIRBAD MEDICAL STORE, PhonePe UPI
+8:35pm, 1044, AMAZON PAY IN E COMMERC BANGALORE IN, ICICI Amazon pay credit card
 
 11/02/2026
-11:08am, 18, Paid to TRIBHANGA MISTANNA BHANDAR, PhonePe UPI
-11:16am, 95, Paid to KISHOR SEN, PhonePe UPI
-6:30pm, 77, Paid to TARA MAMA ICECREAM @FOOD, PhonePe UPI
+7:50pm, 633, AMAZON PAY IN E COMMERC BANGALORE IN, ICICI Amazon pay credit card
 
 12/02/2026
-11:08am, 4725, Paid to Cristallo Resort, PhonePe UPI
-11:29am, 220, Paid to MUKHERJEE FILLING ST, PhonePe UPI
-6:52pm, 1444, Transfer to XXXXXX9388, PhonePe UPI
+10:40am, 2817, AMAZON PAY IN UTILITY BANGALORE IN, ICICI Amazon pay credit card
+4:26pm, 28645, GITANJALI JEWEL PALACE BOLPUR IN, ICICI Coral Credit card
 
 13/02/2026
-4:21am, 75, Paid to Indian Railways UTS, PhonePe UPI
-11:38am, 79, Paid to Ayan Howlader, PhonePe UPI
-6:56pm, 30, Paid to SAJJAT ALI SAPUI, PhonePe UPI
-7:18pm, 422, Paid to Nazrul Store, PhonePe UPI
-7:26pm, 150, Paid to MR GANESH MONDAL, PhonePe UPI
-11:35pm, +105.36, Refund from IRCTC Rail APP, PhonePe UPI
+9:05pm, 353, AMAZON PAY IN E COMMERC BANGALORE IN, ICICI Amazon pay credit card
 
 14/02/2026
-9:53am, 178, Paid to MOHAMMAD SONU, PhonePe UPI
-11:45am, 186, Paid to Mr. SURESH RAY, PhonePe UPI
-1:39pm, 2800, Paid to AMAR FASHION, PhonePe UPI
-2:06pm, 500, Paid to VAISHNAVI BANGLES, PhonePe UPI
-2:46pm, +10000, Received from Chandan, PhonePe UPI
-3:33pm, 900, Paid to Vinay Shoes, PhonePe UPI
-3:44pm, 600, Paid to RAJEEV GUPTA, PhonePe UPI
-3:44pm, +10000, Received from Bittu, PhonePe UPI
-4:16pm, 900, Paid to Mou, PhonePe UPI
-4:44pm, 5000, Paid to Chandan, PhonePe UPI
-9:24pm, 148, Paid to RAJESH KUNDU, PhonePe UPI
-11:15pm, 140, Paid to Souren Nandi, PhonePe UPI
+3:30pm, +348, AMAZON PAY IN E COMMERC BANGALORE IN (refund), ICICI Amazon pay credit card
 
 15/02/2026
-10:53am, 75, Paid to SANDIP BAGUI, PhonePe UPI
-8:02pm, 450, Paid to Siti Cable Internet | Newtown, PhonePe UPI
-9:43pm, 10000, Paid to Bittu, PhonePe UPI
+1:20pm, 1404, AMAZON PAY IN E COMMERC BANGALORE IN, ICICI Amazon pay credit card
+1:45pm, 7704, AMAZON PAY IN E COMMERC BANGALORE IN, ICICI Amazon pay credit card
 
-17/02/2026
-11:33am, 110, Paid to RANJAN PRAMANIK, PhonePe UPI
-6:45pm, 36, Paid to Tazmira Bibi, PhonePe UPI
-7:35pm, 10, Paid to Om Sai Variety Corner, PhonePe UPI
-
-18/02/2026
-6:11am, 75, Paid to Indian Railways UTS, PhonePe UPI
-6:32am, 184, Paid to MASUM ALI, PhonePe UPI
-7:14pm, 619, Paid to MS LOKNATH MEDICINE, PhonePe UPI
-7:16pm, 85, Paid to SUROJIT MALAKAR, PhonePe UPI
-7:44pm, 1110, Paid to SASVIKA FOODS, PhonePe UPI
-7:57pm, 60, Paid to SHAMBHU RAMANI, PhonePe UPI
-10:20pm, 2000, Paid to Rabichaya Catarer 2, PhonePe UPI
+16/02/2026
+10:10am, 353, AMAZON PAY IN E COMMERC BANGALORE IN, ICICI Amazon pay credit card
+10:25am, 1287, AMAZON PAY IN E COMMERC BANGALORE IN, ICICI Amazon pay credit card
+11:05am, 1052, AMAZON PAY IN GROCERY BANGALORE IN, ICICI Amazon pay credit card
+11:30am, 332, AMAZON PAY IN E COMMERC BANGALORE IN, ICICI Amazon pay credit card
 
 19/02/2026
-9:00am, 5000, Paid to Chandan, PhonePe UPI
-9:00am, 5000, Transfer to XXXXXXXXXX71, PhonePe UPI
-9:00am, 30000, Transfer to XXXXXXX3253, PhonePe UPI
-9:02am, 4997, Add money UPI Lite, PhonePe UPI
-10:51am, 29, Paid to B S AGENCY, PhonePe UPI
-2:39pm, 530, Paid to Rupam Saloon, PhonePe UPI
-8:37pm, 100, Paid to MANAS SAHA, PhonePe UPI
-8:54pm, 230, Paid to MUKHERJEE FILLING ST, PhonePe UPI
-10:22pm, 10000, Paid to Cristallo Resort, PhonePe UPI
-
-20/02/2026
-7:05pm, 1450, Paid to DEEP AUTO CENTER, PhonePe UPI
-7:31pm, 18, Paid to MANGALI SINGH, PhonePe UPI
-8:04pm, 460, Paid to BOLPUR- Manmohini textile pvt ltd, PhonePe UPI
-8:24pm, 43, Paid to BIKASH SAHA, PhonePe UPI
-
-21/02/2026
-1:01pm, 50, Paid to MANAS SAHA, PhonePe UPI
-1:16pm, 40, Paid to SABIRUL SK, PhonePe UPI
-1:32pm, 540, Paid to LOKENATH NURSARY, PhonePe UPI
-1:41pm, 1710, Paid to SASVIKA FOODS, PhonePe UPI
-
-22/02/2026
-10:10am, 250, Paid to M/S PIYALI BOUTIQUE, PhonePe UPI
-10:35am, 450, Paid to SK NAWAZ SARIF, PhonePe UPI
-10:50am, 31500, Paid to Cristallo Resort, PhonePe UPI
-11:05am, 116.4, Paid to Indian Railways UTS, PhonePe UPI
-1:25pm, 714, Paid to MITHAI, PhonePe UPI
-6:30pm, 181.8, Paid to IRCTC Rail APP, PhonePe UPI
-
-23/02/2026
-3:03pm, 170, Paid to RAJU ROY, PhonePe UPI
-6:43pm, 100, Paid to RELIANCE JIO INFOCOMM, PhonePe UPI
-9:34pm, 152, Paid to SANJIB MONDAL, PhonePe UPI
+8:45pm, 424, AMAZON PAY IN E COMMERC BANGALORE IN, ICICI Amazon pay credit card
 
 24/02/2026
-2:32pm, 84, Paid to Mrs NASIMA BIBI, PhonePe UPI
-6:29pm, 10000, Transfer to XXXXXXX3253, PhonePe UPI
-6:30pm, 60000, Transfer to XXXXXXXXXX71, PhonePe UPI
-6:54pm, 24, Paid to KISHAN SHAW, PhonePe UPI
-7:17pm, 30, Paid to Mondal Services, PhonePe UPI
-7:36pm, 4000, Add money UPI Lite, PhonePe UPI
-7:36pm, 410, Paid to ABU STORE, PhonePe UPI
-7:39pm, 150, Paid to MR GANESH MONDAL, PhonePe UPI
-8:55pm, 40, Paid to Irfan Khan, PhonePe UPI
-8:55pm, 600, Paid to Kamru da onwer broker | moon beam, PhonePe UPI
-10:33pm, 4000, Transfer to XXXXXXXXXX71, PhonePe UPI
-
-25/02/2026
-12:44am, 1011, Paid to POLICYBAZAAR INSURANCE BROKERS PRIVATE LIMITED, PhonePe UPI
-7:30pm, 60, Paid to ASIM NASKAR, PhonePe UPI
-8:06pm, 120, Paid to Lulipa Fruit shop, PhonePe UPI
-8:08pm, 160, Paid to DUM KA BIRYANI, PhonePe UPI
+11:31am, +29391, "INFINITY PAYMENT RECEIVED for ICICI Coral Credit card, THANK YOU", ICICI Coral Credit card
+11:50am, +27328.45, "INFINITY PAYMENT RECEIVED for ICICI Amazon pay Credit card, THANK YOU", ICICI Amazon pay credit card
 
 26/02/2026
-2:59pm, 76, Paid to PUJA SHARMA, PhonePe UPI
-5:09pm, 50, Paid to Tobox Ventures Private Limited, PhonePe UPI
-7:28pm, 10, Paid to Om Sai Variety Corner, PhonePe UPI
-
-27/02/2026
-6:32pm, 80, Paid to ABHIJIT PALIT, PhonePe UPI
-6:48pm, 16, Paid to GUPTA SNACKS, PhonePe UPI
-6:50pm, 20, Paid to SMOKE CHAI, PhonePe UPI
-7:23pm, 10, Paid to SUJIT KOTAL, PhonePe UPI
-7:36pm, 30, Paid to Rakhibul Sahaji, PhonePe UPI
-7:51pm, 70, Paid to JM SALON, PhonePe UPI
+12:05pm, 463, AMAZON PAY IN E COMMERC BANGALORE IN, ICICI Amazon pay credit card
+12:10pm, 334, AMAZON PAY IN E COMMERC BANGALORE IN, ICICI Amazon pay credit card
+12:20pm, 10004, AMAZON PAY IN E COMMERC BANGALORE IN, ICICI Amazon pay credit card
+12:28pm, 404, AMAZON PAY IN E COMMERC BANGALORE IN, ICICI Amazon pay credit card
+12:35pm, 354, AMAZON PAY IN E COMMERC BANGALORE IN, ICICI Amazon pay credit card
+12:50pm, 5404, AMAZON PAY IN E COMMERC BANGALORE IN, ICICI Amazon pay credit card
 
 28/02/2026
-1:11pm, 190, Paid to Anish Paul, PhonePe UPI
-1:52pm, 70, Paid to MAHARARAJA CHAT, PhonePe UPI
-5:31pm, 70, Paid to TAPAN K DUTTA, PhonePe UPI
-5:38pm, 7, Paid to TAPAN K DUTTA, PhonePe UPI
-9:27pm, 220, Paid to SUBHASISH KUMAR GHOSH, PhonePe UPI
-
-01/03/2026
-12:01pm, 60, Paid to ABHI SAHA, PhonePe UPI
-12:04pm, 150, Paid to Soma CHIKEN CENTRE, PhonePe UPI
-12:11pm, 80, Paid to Akash Veg, PhonePe UPI
-12:24pm, 100, Paid to BISHWANATH RAUT, PhonePe UPI
-10:16pm, 18, Paid to Om Sai Variety Corner, PhonePe UPI
-10:16pm, 160, Paid to PITAM RAKSHIT, PhonePe UPI
-
-02/03/2026
-8:36pm, 100, Paid to Bullet security moonbeam, PhonePe UPI
-8:46pm, 70, Paid to Champaran Zaika, PhonePe UPI
+2:15pm, +7699, AMAZON PAY IN E COMMERC BANGALORE IN (refund), ICICI Amazon pay credit card
+8:30pm, 1499.44, AMAZON PAY IN E COMMERC BANGALORE IN, ICICI Amazon pay credit card
 
 03/03/2026
-12:40pm, 83, Paid to SK RAFIQUL, PhonePe UPI
-2:13pm, 200, Paid to SAPTAM HALDER, PhonePe UPI
-3:15pm, 35, Paid to A R FOOD HOWRAH, PhonePe UPI
-7:20pm, 136, Paid to Sri Ganesh Mustangs Bhandar, PhonePe UPI
-9:53pm, 46, Paid to JMT ICE CREAM, PhonePe UPI
-
-05/03/2026
-9:47am, 5000, Transfer to XXXXXXX3253, PhonePe UPI
-
-06/03/2026
-7:03pm, 60, Paid to MIHIR DAS, PhonePe UPI
-7:23pm, 140, Paid to kOTHARI BROTHERS, PhonePe UPI
-7:26pm, 150, Paid to MS SURGICAL, PhonePe UPI
-8:27pm, 30, Paid to RAJU TEA STALL, PhonePe UPI
-8:56pm, 20000, Transfer to XXXXXXX3253, PhonePe UPI
-9:00pm, 12600, Paid to Mr Nitish Ranjan Deb, PhonePe UPI
-9:19pm, 3000, Paid to PARTHA GUIN, PhonePe UPI
+9:10pm, 569, AMAZON PAY IN E COMMERC BANGALORE IN, ICICI Amazon pay credit card
 
 07/03/2026
-11:51am, 23, Paid to Anikur Rahaman, PhonePe UPI
-1:50pm, 45, Paid to Anup Pan Stall, PhonePe UPI
-5:45pm, 10, Paid to DADU BHAI MISTANNO BHANDAR, PhonePe UPI
-7:21pm, 4000, Add money UPI Lite, PhonePe UPI
-7:21pm, 548, Paid to CHANDRA SUPPLIERS, PhonePe UPI
-8:13pm, 122, Paid to MS LOKNATH MEDICINE, PhonePe UPI
-9:29pm, 5000, Paid to Sunanda Camera | Bolpur, PhonePe UPI
-9:38pm, 282, Paid to SUROJIT MALAKAR, PhonePe UPI
-
-08/03/2026
-10:43am, 800, Paid to BROJENDRA MUKHERJEE, PhonePe UPI
-11:26am, 40000, Transfer to XXXXXX9388, PhonePe UPI
-1:25pm, 8000, Paid to JAHANGIR KHAN, PhonePe UPI
-7:49pm, 18000, Paid to JAHANGIR KHAN, PhonePe UPI
-8:16pm, 250, Paid to Annapurna parls & She Shell Handicrafts, PhonePe UPI
-8:48pm, 20, Paid to Rina Sahani, PhonePe UPI
-9:36pm, 93, Paid to STYLE BAAZAR BOLPUR, PhonePe UPI
-9:46pm, 40, Paid to TARA MAMA ICECREAM @FOOD, PhonePe UPI
-9:48pm, 60, Paid to Sri Ganesh Mustangs Bhandar, PhonePe UPI
-9:49pm, 14, Paid to Sri Ganesh Mustangs Bhandar, PhonePe UPI
-10:13pm, 85, Paid to SHAMBHU RAMANI, PhonePe UPI
+8:20pm, 1447, AMAZON PAY IN E COMMERC BANGALORE IN, ICICI Amazon pay credit card
 
 10/03/2026
-3:58am, 72.75, Paid to Indian Railways UTS, PhonePe UPI
-9:12am, 4.85, Paid to Indian Railways UTS, PhonePe UPI
+7:35pm, 653, AMAZON PAY IN E COMMERC BANGALORE IN, ICICI Amazon pay credit card
 
 11/03/2026
-10:38pm, 139.7, Paid to Zomatofood, PhonePe UPI
-
-12/03/2026
-10:45am, 70, Paid to Monirul Islam, PhonePe UPI
-5:37pm, 53, Paid to TOBOX VENTURES PRIVATE LIMITED, PhonePe UPI
-7:21pm, 51, Paid to LEO PAAN & CHAI BHANDER, PhonePe UPI
-7:52pm, 128, Paid to SHREYAN ENTERPRISE, PhonePe UPI
-8:04pm, 234, Paid to Nazrul Store, PhonePe UPI
-8:08pm, 18, Paid to Om Sai Variety Corner, PhonePe UPI
-8:12pm, 88, Paid to SANDIP BAGUI, PhonePe UPI
-
-13/03/2026
-9:53am, 650, Paid to ASISH CHANDRA HALDAR, PhonePe UPI
-1:20pm, 5000, Paid to Speed, PhonePe UPI
-7:27pm, 30, Paid to ASIM NASKAR, PhonePe UPI
-9:16pm, 40, Paid to Irfan Khan, PhonePe UPI
-
-14/03/2026
-8:33am, 127, Paid to RABIUL MOLLA, PhonePe UPI
-12:52pm, 1150, Paid to CHANDRA SUPPLIERS, PhonePe UPI
-5:48pm, 650, Transfer to XXXXXX9388, PhonePe UPI
-6:25pm, 4000, Add money UPI Lite, PhonePe UPI
-6:25pm, 300, Paid to MUKHERJEE FILLING ST, PhonePe UPI
-6:36pm, 300, Paid to CHANDRA SUPPLIERS, PhonePe UPI
-7:56pm, 60, Paid to Udayan Lodge, PhonePe UPI
-9:25pm, 25, Paid to Tea zone, PhonePe UPI
-9:26pm, 10, Paid to Tea zone, PhonePe UPI
-9:38pm, 70, Paid to Sri Ganesh Mustangs Bhandar, PhonePe UPI
-9:42pm, 90, Paid to TARA MAMA ICECREAM @FOOD, PhonePe UPI
-
-15/03/2026
-10:56am, 8700, Paid to TIRUPATI MARBLES AND GRANITES, PhonePe UPI
-2:56pm, 330, Paid to Rupam Saloon, PhonePe UPI
-8:44pm, 2000, Paid to FRESH LODGE, PhonePe UPI
+4:45pm, +499, AMAZON PAY IN E COMMERC BANGALORE IN (refund), ICICI Amazon pay credit card
 
 16/03/2026
-4:04am, 72.75, Paid to Indian Railways UTS, PhonePe UPI
-7:00pm, 20, Paid to SMOKE CHAI, PhonePe UPI
-7:40pm, 230, Paid to Thakur Fish, PhonePe UPI
-7:45pm, 70, Paid to Lulipa Fruit shop, PhonePe UPI
-7:52pm, 104, Paid to SANDIP BAGUI, PhonePe UPI
+10:05am, 304, AMAZON PAY IN GROCERY BANGALORE IN, ICICI Amazon pay credit card
+10:40am, 16004, AMAZON PAY IN E COMMERC BANGALORE IN, ICICI Amazon pay credit card
+10:55am, 1504, AMAZON PAY IN E COMMERC BANGALORE IN, ICICI Amazon pay credit card
+11:20am, 403, AMAZON PAY IN E COMMERC BANGALORE IN, ICICI Amazon pay credit card
 
 17/03/2026
-11:58am, 79, Paid to BACHCHAN PASWAN, PhonePe UPI
-6:38pm, 82.45, Paid to Indian Railways UTS, PhonePe UPI
-6:46pm, 55, Paid to MUFAZEL MOLL, PhonePe UPI
-7:45pm, 450, Paid to Siti Cable Internet | Newtown, PhonePe UPI
+8:15pm, 204, AMAZON PAY IN GROCERY BANGALORE IN, ICICI Amazon pay credit card
 
 18/03/2026
-3:01pm, 80, Paid to MDSAHID RAHAMAN, PhonePe UPI
-10:39pm, 90000, Transfer to XXXXXXX3253, PhonePe UPI
+9:10pm, 304, AMAZON PAY IN E COMMERC BANGALORE IN, ICICI Amazon pay credit card
+9:40pm, 304, AMAZON PAY IN E COMMERC BANGALORE IN, ICICI Amazon pay credit card
 
 19/03/2026
-1:39pm, 78, Paid to AMIT KUMAR CHANDRA, PhonePe UPI
-5:42pm, 42, Paid to TOBOX VENTURES PRIVATE LIMITED, PhonePe UPI
-7:28pm, 60, Paid to Wb25h2832, PhonePe UPI
-7:53pm, 245, Paid to SANDIP BAGUI, PhonePe UPI
+7:25pm, 144, AMAZON PAY IN E COMMERC BANGALORE IN, ICICI Amazon pay credit card
 
 20/03/2026
-11:02am, 191, Paid to KUTUBUDDIN SARDAR, PhonePe UPI
-11:44am, 20, Paid to KUTUBUDDIN SARDAR, PhonePe UPI
-11:44am, 180, Paid to KUTUBUDDIN SARDAR, PhonePe UPI
-1:19pm, 80000, Paid to Speed, PhonePe UPI
-1:32pm, 100, Paid to SOUMEN DAS, PhonePe UPI
-1:41pm, 2020, Paid to Rathtala Service Station, PhonePe UPI
-3:00pm, 668, Paid to LEMON GRASS, PhonePe UPI
-7:51pm, 125, Paid to F A ENTERPRISE, PhonePe UPI
-
-21/03/2026
-7:20am, 1001, FASTag Recharge for WB02AD4978, PhonePe UPI
-8:16am, 4000, Add money UPI Lite, PhonePe UPI
-8:16am, 82.45, Paid to Indian Railways UTS, PhonePe UPI
-10:35am, 82.45, Paid to Indian Railways UTS, PhonePe UPI
-11:15am, 60, Paid to Howrah Station, PhonePe UPI
-11:20am, 50, Paid to HOWRAH 1, PhonePe UPI
-11:48am, 20, Paid to Sardha and son 6 7, PhonePe UPI
-
-22/03/2026
-7:48am, 60, Paid to KISHOR SEN, PhonePe UPI
-10:26am, 65, Paid to BUDI TUDU, PhonePe UPI
-12:01pm, 155, Paid to YOGANANDA STORE, PhonePe UPI
-1:13pm, 200, Paid to Homoeo King, PhonePe UPI
-1:20pm, 80, Paid to Homoeo King, PhonePe UPI
-3:17pm, 2983.6, Paid to Indian Railways, PhonePe UPI
-8:31pm, 67, Paid to SHAMBHU RAMANI, PhonePe UPI
-
-23/03/2026
-1:45pm, 50, Paid to Rupam Saloon, PhonePe UPI
-8:21pm, 20, Paid to Tea zone, PhonePe UPI
-11:30pm, 470.82, Paid to RELIANCE JIO INFOCOMM, PhonePe UPI
-
-24/03/2026
-4:06am, 67.9, Paid to Indian Railways UTS, PhonePe UPI
-3:55pm, 45, Paid to SUROJIT PASSI, PhonePe UPI
-6:29pm, 30, Paid to Jhalmuri Shop, PhonePe UPI
-6:32pm, 20, Paid to SANAULLA SEKH, PhonePe UPI
-7:03pm, 2000, Paid to Subho Sahani, PhonePe UPI
-7:35pm, 170, Paid to Champaran Zaika, PhonePe UPI
-7:38pm, 16, Paid to Champaran Zaika, PhonePe UPI
-
-25/03/2026
-1:50pm, 100, Paid to TOBOX VENTURES PRIVATE LIMITED, PhonePe UPI
-1:56pm, 75, Paid to SAMANNAY MANDAL, PhonePe UPI
-7:25pm, 20, Paid to MONI STORES, PhonePe UPI
-11:21pm, 140, Paid to Mr SUKESH MONDAL, PhonePe UPI
+8:05pm, 304, AMAZON PAY IN E COMMERC BANGALORE IN, ICICI Amazon pay credit card
 
 26/03/2026
-7:53am, 190, Paid to BABUSONA GHOSH, PhonePe UPI
-8:25am, 50, Paid to Matri Bhandar, PhonePe UPI
-2:31pm, 20, Paid to Kathleen Confectioners- Shyambazar, PhonePe UPI
-3:10pm, 2800, Paid to Shiv maa kali bastralay, PhonePe UPI
-3:42pm, 305, Paid to HOTEL PRIYA, PhonePe UPI
-6:18pm, 2070, Paid to LUXMI NARAYAN SERVICE STATION, PhonePe UPI
-9:20pm, 132, Paid to SWASTIKA SWEETS, PhonePe UPI
-9:29pm, 124, Paid to SHREYAN ENTERPRISE, PhonePe UPI
-10:33pm, 16130, Paid to Suman Dakhineswar, PhonePe UPI
-
-27/03/2026
-12:53pm, 300, Paid to Bullet security moonbeam, PhonePe UPI
-1:03pm, 82, Paid to Towsif Garment, PhonePe UPI
-3:27pm, 73.5, Paid to TOBOX VENTURES PRIVATE LIMITED, PhonePe UPI
-7:15pm, 114, Paid to SWASTIKA SWEETS, PhonePe UPI
-7:19pm, 60, Paid to Champaran Zaika, PhonePe UPI
-9:19pm, 10, Paid to SANDIP BAGUI, PhonePe UPI
-
-28/03/2026
-7:47am, 82.45, Paid to Indian Railways UTS, PhonePe UPI
-11:58am, 10, Paid to BHOLA TEA STALL, PhonePe UPI
-12:00pm, 10, Paid to BHOLA TEA STALL, PhonePe UPI
-12:07pm, 23, Paid to Banty Poddar, PhonePe UPI
-7:21pm, 190, Paid to TARA MAMA ICECREAM @FOOD, PhonePe UPI
-
-29/03/2026
-10:23am, 40, Paid to Kuldip Kumar Ram, PhonePe UPI
-11:36am, 2500, Paid to PRALHAD ROY, PhonePe UPI
-11:52am, 15, Paid to Cha Air Kuri, PhonePe UPI
-12:49pm, 20500, Paid to DAS PAINTS SUPLY, PhonePe UPI
-9:17pm, 2000, Transfer to XXXXXXXXXX71, PhonePe UPI
-9:24pm, 4000, Add money UPI Lite, PhonePe UPI
-9:24pm, 240, Paid to MUKHERJEE FILLING ST, PhonePe UPI
-
-30/03/2026
-4:00am, 67.9, Paid to Indian Railways UTS, PhonePe UPI
-4:17am, 312.7, Paid to Indian Railways, PhonePe UPI
-4:25am, 182.7, Paid to Indian Railways, PhonePe UPI
-8:50am, 141, Paid to NUR FRUITS AND VEGETABLES, PhonePe UPI
-
-31/03/2026
-12:42pm, 348, Paid to Blinkit, PhonePe UPI
-11:06pm, 422, Paid to Blinkit, PhonePe UPI
+12:18pm, 4564, Bie Shopping K C DASS FASHION PVT LTD KOLKATA IN, ICICI Coral Credit card
+12:46pm, 9928, Bie Shopping K C DASS FASHION PVT LTD KOLKATA IN, ICICI Coral Credit card
+3:50pm, +199, AMAZON PAY IN GROCERY BANGALORE IN (refund), ICICI Amazon pay credit card
+4:35pm, 37128, Bie Shopping BNPL SHYAMBAZAR KOLKATA IN, ICICI Coral Credit card
 
 01/04/2026
-8:53am, 40000, Paid to Bittu, PhonePe UPI
-1:45pm, 76, Paid to KHURSHID ALAM MOLLA, PhonePe UPI
-
-02/04/2026
-11:22am, 32, Paid to MONJURUL MOLLA, PhonePe UPI
-11:38am, 2700, Paid to PACK N MOVE EXPRESS, PhonePe UPI
-12:01pm, 84, Paid to Mr BISWANATH BANIK, PhonePe UPI
-1:55pm, 11000, Transfer to XXXXXXX3253, PhonePe UPI
-4:02pm, 84, Paid to TOBOX VENTURES PRIVATE LIMITED, PhonePe UPI
-4:29pm, 25, Paid to SL Enterprise, PhonePe UPI
-9:09pm, 40, Paid to Irfan Khan, PhonePe UPI
-
-03/04/2026
-7:57am, 171, Paid to Sekh Nasim, PhonePe UPI
-8:04am, 90, Paid to Sharda and Sons, PhonePe UPI
-12:11pm, 23, Paid to Rapido, PhonePe UPI
-6:32pm, 204, Paid to MS LOKNATH MEDICINE, PhonePe UPI
-6:45pm, 301, Paid to SURANA STORES, PhonePe UPI
-6:52pm, 68, Paid to KISHOR SEN, PhonePe UPI
-8:56pm, 518, Paid to BOLPUR- Manmohini textile pvt ltd, PhonePe UPI
-9:04pm, 138, Paid to SUROJIT MALAKAR, PhonePe UPI
-10:24pm, 209, Paid to RELIANCE JIO INFOCOMM, PhonePe UPI
-
-04/04/2026
-10:32am, 140, Paid to Sanjib Store, PhonePe UPI
-1:08pm, 668, Paid to NEW BOMBAY SWEETS_SARAIDHELA, PhonePe UPI
-1:12pm, 40, Paid to Suraj fruit centre, PhonePe UPI
-
-05/04/2026
-11:30am, 25, Paid to BHOGENDRA KUMAR JHA, PhonePe UPI
-11:44am, 180, Paid to Ganpati mart, PhonePe UPI
-7:16pm, 60, Paid to TULSYAN MEDIMART, PhonePe UPI
+10:30am, +32209, "INFINITY PAYMENT RECEIVED for ICICI Amazon pay Credit card, THANK YOU", ICICI Amazon pay credit card
 
 06/04/2026
-9:32am, 674, Paid to Sahu Medical, PhonePe UPI
-11:29am, 35, Paid to MADHUR STORE, PhonePe UPI
-3:30pm, 12600, Paid to Mr Nitish Ranjan Deb, PhonePe UPI
-9:26pm, 90, Paid to SUROJIT MALAKAR, PhonePe UPI
-10:40pm, 252.23, Paid to RELIANCE JIO INFOCOMM, PhonePe UPI
+11:52am, 1741, Bie Shopping MANMOHINI FASHION BIRBHUM IN, ICICI Coral Credit card
+5:20pm, 6322, Bie Shopping MANMOHINI TEXTILE PVT LTD BOLPUR IN, ICICI Coral Credit card
 
 07/04/2026
-8:54am, 422, Paid to Flipkart, PhonePe UPI
-3:01pm, 160, Paid to SARBAMANGLA KALITOLA, PhonePe UPI
-5:02pm, 35, Paid to KISHOR SEN, PhonePe UPI
-
-08/04/2026
-11:22am, 5000, Paid to DILMOHAN SHAW, PhonePe UPI
-1:25pm, 20, Paid to Laxmi juice centre, PhonePe UPI
-1:36pm, 160, Paid to MUKHERJEE FILLING ST, PhonePe UPI
-1:48pm, 8, Paid to KUNTAL DEY, PhonePe UPI
-2:25pm, 4000, Add money UPI Lite, PhonePe UPI
-2:27pm, 80000, Transfer to XXXXXX9388, PhonePe UPI
-7:22pm, 588, Paid to SARBAMANGLA KALITOLA, PhonePe UPI
-7:42pm, 1250, Paid to Fultusi, PhonePe UPI
-9:09pm, 4276, Paid to BOLPUR- Manmohini textile pvt ltd, PhonePe UPI
-
-09/04/2026
-1:03pm, 688, Paid to ADINATH MONDAL, PhonePe UPI
-1:04pm, 80, Paid to ADINATH MONDAL, PhonePe UPI
-7:41pm, 140, Paid to Fultusi, PhonePe UPI
-8:07pm, 271, Paid to SURANA STORES, PhonePe UPI
-8:17pm, 12, Paid to KANAKANJALI, PhonePe UPI
-8:51pm, 199, Paid to SRESTHO VANDAR, PhonePe UPI
-8:52pm, 44, Paid to SRESTHO VANDAR, PhonePe UPI
-10:35pm, 500, Paid to Mou, PhonePe UPI
-10:38pm, +351, Received from MOUPEYA PAL, PhonePe UPI
+11:10am, 750, AMAZON PAY IN GROCERY BANGALORE IN, ICICI Amazon pay credit card
+11:25am, 1876.18, AMAZON PAY IN GROCERY BANGALORE IN, ICICI Amazon pay credit card
+5:40pm, +240.65, AMAZON PAY IN GROCERY BANGALORE IN (refund), ICICI Amazon pay credit card
+8:15pm, 547, Flipkart Internet Priv Bangalore IN, ICICI Amazon pay credit card
 
 10/04/2026
-1:19pm, 4000, Add money UPI Lite, PhonePe UPI
-1:19pm, 1000, Paid to PRASENJIT DAS, PhonePe UPI
-2:05pm, 170, Paid to MS Maa Santashi Pharmacy, PhonePe UPI
-
-11/04/2026
-12:06am, 50000, Paid to Mr Syamapada Pal, PhonePe UPI
-8:25am, 77.6, Paid to Indian Railways UTS, PhonePe UPI
-12:38pm, 144, Paid to Lovely Sweet, PhonePe UPI
-1:47pm, 1000, Paid to ARNAB BANERJEE, PhonePe UPI
-1:59pm, 55, Paid to JANATA VARIETIES, PhonePe UPI
-6:12pm, 220, Paid to Mr RAFIKUL ALAM, PhonePe UPI
-8:36pm, 106.7, Paid to Indian Railways UTS, PhonePe UPI
+9:05am, 3348, FLIPKART INTERNET PVT L BANGALORE IN, ICICI Coral Credit card
+3:40pm, 1390, Bie Shopping MANMOHINI TEXTILE PVT LTD BIRBHUM IN, ICICI Coral Credit card
+4:12pm, 10147, Bie Shopping MANMOHINI TEXTILE PVT LTD BOLPUR IN, ICICI Coral Credit card
 
 12/04/2026
-4:43am, 67.9, Paid to Indian Railways UTS, PhonePe UPI
-6:23am, 50000, Paid to Mr Syamapada Pal, PhonePe UPI
-12:27pm, 150, Paid to SOUGATA BISWAS, PhonePe UPI
-1:10pm, 130, Paid to Sahidul Store, PhonePe UPI
-6:19pm, 10, Paid to SARASWATI DEY, PhonePe UPI
-7:15pm, +674, Received from MOUPEYA PAL, PhonePe UPI
-7:19pm, 10, Paid to Mrs NITU PAUL, PhonePe UPI
-9:01pm, 160, Paid to Sanjit Kumar Paswan, PhonePe UPI
-
-13/04/2026
-11:16am, 554, Paid to Blinkit, PhonePe UPI
-12:45pm, 12400, Transfer to XXXXXX9388, PhonePe UPI
-12:52pm, 50000, Paid to Mr Syamapada Pal, PhonePe UPI
-12:53pm, 20000, Transfer to XXXXXXX3253, PhonePe UPI
-1:34pm, 85, Paid to NAZIRUL HAQUE, PhonePe UPI
+9:00am, 149, Paid to Satarupa Basak, Kiwi UPI Credit Card
+9:00am, 1274, Paid to Sudip Sarkar, Kiwi UPI Credit Card
+9:00am, 5032, Paid to Skinnoria, Kiwi UPI Credit Card
+9:00am, 20, Paid to Mrs Sibani Das, Kiwi UPI Credit Card
+9:00am, 509, Paid to Spencer S Retail Ltd, Kiwi UPI Credit Card
+9:00am, 674, Paid to Spencer S Retail Ltd, Kiwi UPI Credit Card
+9:00am, 508, Paid to Spencers Retail Limited, Kiwi UPI Credit Card
+9:00am, 500, Paid to Sima Saha, Kiwi UPI Credit Card
 
 14/04/2026
-5:21pm, 42, Paid to TOBOX VENTURES PRIVATE LIMITED, PhonePe UPI
-5:22pm, 13, Paid to TOBOX VENTURES PRIVATE LIMITED, PhonePe UPI
-5:34pm, 26, Paid to TOBOX VENTURES PRIVATE LIMITED, PhonePe UPI
+9:00am, 153, Paid to Asgar Ali Gharami, Kiwi UPI Credit Card
 
 15/04/2026
-12:34pm, 20, Paid to ASRAF ALI, PhonePe UPI
+9:00am, 363, Paid to Flipkart Payments, Kiwi UPI Credit Card
 
 16/04/2026
-2:25pm, 100, Paid to TOBOX VENTURES PRIVATE LIMITED, PhonePe UPI
+9:00am, 146, Paid to Flipkart Payments, Kiwi UPI Credit Card
+9:00am, 54, Paid to Om Sai Variety Corner, Kiwi UPI Credit Card
+9:00am, 58, Paid to Swastika Sweets, Kiwi UPI Credit Card
+9:20pm, 805, AMAZON PAY IN E COMMERC BANGALORE IN, ICICI Amazon pay credit card
+
+17/04/2026
+9:00am, 532, Paid to Flipkart Payments, Kiwi UPI Credit Card
+8:47pm, 255, Flipkart Bengaluru IN, ICICI Coral Credit card
 
 18/04/2026
-9:22am, 450, Paid to Siti Cable Internet | Newtown, PhonePe UPI
-12:20pm, 116.4, Paid to Indian Railways UTS, PhonePe UPI
-1:19pm, 3500, Paid to Mou, PhonePe UPI
-5:27pm, 270, Paid to Sumit Kumar, PhonePe UPI
+9:00am, 251, Paid to Flipkart Payments, Kiwi UPI Credit Card
+
+19/04/2026
+9:00am, 60, Paid to Sanjit Kumar Nonia, Kiwi UPI Credit Card
 
 20/04/2026
-5:13am, 116.4, Paid to Indian Railways UTS, PhonePe UPI
-5:18am, 75, Paid to Himanshu Kumar, PhonePe UPI
-2:30pm, 80, Paid to MD FARIDUL ISLAM MOLLA, PhonePe UPI
+9:00am, 154, Paid to Flipkart, Kiwi UPI Credit Card
+9:00am, 235, Paid to Flipkart Payments, Kiwi UPI Credit Card
+9:00am, 1046, Paid to Flipkart Payments, Kiwi UPI Credit Card
 
 21/04/2026
-4:55pm, 37, Paid to TOBOX VENTURES PRIVATE LIMITED, PhonePe UPI
+9:00am, 1206, Paid to Flipkart Payments, Kiwi UPI Credit Card
 
 22/04/2026
-3:23pm, 73, Paid to ARUP MAL, PhonePe UPI
-6:17pm, 26, Paid to TOBOX VENTURES PRIVATE LIMITED, PhonePe UPI
-6:21pm, 26, Paid to TOBOX VENTURES PRIVATE LIMITED, PhonePe UPI
-6:35pm, 37, Paid to SL Enterprise, PhonePe UPI
+9:00am, 335.27, Paid to Dominos Pizza, Kiwi UPI Credit Card
+8:45pm, 2822, MYNTRA DESIGNS PRIVATE L Bangalore IN, ICICI Amazon pay credit card
 
 23/04/2026
-5:54pm, 40, Paid to Irfan Khan, PhonePe UPI
+9:00am, 398, Paid to Flipkart Internet Private Limited, Kiwi UPI Credit Card
+9:00am, 959, Paid to Flipkart Payments, Kiwi UPI Credit Card
+12:10pm, 2854, AMAZON PAY IN E COMMERC BANGALORE IN, ICICI Amazon pay credit card
+12:25pm, 984, AMAZON PAY IN E COMMERC BANGALORE IN, ICICI Amazon pay credit card
+12:40pm, 2334, AMAZON PAY IN E COMMERC BANGALORE IN, ICICI Amazon pay credit card
+7:55pm, 447, FLIPKART INTERNET PRIV Bengaluru IN, ICICI Amazon pay credit card
 
 24/04/2026
-10:37am, +4600, Received from MOUPEYA PAL, PhonePe UPI
-
-25/04/2026
-8:22am, 82.45, Paid to Indian Railways UTS, PhonePe UPI
-8:42am, 130, Paid to RAJ MONDAL, PhonePe UPI
-2:29pm, 530, Paid to Rupam Saloon, PhonePe UPI
+9:00am, 100, Paid to Mr Sahauddin Islam Gazi, Kiwi UPI Credit Card
+10:15am, +3737.97, "INFINITY PAYMENT RECEIVED for ICICI Amazon pay Credit card, THANK YOU", ICICI Amazon pay credit card
+10:30am, +74823, "INFINITY PAYMENT RECEIVED for ICICI Coral Credit card, THANK YOU", ICICI Coral Credit card
+1:15pm, 69699, SENCO GOLD LIMITED NORTH 24 PARG IN, ICICI Coral Credit card
+9:05pm, 1225, FLIPKART INTERNET PRIV NOIDA IN, ICICI Amazon pay credit card
 
 26/04/2026
-8:12am, 5000, Paid to Hitesh Chetu, PhonePe UPI
-7:41pm, 50, Paid to SUROJIT MALAKAR, PhonePe UPI
-8:14pm, 288, Paid to SARBAMANGLA KALITOLA, PhonePe UPI
+8:35pm, 952, AMAZON PAY IN E COMMERC BANGALORE IN, ICICI Amazon pay credit card
 
 27/04/2026
-6:03am, 67.9, Paid to Indian Railways UTS, PhonePe UPI
-7:27pm, 3000, Paid to Camera Partha Guin Tapas Kanti Guin, PhonePe UPI
+9:00am, 220, Paid to Joy Durga Fng Stn, Kiwi UPI Credit Card
+9:00am, 329, Paid to Reliance Jio Infocomm, Kiwi UPI Credit Card
+7:50pm, 703, AMAZON PAY IN E COMMERC BANGALORE IN, ICICI Amazon pay credit card
 
 28/04/2026
-3:57am, 67.9, Paid to Indian Railways UTS, PhonePe UPI
+9:00am, 95, Paid to Tobox Ventures Private Limited, Kiwi UPI Credit Card
+9:00am, 346, Paid to Flipkart Payments, Kiwi UPI Credit Card
+9:00am, 361.72, Paid to Zomato, Kiwi UPI Credit Card
 
 29/04/2026
-9:47am, 330, Paid to Sanjay Sharma, PhonePe UPI
-2:25pm, 4000, Transfer to XXXXXXX3253, PhonePe UPI
-5:24pm, 2000, Paid to Biswajit Biswas | Driver | Bolpur | Subho, PhonePe UPI
-8:19pm, 2390, Paid to Mou, PhonePe UPI
+9:00am, 480, Paid to Kailash Jha, Kiwi UPI Credit Card
+9:00am, 2000, Paid to Y Y Filling Station, Kiwi UPI Credit Card
+9:00am, 9328, Paid to Yes Bank Credit Card, Kiwi UPI Credit Card
 
 30/04/2026
-3:04pm, 500, Paid to Biswajit Biswas | Driver | Bolpur | Subho, PhonePe UPI
+9:00am, 150, Paid to Beekay Auto Pvt, Kiwi UPI Credit Card
 
 01/05/2026
-8:24am, 60, Paid to KISHOR SEN, PhonePe UPI
-9:21am, 30, Paid to B S AGENCY, PhonePe UPI
-9:37am, 213, Paid to PROVATI STORE, PhonePe UPI
-9:52am, 60, Paid to ROYAL, PhonePe UPI
-8:19pm, 42, Paid to GOPAL FAST FOOD, PhonePe UPI
-8:19pm, 50, Paid to DIPANKAR SHAW, PhonePe UPI
-8:34pm, 100, Paid to SARBAMANGLA KALITOLA, PhonePe UPI
-8:40pm, 70, Paid to Fultusi, PhonePe UPI
+9:00am, 255, Paid to Surojit Malakar, Kiwi UPI Credit Card
+9:00am, 360, Paid to Surana Stores, Kiwi UPI Credit Card
+9:00am, 100, Paid to Surana Stores, Kiwi UPI Credit Card
+9:00am, 155, Paid to Surojit Malakar, Kiwi UPI Credit Card
+9:00am, 20, Paid to Surojit Malakar, Kiwi UPI Credit Card
+11:05am, +12321, "INFINITY PAYMENT RECEIVED for ICICI Amazon pay Credit card, THANK YOU", ICICI Amazon pay credit card
 
 02/05/2026
-10:58am, 60, Paid to SUROJIT MALAKAR, PhonePe UPI
-12:28pm, 150, Paid to KISHOR SEN, PhonePe UPI
-12:49pm, 280, Paid to BORO SHAWJI, PhonePe UPI
-1:02pm, 500, Paid to SATYANARAYAN NURSERY, PhonePe UPI
-1:16pm, 25, Paid to CHANDRA SUPPLIERS, PhonePe UPI
-2:29pm, 18, Paid to PRAYOJANIYO DASHAKARMA, PhonePe UPI
-6:52pm, 10, Paid to KISHOR SEN, PhonePe UPI
-8:15pm, 24, Paid to PROVATI STORE, PhonePe UPI
-8:32pm, 30, Paid to PRAYOJANIYO DASHAKARMA, PhonePe UPI
+9:00am, 336, Paid to Bolpur Sweet House, Kiwi UPI Credit Card
+9:00am, 1632, Paid to New Satyanarayan Bhandar, Kiwi UPI Credit Card
+9:00am, 180, Paid to Fultusi, Kiwi UPI Credit Card
+9:00am, 50, Paid to Bolpur Sweet House, Kiwi UPI Credit Card
 
 03/05/2026
-3:30pm, 2000, Paid to Biswajit Biswas | Driver | Bolpur | Subho, PhonePe UPI
+9:00am, 320, Paid to Bipadtaran Bahara, Kiwi UPI Credit Card
+9:00am, 30, Paid to Bipadtaran Bahara, Kiwi UPI Credit Card
+9:00am, 75, Paid to Nitish Gupta, Kiwi UPI Credit Card
+9:00am, 60, Paid to Abhijit Das, Kiwi UPI Credit Card
+9:00am, 30, Paid to Mr Narayan Adak, Kiwi UPI Credit Card
+9:00am, 15, Paid to Mr Narayan Adak, Kiwi UPI Credit Card
+9:00am, 1050, Paid to Soma Saha, Kiwi UPI Credit Card
 
 04/05/2026
-1:26am, 2700, Paid to SK AZHARUDDIN, PhonePe UPI
-10:09am, 10, Paid to SUBHASISH DAS, PhonePe UPI
-1:02pm, 5000, Paid to NUR HOSSAIN MONDAL, PhonePe UPI
-4:56pm, 50, Paid to KISHOR SEN, PhonePe UPI
-5:38pm, 2250, Paid to Bittu, PhonePe UPI
-7:08pm, 12600, Paid to Mr Nitish Ranjan Deb, PhonePe UPI
+9:00am, 47000, Paid to Srinika Palace, Kiwi UPI Credit Card
+9:00am, 10500, Paid to Ms Supriya Hensh, Kiwi UPI Credit Card
 
 05/05/2026
-9:52am, 40, Paid to BAHARA BROTHER, PhonePe UPI
-4:34pm, 5000, Paid to Chandan, PhonePe UPI
-8:54pm, 269, Paid to Blinkit, PhonePe UPI
+9:00am, 852.33, Paid to Zomato, Kiwi UPI Credit Card
 
 06/05/2026
-10:09am, 5500, Paid to RABI DAS, PhonePe UPI
+9:00am, 6700, Paid to Sandhya Tyres, Kiwi UPI Credit Card
+9:00am, 100, Paid to Partha Hazra, Kiwi UPI Credit Card
+9:00am, 2000, Paid to Reliance Bp Mobility Limited, Kiwi UPI Credit Card
+9:00am, 352, Paid to Madan Mohan Mistanna B..., Kiwi UPI Credit Card
+9:00am, 75, Paid to Mr Debnath Thakur, Kiwi UPI Credit Card
+
+07/05/2026
+9:00am, 2441, Paid to Kishor Sen, Kiwi UPI Credit Card
+9:00am, 200, Paid to V2 Retail, Kiwi UPI Credit Card
+6:05pm, 2992, STYLE BAAZAR RAMPURHAT BIRBHUM IN, ICICI Coral Credit card
+6:22pm, 1131, STYLE BAAZAR RAMPURHAT BIRBHUM IN, ICICI Coral Credit card
 
 08/05/2026
-8:54pm, 150, Paid to Rajnandini Nursery, PhonePe UPI
+9:00am, 40, Paid to Swastik Foods, Kiwi UPI Credit Card
+9:00am, 2600, Paid to Rahul Patra, Kiwi UPI Credit Card
 
 09/05/2026
-10:50am, 80000, Paid to RS FISH SUPPLIER, PhonePe UPI
-1:26pm, 3000, Paid to Biswajit Biswas | Driver | Bolpur | Subho, PhonePe UPI
-9:54pm, 470.82, Paid to RELIANCE JIO INFOCOMM, PhonePe UPI
-10:07pm, 15000, Paid to DILMOHAN SHAW, PhonePe UPI
+9:00am, 220, Paid to Mukherjee Filling St, Kiwi UPI Credit Card
 
 10/05/2026
-12:09pm, 1000, Paid to Bittu, PhonePe UPI
-6:48pm, 42000, Paid to DILMOHAN SHAW, PhonePe UPI
-10:01pm, 40000, Paid to RS FISH SUPPLIER, PhonePe UPI
+9:00am, 120, Paid to New Satyanarayan Bhandar, Kiwi UPI Credit Card
 
 11/05/2026
-9:48am, 750, Paid to SEKH ABUJAHAN, PhonePe UPI
-2:11pm, 160, Paid to JMT ICE CREAM, PhonePe UPI
-9:57pm, 44000, Paid to RS FISH SUPPLIER, PhonePe UPI
-10:01pm, 15000, Paid to Sunanda Camera | Bolpur, PhonePe UPI
+9:00am, 844.5, Paid to Indian Railways, Kiwi UPI Credit Card
+9:00am, 192.7, Paid to Indian Railways, Kiwi UPI Credit Card
+9:00am, 122.7, Paid to Indian Railways, Kiwi UPI Credit Card
+9:30pm, 16844, AMAZON PAY IN E COMMERC BANGALORE IN, ICICI Amazon pay credit card
 
 12/05/2026
-7:21am, 1000, Paid to Y Y FILLING STATION 3, PhonePe UPI
-11:32am, 450, Paid to Siti Cable Internet | Newtown, PhonePe UPI
-11:39am, +595, Received from Mou, PhonePe UPI
-12:47pm, 1100, Paid to Biswajit Biswas | Driver | Bolpur | Subho, PhonePe UPI
-9:10pm, 100, Paid to I B R MUNSHI, PhonePe UPI
-10:07pm, 134, Paid to NAZRUL STORES, PhonePe UPI
+9:00am, 120, Paid to Shree Balaji Fast Food, Kiwi UPI Credit Card
+9:00am, 595.08, Paid to Zomato Limited, Kiwi UPI Credit Card
+9:00am, 460, Paid to Saiful Islam, Kiwi UPI Credit Card
+9:00am, 50, Paid to Swastika Sweets, Kiwi UPI Credit Card
+2:48pm, 5675.5, AIRPLAZA RETAIL HOLDING NORTH 24 PARG IN, ICICI Coral Credit card
 
 13/05/2026
-2:16pm, 40, Paid to Irfan Khan, PhonePe UPI
-6:20pm, 100, Paid to Bullet security moonbeam, PhonePe UPI
-6:21pm, 300, Paid to Bullet security moonbeam, PhonePe UPI
-7:20pm, 210, Paid to Coco Auto Care Centre Newtown, PhonePe UPI
-7:51pm, 160, Paid to Cha Culture, PhonePe UPI
+9:00am, 362, Paid to Asgar Ali Gharami, Kiwi UPI Credit Card
 
 14/05/2026
-8:47pm, 40, Paid to Irfan Khan, PhonePe UPI
+9:00am, 659, Paid to Flipkart Payments, Kiwi UPI Credit Card
+9:00am, 265, Paid to Flipkart Payments, Kiwi UPI Credit Card
+9:33pm, 230, BLINKIT GURGAON IN, ICICI Coral Credit card
 
 15/05/2026
-8:24am, 3951, Electricity bill paid 521054478, PhonePe UPI
-8:14pm, 117, Paid to NAZRUL STORES, PhonePe UPI
-8:26pm, 562, Paid to ABU STORE, PhonePe UPI
-8:45pm, 200, Paid to SAKIRUL MOLLA FLOWERS, PhonePe UPI
+9:00am, 160, Paid to Subhrajit Rana, Kiwi UPI Credit Card
 
 16/05/2026
-12:06pm, 70, Paid to JM SALON, PhonePe UPI
-12:32pm, 150, Paid to JM SALON, PhonePe UPI
-7:34pm, 80, Paid to I B R MUNSHI, PhonePe UPI
-8:18pm, 108, Paid to NAZRUL STORES, PhonePe UPI
-8:23pm, 100, Paid to Sahauddin ice cream, PhonePe UPI
-
-17/05/2026
-10:09pm, 48, Paid to SHYAM STORE, PhonePe UPI
+1:15pm, 1304, AMAZON PAY IN E COMMERC BANGALORE IN, ICICI Amazon pay credit card
+1:30pm, 374, AMAZON PAY IN E COMMERC BANGALORE IN, ICICI Amazon pay credit card
 
 18/05/2026
-10:57pm, 137, Paid to ROHAN STORES, PhonePe UPI
+9:00am, 125, Paid to Meesho, Kiwi UPI Credit Card
+9:00am, 124, Paid to Meesho, Kiwi UPI Credit Card
+10:05am, 316.86, AMAZON PAY IN E COMMERC BANGALORE IN, ICICI Amazon pay credit card
+11:40am, +274, AMAZON PAY IN E COMMERC BANGALORE IN (refund), ICICI Amazon pay credit card
+12:20pm, 207.81, AMAZON PAY IN E COMMERC BANGALORE IN, ICICI Amazon pay credit card
+12:35pm, 453, AMAZON PAY IN E COMMERC BANGALORE IN, ICICI Amazon pay credit card
+12:50pm, 274, AMAZON PAY IN E COMMERC BANGALORE IN, ICICI Amazon pay credit card
 
 19/05/2026
-8:41pm, 100, Paid to DHALI VEGITABLE SHOP, PhonePe UPI
-9:02pm, 140, Paid to Kanij Bedding Sofa Centre, PhonePe UPI
-9:06pm, 30, Paid to SANDIP BAGUI, PhonePe UPI
-9:10pm, 30, Paid to I B R MUNSHI, PhonePe UPI
-9:25pm, 35, Paid to CHOURASIA BANARASI PAN SHOP, PhonePe UPI
+3:25pm, +369, AMAZON PAY IN E COMMERC BANGALORE IN (refund), ICICI Amazon pay credit card
+3:40pm, 1004, AMAZON PAY IN E COMMERC BANGALORE IN, ICICI Amazon pay credit card
 
 20/05/2026
-12:42am, 259, Paid to Urban Company, PhonePe UPI
+9:00am, 20, Paid to Mrs Raima Bibi, Kiwi UPI Credit Card
 
 21/05/2026
-10:27am, 70, Paid to ABU STORE, PhonePe UPI
-10:33am, 190, Paid to SK KHURSID ALAM, PhonePe UPI
-8:15pm, 36, Paid to Om Sai Variety Corner, PhonePe UPI
-9:36pm, 40, Paid to Irfan Khan, PhonePe UPI
-
-22/05/2026
-6:45pm, 170, Paid to ABU STORE 2, PhonePe UPI
-6:49pm, 60, Paid to Rojina Bibi, PhonePe UPI
+9:00am, 160, Paid to Tea Corn Er, Kiwi UPI Credit Card
 
 23/05/2026
-7:50pm, 53, Paid to Apu chayer dokan, PhonePe UPI
+9:00am, 82.45, Paid to Indian Railways Uts, Kiwi UPI Credit Card
+9:00am, 162, Paid to Kishor Sen, Kiwi UPI Credit Card
+
+24/05/2026
+9:00am, 130, Paid to Surana Stores, Kiwi UPI Credit Card
+9:00am, 168, Paid to Bolpur Sweet House, Kiwi UPI Credit Card
+9:00am, 23, Paid to Surjakanta Mahanta, Kiwi UPI Credit Card
+9:00am, 14, Paid to Bolpur Sweet House, Kiwi UPI Credit Card
+9:00am, 40, Paid to Fultusi, Kiwi UPI Credit Card
+9:00am, 50, Paid to Naresh Gupta, Kiwi UPI Credit Card
+
+25/05/2026
+9:00am, 67.9, Paid to Indian Railways Uts, Kiwi UPI Credit Card
+9:00am, 136, Paid to Avhijit Malik, Kiwi UPI Credit Card
+9:00am, 239, Paid to Reliance Jio Infocomm, Kiwi UPI Credit Card
 
 26/05/2026
-8:10am, 80000, Transfer to XXXXXXXXXX71, PhonePe UPI
-8:17am, 4000, Transfer to XXXXXXXXXX71, PhonePe UPI
-12:04pm, 40, Paid to BAPI WATER Sunrise | Newtown, PhonePe UPI
+9:00am, 299, Paid to Reliance Jio Infocomm, Kiwi UPI Credit Card
+9:00am, 210, Paid to Coco Auto Care Centre Newtown, Kiwi UPI Credit Card
+9:00am, 320, Paid to Suchandra Kumar, Kiwi UPI Credit Card
+9:00am, 157, Paid to Md Amanul Mondal, Kiwi UPI Credit Card
+9:00am, 40, Paid to Sandip Bagui, Kiwi UPI Credit Card
+11:04am, +79497.5, "INFINITY PAYMENT RECEIVED for ICICI Coral Credit card, THANK YOU", ICICI Coral Credit card
+11:09am, +230, "INFINITY PAYMENT RECEIVED for ICICI Coral Credit card, THANK YOU", ICICI Coral Credit card
+
+27/05/2026
+9:00am, 316, Paid to Flipkart Payments, Kiwi UPI Credit Card
+8:10pm, 32044, AMAZON PAY IN E COMMERC BANGALORE IN, ICICI Amazon pay credit card, card 4315XXXXXXXX1007
 
 28/05/2026
-4:36pm, 10, Paid to AMAN STORES, PhonePe UPI
-4:41pm, 66, Paid to SWASTIKA SWEETS, PhonePe UPI
+9:00am, 36, Paid to Om Sai Variety Corner, Kiwi UPI Credit Card
 
 29/05/2026
-8:32pm, 40, Paid to Irfan Khan, PhonePe UPI
+9:00am, 73589.51, Paid to Yes Bank Credit Card, Kiwi UPI Credit Card
+9:00am, 150, Paid to Abu Hosen Mandal, Kiwi UPI Credit Card
+9:00am, 10, Paid to Abu Hosen Mandal, Kiwi UPI Credit Card
+9:00am, 51, Paid to Samsuddin Ali, Kiwi UPI Credit Card
+
+30/05/2026
+9:00am, 66, Paid to Om Sai Variety Corner, Kiwi UPI Credit Card
+9:00am, 68, Paid to Swastika Sweets, Kiwi UPI Credit Card
 
 31/05/2026
-11:15am, 40, Paid to Md Asikul Molla, PhonePe UPI
-5:16pm, 31, Paid to RAJIV KHANNA, PhonePe UPI
+9:00am, 1768, Paid to Banyan Tree Automobil..., Kiwi UPI Credit Card
+9:00am, 2574.01, Paid to Vishal Mega Mart, Kiwi UPI Credit Card
+9:00am, 250, Paid to Afreen Khatun, Kiwi UPI Credit Card
+9:00am, 40, Paid to Surabuddin Ali Ata, Kiwi UPI Credit Card
+9:00am, 170, Paid to Zahid Ahamed, Kiwi UPI Credit Card
 
 01/06/2026
-10:39am, 40, Paid to SK KHURSID ALAM, PhonePe UPI
-6:51pm, +30, Received from SUBHAJIT LAHA, PhonePe UPI
+9:00am, 103, Paid to Saddam Hossain, Kiwi UPI Credit Card
 
 02/06/2026
-1:19pm, 7000, Transfer to XXXXXXX3253, PhonePe UPI
-1:20pm, 3400, Transfer to XXXXXXX3253, PhonePe UPI
+9:00am, 216, Paid to Meesho, Kiwi UPI Credit Card
+9:00am, 122.7, Paid to Indian Railways, Kiwi UPI Credit Card
+9:00am, 50, Paid to Mrs Raima Bibi, Kiwi UPI Credit Card
 
 03/06/2026
-2:31pm, 80, Paid to TANMAY MONDAL, PhonePe UPI
-3:09pm, 45, Paid to Ayan Guhu | CG, PhonePe UPI
+9:00am, 242, Paid to Blink Commerce Private Limited, Kiwi UPI Credit Card
+9:00am, 30, Paid to Nasiruddin Molla, Kiwi UPI Credit Card
 
 04/06/2026
-8:33pm, 12600, Paid to Mr Nitish Ranjan Deb, PhonePe UPI
-8:33pm, 100, Transfer to XXXXXXX3253, PhonePe UPI
+9:00am, 50, Paid to Md Tajuddin, Kiwi UPI Credit Card
+9:00am, 80, Paid to Nazrul Stores, Kiwi UPI Credit Card
+9:00am, 42, Paid to Om Sai Variety Corner, Kiwi UPI Credit Card
+
+05/06/2026
+9:00am, 77, Paid to Bivas Mondal, Kiwi UPI Credit Card
+9:00am, 30, Paid to Sajjat Ali Sapui, Kiwi UPI Credit Card
 
 06/06/2026
-7:39am, 82.45, Paid to Indian Railways UTS, PhonePe UPI
+9:00am, 80, Paid to Parwati Enterprises, Kiwi UPI Credit Card
+9:00am, 20, Paid to Roppen Transportation Services, Kiwi UPI Credit Card
 
-07/06/2026
-11:54am, 192.7, Paid to Indian Railways, PhonePe UPI
-12:22pm, 82.45, Paid to Indian Railways UTS, PhonePe UPI
-12:26pm, 19, Paid to RELIANCE JIO INFOCOMM, PhonePe UPI
-12:37pm, 20, Paid to Rapido, PhonePe UPI
-12:52pm, 313.15, Paid to Indian Railways, PhonePe UPI
-7:28pm, 40, Paid to Irfan Khan, PhonePe UPI
-
-08/06/2026
-9:32pm, 285, Paid to MOUMITA BANIK, PhonePe UPI
-10:23pm, 80, Paid to I B R MUNSHI, PhonePe UPI
-
-09/06/2026
-7:55pm, 210, Paid to Coco Auto Care Centre Newtown, PhonePe UPI
-8:24pm, 202, Paid to Shyam store new, PhonePe UPI
-
-10/06/2026
-3:51pm, 336, Paid to NAZRUL STORES, PhonePe UPI
-
-11/06/2026
-12:12pm, 2000, Paid to Mou, PhonePe UPI
-4:24pm, 45, Paid to Ayan Guhu | CG, PhonePe UPI
-9:04pm, 88, Paid to SANDIP BAGUI, PhonePe UPI
-
-12/06/2026
-9:31am, 40, Paid to BAPI WATER Sunrise | Newtown, PhonePe UPI
-
-13/06/2026
-7:42am, 82.45, Paid to Indian Railways UTS, PhonePe UPI
-8:42am, 50, Paid to PARWATI ENTERPRISES, PhonePe UPI
-12:01pm, 20, Paid to Rapido, PhonePe UPI
-7:32pm, 200, Paid to MUKHERJEE FILLING ST, PhonePe UPI
-7:41pm, 30, Paid to SAROJ PLASTIC, PhonePe UPI
-
-14/06/2026
-8:44am, 67.25, Paid to Indian Railways, PhonePe UPI
-12:29pm, 247.35, Paid to Indian Railways UTS, PhonePe UPI
-5:13pm, 462, Paid to Sanjay Ram, PhonePe UPI
-7:40pm, 221, Paid to SWASTIKA SWEETS, PhonePe UPI
-9:30pm, 40, Paid to Irfan Khan, PhonePe UPI
-
-16/06/2026
-9:49am, 40, Paid to BAPI WATER Sunrise | Newtown, PhonePe UPI
-4:30pm, 77, Paid to AVANTAGE FOODS PRIVATE LIMITED, PhonePe UPI
-4:31pm, +45, Received from AYAN GUHA BISWAS, PhonePe UPI
-6:08pm, 45, Paid to AMAN STORES, PhonePe UPI
-6:11pm, 40, Paid to NAZRUL STORES, PhonePe UPI
-6:16pm, 78, Paid to SWASTIKA SWEETS, PhonePe UPI
+15/06/2026
+9:00am, 713, Paid to Blinkit, Kiwi UPI Credit Card
+9:00am, 38, Paid to Blinkit, Kiwi UPI Credit Card
 
 17/06/2026
-12:11am, 239, Paid to RELIANCE JIO INFOCOMM, PhonePe UPI
-9:22am, 450, Paid to Siti Cable Internet | Newtown, PhonePe UPI
-3:33pm, 50, Paid to TOBOX VENTURES PRIVATE LIMITED, PhonePe UPI
-7:07pm, 40, Paid to Irfan Khan, PhonePe UPI
-8:22pm, 100, Paid to SWASTIKA SWEETS, PhonePe UPI
-8:27pm, 120, Paid to SANDIP BAGUI, PhonePe UPI
+2:05pm, +153, AMAZON PAY IN RECHARGE BANGALORE IN (refund), ICICI Amazon pay credit card
+2:10pm, 153, AMAZON PAY IN RECHARGE BANGALORE IN, ICICI Amazon pay credit card
 
-18/06/2026
-4:19pm, 124, Paid to TOBOX VENTURES PRIVATE LIMITED, PhonePe UPI
-7:07pm, 30, Paid to MDABDUL GAFFARMOLLA, PhonePe UPI
-
-19/06/2026
-6:41am, 356, Paid to DURGADEBI SINGH, PhonePe UPI
-11:09am, 50, Paid to MURALI DHAR PANDEY, PhonePe UPI
-3:08pm, 580, Paid to Rupam Saloon, PhonePe UPI
-3:22pm, 10, Paid to FULKALI KHATUN, PhonePe UPI
-7:22pm, 342, Paid to SARBAMANGLA KALITOLA, PhonePe UPI
-7:30pm, 120, Paid to Mr UTTAM DUTTA, PhonePe UPI
-11:20pm, 29, Paid to RELIANCE JIO INFOCOMM, PhonePe UPI
-
-20/06/2026
-6:56am, 19.4, Paid to Indian Railways UTS, PhonePe UPI
-12:37pm, 250, Paid to GOUTAM MEDICAL STORES, PhonePe UPI
-4:13pm, 200, Paid to SANDIP SAHA, PhonePe UPI
-7:55pm, 250, Paid to 13631 Apollo Pharmacy, PhonePe UPI
-8:01pm, 70, Paid to Santu Variety, PhonePe UPI
-
-21/06/2026
-9:28pm, 80, Paid to SANDIP CHAKRABORTY, PhonePe UPI
-
-22/06/2026
-12:52pm, 120, Paid to TELE -TALK, PhonePe UPI
-9:49pm, 200, Paid to RAJA MUKHERJEE, PhonePe UPI
+23/06/2026
+10:20am, 579, AMAZON PAY IN RECHARGE BANGALORE IN, ICICI Amazon pay credit card
+8:40pm, 343, FLIPKART INTERNET PRIV NOIDA IN, ICICI Amazon pay credit card
 
 24/06/2026
-11:11am, 40, Paid to BAPI WATER Sunrise | Newtown, PhonePe UPI
-4:58pm, 10.74, Paid to Be10x, PhonePe UPI
+9:15pm, 412, Flipkart Bangalore IN, ICICI Amazon pay credit card
 
 25/06/2026
-5:00pm, 60, Paid to TOBOX VENTURES PRIVATE LIMITED, PhonePe UPI
-5:11pm, 60, Paid to TOBOX VENTURES PRIVATE LIMITED, PhonePe UPI
-7:21pm, 168, Paid to NAZRUL STORES, PhonePe UPI
-7:24pm, 145, Paid to HASIBUL ISLAM, PhonePe UPI
-
-26/06/2026
-11:05pm, 350, Paid to Blinkit, PhonePe UPI
-
-27/06/2026
-10:16am, 58, Paid to Khusid alam Enterprises7, PhonePe UPI
-10:18am, 30, Paid to SANDIP BAGUI, PhonePe UPI
-11:09am, 1000, Paid to Mou, PhonePe UPI
-11:33am, 72.75, Paid to Indian Railways UTS, PhonePe UPI
-1:00pm, 35, Paid to Gokul Food, PhonePe UPI
-7:33pm, 50, Paid to Sk Joinal Abedin, PhonePe UPI
-7:57pm, 192, Paid to GHOSH SWEETS BANDHGORA, PhonePe UPI
-
-28/06/2026
-6:54pm, 9.7, Paid to Indian Railways UTS, PhonePe UPI
-10:52pm, 2000, Paid to Mou, PhonePe UPI
+7:30pm, 299, AMAZON MUMBAI IN, ICICI Amazon pay credit card
 
 29/06/2026
-3:02pm, 105, Paid to BASANTI DUTTA, PhonePe UPI
-3:04pm, 56, Paid to SWAPAN KUMBHAKAR, PhonePe UPI
-
-30/06/2026
-9:17am, 600, Paid to Surajit Chatterjee | Income Tax | Surul, PhonePe UPI
-9:34am, 10, Paid to Mr Ajit Singh, PhonePe UPI
-9:54am, 700, Paid to DADA BGAI MOTON SENTER, PhonePe UPI
-10:16am, 30, Paid to GOPAL FAST FOOD, PhonePe UPI
-7:27pm, 139, Paid to SASVIKA FOODS, PhonePe UPI
-7:59pm, 22, Paid to SRESTHO VANDAR, PhonePe UPI
-8:36pm, 1284, Paid to ANINDITA SAMANTA, PhonePe UPI
-8:47pm, 120, Paid to MUKHERJEE FILLING ST, PhonePe UPI
+11:10am, 271.04, AMAZON PAY IN E COMMERC BANGALORE IN, ICICI Amazon pay credit card
+11:35am, +271.04, AMAZON PAY IN E COMMERC BANGALORE IN (refund), ICICI Amazon pay credit card
+11:50am, 271.04, AMAZON PAY IN E COMMERC BANGALORE IN, ICICI Amazon pay credit card
+1:26pm, 6350, HEALTH WORLD HOSPITALS DURGAPUR IN, ICICI Coral Credit card
+6:20pm, 170, AMAZON PAY IN GROCERY BANGALORE IN, ICICI Amazon pay credit card
+9:05pm, 221, FLIPKART INTERNET PRIV NOIDA IN, ICICI Amazon pay credit card
 
 01/07/2026
-11:31am, 14000, Transfer to XXXXXXX3253, PhonePe UPI
-11:32am, 13600, Paid to Mr Nitish Ranjan Deb, PhonePe UPI
-11:35am, 20000, Transfer to XXXXXX9388, PhonePe UPI
-7:13pm, 120, Paid to Mr Ajit Sah, PhonePe UPI
-7:22pm, 160, Paid to BHOLENATH ICE CREAM SANTINIKATAN, PhonePe UPI
-8:09pm, 206, Paid to KISHOR SEN, PhonePe UPI
-
-02/07/2026
-8:08pm, 19, Paid to RELIANCE JIO INFOCOMM, PhonePe UPI
-8:10pm, 579, Paid to RELIANCE JIO INFOCOMM, PhonePe UPI
+9:00am, 7529.44, Paid to Yes Bank Credit Card, Kiwi UPI Credit Card
+9:00am, 104097, Paid to Tata Aia Life Insurance, Kiwi UPI Credit Card
+9:00am, 227.33, Paid to Medplus Raghunathga..., Kiwi UPI Credit Card
+9:00am, 50, Paid to Piyarul Sahana, Kiwi UPI Credit Card
+10:40am, +38937.63, "INFINITY PAYMENT RECEIVED for ICICI Amazon pay Credit card, THANK YOU", ICICI Amazon pay credit card
+4:15pm, 75.6, Unique Identification New Delhi IN, ICICI Amazon pay credit card
 
 03/07/2026
-10:13am, 522, Paid to SARBAMANGLA KALITOLA, PhonePe UPI
-11:19am, 105, Paid to Rup Enterprise, PhonePe UPI
-11:45am, +1360, Refund from ASHIRBAD MEDICAL STORE, PhonePe UPI
-11:57am, 50, Paid to MS SURGICAL, PhonePe UPI
-12:54pm, 50, Paid to Rupam Saloon, PhonePe UPI
-2:14pm, 53.35, Paid to Indian Railways UTS, PhonePe UPI
-2:22pm, 18, Paid to ROHIT DHARA, PhonePe UPI
-4:10pm, 28, Paid to JAYDEB RAJBANSHI, PhonePe UPI
-4:58pm, 19.4, Paid to Indian Railways UTS, PhonePe UPI
-5:21pm, 38, Paid to ROPPEN TRANSPORTATION SERVICES PRIVATE LIMITED, PhonePe UPI
-9:27pm, 793.6, Paid to Indian Railways, PhonePe UPI
-9:50pm, 652.05, Paid to Redbus India Private Limited, PhonePe UPI
-
-04/07/2026
-9:13am, 463.15, Paid to Indian Railways, PhonePe UPI
-9:18am, +289.8, Refund from Redbus India Private Limited, PhonePe UPI
-11:13am, 1584.95, Paid to Indian Railways, PhonePe UPI
-6:06pm, 5000, Paid to Mou, PhonePe UPI
-
-05/07/2026
-11:31am, 19, Paid to RELIANCE JIO INFOCOMM, PhonePe UPI
-7:10pm, 120, Paid to Styajit stores, PhonePe UPI
-
-06/07/2026
-11:21am, 218.72, Paid to APOLLO PHARMACY, PhonePe UPI
-6:47pm, 1190, Paid to SANDEEP KUMAR SAH, PhonePe UPI
-8:01pm, 80, Paid to Mr BHANWAR LAL JAT, PhonePe UPI
-8:29pm, 420, Paid to Akram nursery, PhonePe UPI
-8:33pm, 24, Paid to MAHEK GROCERY, PhonePe UPI
-8:39pm, 104, Paid to SWASTIKA SWEETS, PhonePe UPI
-
-07/07/2026
-2:30pm, 58, Paid to TOBOX VENTURES PRIVATE LIMITED, PhonePe UPI
-4:18pm, 33, Paid to I B R MUNSHI, PhonePe UPI
-6:47pm, 700, Paid to EMDADUL SABRI, PhonePe UPI
-9:28pm, 40, Paid to Irfan Khan, PhonePe UPI
-
-08/07/2026
-3:10pm, 45, Paid to AVANTAGE FOODS PRIVATE LIMITED, PhonePe UPI
-5:45pm, 32, Paid to Smoke & chai, PhonePe UPI
-5:46pm, 26, Paid to ABDULLA ALTHAF RAHMAN, PhonePe UPI
-7:15pm, 87, Paid to SWASTIKA SWEETS, PhonePe UPI
-
-09/07/2026
-12:18am, 666, Paid to RELIANCE JIO INFOCOMM, PhonePe UPI
-6:11pm, 28, Paid to I B R MUNSHI, PhonePe UPI
-8:08pm, 66, Paid to SANDIP BAGUI, PhonePe UPI
-9:36pm, 156, Paid to SWASTIKA SWEETS, PhonePe UPI
-9:38pm, 80, Paid to Shyam store new, PhonePe UPI
-10:23pm, 13, Paid to MD SAHIN, PhonePe UPI
+9:00am, 1360, Paid to Prarthana Mondal, Kiwi UPI Credit Card
+9:00am, 40, Paid to New Satyanarayan Bhandar, Kiwi UPI Credit Card
 
 10/07/2026
-11:46am, 1139, Paid to SPENCER S RETAIL LIMITED, PhonePe UPI
-12:02pm, 4900, Paid to Subho Sahani, PhonePe UPI
-12:30pm, 254, Paid to ZEPTONOW, PhonePe UPI
-6:47pm, 70, Paid to JM SALON, PhonePe UPI
-9:22pm, 262, Paid to BLINKIT, PhonePe UPI
+11:25am, 3246, AMAZON PAY IN UTILITY BANGALORE IN, ICICI Amazon pay credit card
 
-11/07/2026
-5:09am, 59, Paid to Sujit genral storeb, PhonePe UPI
-5:10am, 70, Paid to Sujit genral storeb, PhonePe UPI
-10:39am, 250, Paid to Subrata Barik, PhonePe UPI
-7:38pm, 20, Paid to MAA CHANDI STORE, PhonePe UPI
-
-12/07/2026
-10:39am, 42, Paid to Bhai Bhai Hotel & Restaurant, PhonePe UPI
-11:02am, 130, Paid to MAA CHANDI STORE, PhonePe UPI
-12:05pm, 3000, Transfer to XXXXXX9388, PhonePe UPI
-12:06pm, 4185, Paid to PRANTIK HOTEL AND RESORTS, PhonePe UPI
-7:51pm, 420, Paid to SUBARNA DAS, PhonePe UPI
-8:50pm, 40, Paid to EEK CUP CHAI, PhonePe UPI
-9:00pm, 269, Paid to MINTU STORE, PhonePe UPI
-
-13/07/2026
-2:43pm, 174, Transfer to XXXXXX9388, PhonePe UPI
-2:43pm, 37, Transfer to XXXXXX9388, PhonePe UPI
-
-15/07/2026
-4:41pm, 26, Paid to ABDULLA ALTHAF RAHMAN, PhonePe UPI
+14/07/2026
+10:21pm, 2104.03, Ticket to Vanarash IRCTC, ICICI Coral Credit card
+10:21pm, 2104.03, IIL*Indian Railways Servi NewDelhi IN, ICICI Amazon pay credit card
+10:36pm, 3922.95, Ticket to Vanarash return IRCTC, ICICI Coral Credit card
+10:48pm, +2104.03, IIL*Indian Railways Servi NewDelhi IN (refund), ICICI Amazon pay credit card
 
 16/07/2026
-9:56am, 4000, Paid to Mou, PhonePe UPI
-4:14pm, 10, Paid to GUPTA SNACKS, PhonePe UPI
-4:15pm, 13, Paid to ABDULLA ALTHAF RAHMAN, PhonePe UPI
-4:23pm, 125, Paid to ABDULLA ALTHAF RAHMAN, PhonePe UPI
-4:27pm, 107, Paid to ABDULLA ALTHAF RAHMAN, PhonePe UPI
-8:04pm, 52, Paid to SWASTIKA SWEETS, PhonePe UPI
-8:11pm, 30, Paid to BENGAL DAIRY 109, PhonePe UPI
-8:24pm, 24, Paid to EEK CUP CHAI, PhonePe UPI
+9:00am, 5000, Paid to Rabiul Ali Molla, Kiwi UPI Credit Card
+9:02am, 299, CAS*GOENKA KACHAVE LLP BIDHAN NAGAR IN, ICICI Coral Credit card
+9:03am, 53.82, IGST-CI@18%, ICICI Coral Credit card
+9:03am, 381.26, Interest Amount Amortization <1/12> CAS*GOENKA KACHAVE LLP, ICICI Coral Credit card
+9:03am, 68.63, IGST-CI@18%, ICICI Coral Credit card
+9:04am, 2214.6, Principal Amount Amortization <1/12> CAS*GOENKA KACHAVE LLP, ICICI Coral Credit card
+7:45pm, 304, AMAZON PAY IN GROCERY BANGALORE IN, ICICI Amazon pay credit card
 
 17/07/2026
-10:06am, 450, Paid to Siti Cable Internet | Newtown, PhonePe UPI
-1:39pm, 170, Paid to JM SALON, PhonePe UPI
-1:42pm, 155, Paid to ACHINTA CHICKEN SHOP, PhonePe UPI
-1:46pm, 104, Paid to ROHAN STORES, PhonePe UPI
-1:49pm, 60, Paid to SWASTIKA SWEETS, PhonePe UPI
-
-18/07/2026
-12:19pm, 160, Paid to MANDAL STORE, PhonePe UPI
-7:42pm, 1120, Paid to Rahul Chicken Centre, PhonePe UPI
-8:01pm, 80, Paid to LOBSEN HOTEL, PhonePe UPI
-8:08pm, 480, Paid to MANBHUM AGENCY, PhonePe UPI
-
-19/07/2026
-10:27am, 80, Paid to Mahim Kumar, PhonePe UPI
-10:29am, 10, Paid to Mahim Kumar, PhonePe UPI
-12:27pm, 900, Paid to SAINIK HOTEL FL ON SHOP BAR CUM RESTURENT, PhonePe UPI
-12:43pm, 100, Paid to Suman Dakhineswar, PhonePe UPI
-3:35pm, 70, Paid to LUV TEA & TIFFIN STALL, PhonePe UPI
-7:22pm, 1073, Paid to UNAN THE RESTAURANT, PhonePe UPI
-
-20/07/2026
-10:51am, 2900, Paid to PALASH MIDYA, PhonePe UPI
-
-21/07/2026
-9:38am, 163, Paid to Nazrul Store, PhonePe UPI
-
-22/07/2026
-10:41am, 462.7, Paid to Indian Railways, PhonePe UPI
-1:53pm, 300, Paid to Bullet security moonbeam, PhonePe UPI
-2:08pm, 76, Paid to PRADIP MONDAL, PhonePe UPI
-3:13pm, 1153.6, Paid to Indian Railways, PhonePe UPI
-3:18pm, 1154.5, Paid to Indian Railways, PhonePe UPI
-8:27pm, 70, Paid to LEO PAAN & CHAI BHANDAR, PhonePe UPI
-9:14pm, 72, Paid to SWASTIKA SWEETS, PhonePe UPI
-9:15pm, 12, Paid to SWASTIKA SWEETS, PhonePe UPI
-
-23/07/2026
-10:34am, 3555, Paid to Mou, PhonePe UPI
-1:04pm, 40, Paid to BAPI WATER Sunrise | Newtown, PhonePe UPI
-1:37pm, 40, Paid to Irfan Khan, PhonePe UPI
-3:45pm, +5001, Received from Cashify, PhonePe UPI
-3:50pm, 5001, Paid to Mou, PhonePe UPI
-4:00pm, 1, Paid to Mou, PhonePe UPI
-7:37pm, 590, Paid to SANDEEP KUMAR SAH, PhonePe UPI
-7:58pm, 110, Paid to ZAHID AHAMED, PhonePe UPI
-
-24/07/2026
-8:48pm, 20, Paid to Bhelpuri Paprichat Shop, PhonePe UPI
-8:54pm, 15, Paid to LEO PAAN & CHAI BHANDAR, PhonePe UPI
-8:57pm, 40, Paid to AFIYA ROLL, PhonePe UPI
-
-25/07/2026
-2:45pm, 400, Paid to SK SHABUDDIN, PhonePe UPI
-
-26/07/2026
-8:09am, 87.3, Paid to Indian Railways UTS, PhonePe UPI
-1:23pm, 175, Paid to MOHAN GHOSH, PhonePe UPI
-1:24pm, 100, Paid to MOHAN GHOSH, PhonePe UPI
-1:52pm, 70, Paid to SONALI HOTEL, PhonePe UPI
-1:54pm, 13, Paid to PKS CORNER, PhonePe UPI
-3:07pm, 72.75, Paid to Indian Railways UTS, PhonePe UPI
-6:51pm, 124, Paid to Manish Choudhary, PhonePe UPI
-8:30pm, 20, Paid to I B R MUNSHI, PhonePe UPI
-
-27/07/2026
-8:07pm, 28, Paid to LEO PAAN & CHAI BHANDAR, PhonePe UPI
-8:13pm, 10, Paid to LEO PAAN & CHAI BHANDAR, PhonePe UPI
-
-28/07/2026
-12:55pm, 86, Paid to MRS. RUHANA PERVIN, PhonePe UPI
-4:12pm, 32, Paid to Shri Ram Nasta Center 2, PhonePe UPI
-4:13pm, 70, Paid to ABDULLA ALTHAF RAHMAN, PhonePe UPI
-8:29pm, 15, Paid to LEO PAAN & CHAI BHANDAR, PhonePe UPI
-9:05pm, 27, Paid to MINTU STORE, PhonePe UPI
-9:08pm, 50, Paid to SWASTIKA SWEETS, PhonePe UPI
-9:15pm, 40, Paid to Munshi Tea, PhonePe UPI
-
-29/07/2026
-8:17pm, 547, Paid to Blinkit, PhonePe UPI
-
-30/07/2026
-10:56am, 565, Paid to Blinkit, PhonePe UPI
-2:02pm, 60, Paid to MOJNU MOLLICK, PhonePe UPI
-7:21pm, 15, Paid to LEO PAAN & CHAI BHANDAR, PhonePe UPI
-7:56pm, 12, Paid to ABU STORE, PhonePe UPI
-8:02pm, 59, Paid to FAENTERPRISE, PhonePe UPI
-8:10pm, 60, Paid to BENGAL DAIRY 109, PhonePe UPI
+9:00am, 1254, Paid to Spencer S Retail Limited, Kiwi UPI Credit Card
 
 01/08/2026
-4:59pm, 216, Paid to Shiv Baba sweet, PhonePe UPI
-5:06pm, 20, Paid to Barnwal kirana store, PhonePe UPI
+7:30am, +320, Autodebit Payment Received for ICICI Coral Credit card., ICICI Coral Credit card
+10:20am, +6344.68, "INFINITY PAYMENT RECEIVED for ICICI Amazon pay Credit card, THANK YOU", ICICI Amazon pay credit card
+8:15pm, +15074.29, "INFINITY PAYMENT RECEIVED for ICICI Coral Credit card, THANK YOU", ICICI Coral Credit card
 
 02/08/2026
-7:42am, 50000, Transfer to XXXXXXXXXX71, PhonePe UPI
-7:48am, 13600, Paid to Mr Nitish Ranjan Deb, PhonePe UPI
-7:51am, 5000, Transfer to XXXXXXX3253, PhonePe UPI
-10:24am, 112, Paid to SUBHASH MAHATO SO NARAYAN MAHATO, PhonePe UPI
-4:00pm, 88, Paid to A & R COMPANY -S11, PhonePe UPI
-4:29pm, 407, Paid to SWIGGY, PhonePe UPI
-7:34pm, 864, Paid to SPENCER S RETAIL LIMITED, PhonePe UPI
-
-03/08/2026
-9:44pm, 198, Paid to Nazrul Store, PhonePe UPI
-10:09pm, 2200, Paid to M/S RAFIK ENTERPRISE, PhonePe UPI
-
-04/08/2026
-5:59pm, 20, Paid to SL ENTERPRISE, PhonePe UPI
-8:13pm, 57, Paid to ROHAN STORES, PhonePe UPI
-8:18pm, 52, Paid to SWASTIKA SWEETS, PhonePe UPI
-8:26pm, 66, Paid to SUVASHIS PRAMANIK, PhonePe UPI
-8:41pm, 28, Paid to EEK CUP CHAI, PhonePe UPI
-
-05/08/2026
-3:39pm, 42, Paid to TOBOX VENTURES PRIVATE LIMITED, PhonePe UPI
-9:11pm, 50, Paid to Nurvi welfare foundation, PhonePe UPI
-9:54pm, 400, Paid to Thakur Fish, PhonePe UPI
-9:58pm, 70, Paid to Nazrul Store, PhonePe UPI
+9:00am, 105774.33, Paid to Yes Bank Credit Card, Kiwi UPI Credit Card
+9:10am, 107, AMAZON PAY IN RECHARGE BANGALORE IN, ICICI Amazon pay credit card
 
 06/08/2026
-12:46pm, 40, Paid to Irfan Khan, PhonePe UPI
-
-07/08/2026
-8:01pm, 280, Paid to NAZRUL STORES, PhonePe UPI
-8:08pm, 24, Paid to BENGAL DAIRY 109, PhonePe UPI
+9:00am, 4423.3, Paid to Vishal Mega Mart, Kiwi UPI Credit Card
 
 08/08/2026
-10:37am, 40, Paid to BAPI WATER Sunrise | Newtown, PhonePe UPI
-12:13pm, 200, Paid to MAFIJUL ISLAM, PhonePe UPI
-3:00pm, 1200, Paid to Coco Auto Care Centre Newtown, PhonePe UPI
-
-09/08/2026
-2:00pm, 162.7, Paid to Indian Railways, PhonePe UPI
-6:57pm, 144, Paid to NAZRUL STORES, PhonePe UPI
-7:00pm, 104, Paid to Subhash Kumar Yadav, PhonePe UPI
-7:16pm, 36, Paid to MUFAZEL MOLL, PhonePe UPI
-7:33pm, 70, Paid to JM SALON, PhonePe UPI
-7:49pm, 93, Paid to EEK CUP CHAI, PhonePe UPI
+9:00am, 1439.2, Paid to 25470 Apollo Pharmacy, Kiwi UPI Credit Card
 
 10/08/2026
-5:39pm, 25, Paid to SADDAM STORES, PhonePe UPI
-6:54pm, 70, Paid to PP CATERERS 3, PhonePe UPI
-
-11/08/2026
-1:23pm, 500, Paid to Varanasi cafe bakery and restaurant, PhonePe UPI
-1:24pm, 40, Paid to DEEPAK JAITLY, PhonePe UPI
-1:52pm, 500, Paid to Subhro Da Patuli, PhonePe UPI
-2:38pm, 940, Paid to Varanasi cafe bakery and restaurant, PhonePe UPI
-2:42pm, 20, Paid to M S APEX RESTAURANT, PhonePe UPI
-8:21pm, 30, Paid to Bharat Yadav, PhonePe UPI
-8:44pm, 1270, Paid to Luxa A, PhonePe UPI
-8:45pm, 560, Paid to Luxa B, PhonePe UPI
-8:58pm, 50, Paid to ANUP CHAURASIA, PhonePe UPI
-9:09pm, 30, Paid to SANJAY SONKAR, PhonePe UPI
-9:18pm, 20, Paid to RK Provision Store, PhonePe UPI
-
-12/08/2026
-1:05pm, 860, Paid to M S APEX RESTAURANT, PhonePe UPI
-5:10pm, 120, Paid to RakeshRajbhar, PhonePe UPI
-6:19pm, 120, Paid to VIJAY KUMAR YADAV, PhonePe UPI
-8:26pm, 350, Paid to Family handicraft, PhonePe UPI
-9:00pm, 350, Paid to Kishanchand Khemani, PhonePe UPI
-9:27pm, 160, Paid to RAM JI GUPTA, PhonePe UPI
-9:36pm, 240, Paid to SHREE BHOLA BHANDAR, PhonePe UPI
-9:45pm, 150, Paid to VISHAL SAINI, PhonePe UPI
+11:45am, 2940, AMAZON PAY IN UTILITY BANGALORE IN, ICICI Amazon pay credit card
 
 14/08/2026
-11:52am, 648, Transfer to XXXXXXX3253, PhonePe UPI
-12:44pm, 5000, Paid to Mou, PhonePe UPI
-8:05pm, 210, Paid to ZAHID AHAMED, PhonePe UPI
-8:09pm, 100, Paid to DHALI VEGITABLE SHOP, PhonePe UPI
-8:12pm, 86, Paid to NAZRUL STORES, PhonePe UPI
-8:17pm, 45, Paid to SWASTIKA SWEETS, PhonePe UPI
-8:18pm, 36, Paid to SUVASHIS PRAMANIK, PhonePe UPI
+9:00am, 666, Paid to Reliance Jio Infocomm, Kiwi UPI Credit Card
+8:25pm, 500, AMAZON PAY IN E COMMERC BANGALORE IN, ICICI Amazon pay credit card
 
 15/08/2026
-10:09pm, 40, Paid to Irfan Khan, PhonePe UPI
+9:00am, 499, Paid to Blinkit, Kiwi UPI Credit Card
+1:35pm, 4605, POLICYBAZAAR COM GURGAON IN, ICICI Amazon pay credit card
 
 16/08/2026
-10:46am, 450, Paid to Siti Cable Internet | Newtown, PhonePe UPI
+9:00am, 306, Paid to Blinkit, Kiwi UPI Credit Card
+10:14am, 351.75, Interest Amount Amortization <2/12> CAS*GOENKA KACHAVE LLP, ICICI Coral Credit card
+10:14am, 63.32, IGST-CI@18%, ICICI Coral Credit card
+10:15am, 2244.11, Principal Amount Amortization <2/12> CAS*GOENKA KACHAVE LLP, ICICI Coral Credit card
 
 17/08/2026
-11:01am, 784, Paid to PolicyBazaar, PhonePe UPI
-8:25pm, 329, Paid to NAZRUL STORES, PhonePe UPI
+9:00am, 36, Paid to Suvashis Pramanik, Kiwi UPI Credit Card
 
 18/08/2026
-2:44pm, 500, Paid to ASISH CHANDRA HALDAR, PhonePe UPI
-8:59pm, 180, Paid to Miss MOUMITA BANIK, PhonePe UPI
+9:00am, 62, Paid to Rohan Stores, Kiwi UPI Credit Card
 
 19/08/2026
-5:48pm, 40, Paid to BAPI WATER Sunrise | Newtown, PhonePe UPI
-7:45pm, 180, Paid to MR BHASKAR BISWAS, PhonePe UPI
+9:00am, 290.56, Paid to Coco Auto Care Centre, Kiwi UPI Credit Card
+9:00am, 220, Paid to Abu Store 2, Kiwi UPI Credit Card
+9:00am, 120, Paid to Crispy Bite, Kiwi UPI Credit Card
 
 20/08/2026
-4:41pm, 37, Paid to Tobox Ventures Private Limited, PhonePe UPI
-4:54pm, 26, Paid to Tobox Ventures Private Limited, PhonePe UPI
-7:48pm, 23, Paid to I B R MUNSHI, PhonePe UPI
-8:22pm, 120, Paid to ZAHID AHAMED, PhonePe UPI
-8:33pm, 48, Paid to SWASTIKA SWEETS, PhonePe UPI
-8:36pm, 42, Paid to SUVASHIS PRAMANIK, PhonePe UPI
+9:00am, 218.13, Paid to Apollo Pharmacy, Kiwi UPI Credit Card
+9:00am, 80, Paid to Amjed Tee Store, Kiwi UPI Credit Card
 
-21/08/2026
-7:10pm, 42, Paid to Tobox Ventures Private Limited, PhonePe UPI
-
-22/08/2026
-2:10pm, 40, Paid to Irfan Khan, PhonePe UPI
-6:08pm, 40, Paid to ABU STORE, PhonePe UPI
-7:47pm, 212, Paid to BENGAL DAIRY 109, PhonePe UPI
-
-24/08/2026
-11:35am, 1063.6, Paid to Indian Railways, PhonePe UPI
-1:05pm, 756, Transfer to XXXXXXX3253, PhonePe UPI
+23/08/2026
+9:00am, 1060, Paid to M S Mehak E Punjab Ho..., Kiwi UPI Credit Card
 
 25/08/2026
-1:37pm, 40, Paid to BAPI WATER Sunrise | Newtown, PhonePe UPI
+9:20am, 107, AMAZON PAY IN RECHARGE BANGALORE IN, ICICI Amazon pay credit card
 
 26/08/2026
-7:01pm, 155, Paid to LEO PAAN & CHAI BHANDAR, PhonePe UPI
+9:00am, 40, Paid to Gupta Snacks, Kiwi UPI Credit Card
+9:00am, 40, Paid to 25470 Apollo Pharmacy, Kiwi UPI Credit Card
 
 27/08/2026
-3:56pm, 24, Paid to Enamul Tea Stall, PhonePe UPI
+9:00am, 20, Paid to Rafikul, Kiwi UPI Credit Card
 
 29/08/2026
-5:43pm, 77.6, Paid to Indian Railways UTS, PhonePe UPI
+9:00am, 666, Paid to Reliance Jio Infocomm, Kiwi UPI Credit Card
+9:00am, 75, Paid to Jmt Ice Cream, Kiwi UPI Credit Card
 
-30/08/2026
-7:16pm, 600, Paid to Mou, PhonePe UPI
+31/08/2026
+9:00am, 13281.5, Paid to Yes Bank Credit Card, Kiwi UPI Credit Card
+9:00am, 8152, Paid to Icici Credit Card, Kiwi UPI Credit Card
+9:00am, 15, Paid to Suraj Kumar Singh, Kiwi UPI Credit Card
+10:05am, +8152, BBPS Payment received for ICICI Amazon pay Credit card, ICICI Amazon pay credit card
+10:10am, +107, "INFINITY PAYMENT RECEIVED for ICICI Amazon pay Credit card, THANK YOU", ICICI Amazon pay credit card
+6:42pm, +2659.18, "INFINITY PAYMENT RECEIVED for ICICI Coral Credit card, THANK YOU", ICICI Coral Credit card
+7:40pm, 589, AMAZON PAY IN GROCERY BANGALORE IN, ICICI Amazon pay credit card
 
 01/09/2026
-12:00am, +2855, Available Cash in Hand, Cash
-12:00am, +2663.6, Available Bank Balance for this date, PhonePe UPI
-10:10am, +94122, Received salary, Bank Transfer
-11:20am, 40000, Send to bittu due amount clear, PhonePe UPI, All due clear with bittu
-11:21am, 2659, Pay bill for ICICI Coral Credit card, Kiwi UPI Debit
-11:22am, 13281, Pay bill for Kiwi UI Yes Credit card, Kiwi UPI Debit
-11:23am, 8260, Pay bill for ICICI Amazon pay Credit card, Kiwi UPI Debit
-11:24am, 13600, Room rent, PhonePe UPI
-11:25am, 10961, Loan Emi ICIC bank, PhonePe UPI
-9:03pm, 56, apollo medecine mef spas, Kiwi UPI Credit Card
-9:17pm, 200, fish, Kiwi UPI Debit
+9:03pm, 56.5, 25470 Apollo Pharmacy, Kiwi UPI Credit Card
+9:17pm, 200, Thakur Fish Centre, Kiwi UPI Credit Card
 
 02/09/2026
-5:30pm, 52, office evening snacks, PhonePe UPI
-6:56pm, 20, chide baja Office vending machine, Kiwi UPI Debit
-8:11pm, 270, "chal, Ada, pencil battery", PhonePe UPI
+6:56pm, 20, Sl Enterprise, Kiwi UPI Credit Card
+8:10pm, 270, Nazrul Stores, Kiwi UPI Credit Card, FAILED
 
 03/09/2026
-10:26am, 176, Swiggy breakfast order, PhonePe UPI
-4:35pm, 15, tea office, Kiwi UPI Debit
-7:53pm, 80, "kaju, doi", PhonePe UPI
-7:57pm, 136, Chicken, Kiwi UPI Credit Card
-9:06pm, 474, Swiggy cake, Kiwi UPI Credit Card
-9:20pm, 40, water, PhonePe UPI
+4:35pm, 15, Noor Jamal Store, Kiwi UPI Credit Card
+7:52pm, 80, Nazrul Stores, Kiwi UPI Credit Card, FAILED
+7:57pm, 136, Hasibul Islam, Kiwi UPI Credit Card
+9:06pm, 474, Swiggy, Kiwi UPI Credit Card
 
 04/09/2026
-3:09pm, 20, peanut Office vending machine, PhonePe UPI
-7:25pm, 1500, "**mislenious snacks, esse", Kiwi UPI Credit Card
-7:46pm, 433, petrol scooty, Kiwi UPI Credit Card
-7:52pm, 40, soap, PhonePe UPI
-7:59pm, 66, ruti, Kiwi UPI Credit Card
-11:00pm, +500, received from keka for Sling bag purchase, PhonePe UPI
-11:01pm, 504, "Ordered Sling bag form amazon, Roshan B'day", ICICI Amazon pay credit card
+3:09pm, 20, Sl Enterprise, Kiwi UPI Credit Card
+7:25pm, 1500, Ak Kirana Store, Kiwi UPI Credit Card
+7:46pm, 433, Coco Auto Care Centre, Kiwi UPI Credit Card
+7:59pm, 66, Suvashis Pramanik, Kiwi UPI Credit Card
+8:55pm, 504, AMAZON PAY IN E COMMERC BANGALORE IN, ICICI Amazon pay credit card
 
 05/09/2026
-12:07pm, 2600, petrol car, Kiwi UPI Credit Card
-6:39pm, 50, "coke, chips", PhonePe UPI
-8:47pm, 1048, ***mislenious food, Kiwi UPI Credit Card
+12:07pm, 2600, Coco Auto Care Centre, Kiwi UPI Credit Card
+8:47pm, 1048, Spencers Retail Limited, Kiwi UPI Credit Card
 
 06/09/2026
-5:20pm, 120, sabji, PhonePe UPI
-9:00pm, 70, **mislenious snacks, Kiwi UPI Credit Card
-
-07/09/2026
-6:25pm, 40, water, PhonePe UPI
-8:10pm, 142, order food on zomato, Amazon pay wallet
+9:00pm, 70, Paanbhojon, Kiwi UPI Credit Card
 
 08/09/2026
-8:24pm, 347, sabji, Kiwi UPI Credit Card
-8:27pm, 12, lonka, PhonePe UPI
-9:20pm, 1064.5, train ticket for maa baba DHN to HWH, PhonePe UPI
-9:26pm, 462.7, train ticket for maa baba KOAA to DHN, PhonePe UPI
+8:24pm, 347, Nazrul Store, Kiwi UPI Credit Card
 
 09/09/2026
-10:10am, 2498.09, Claude Subscription charges, ICICI Coral Credit card, "Amount: 2399, DCC fees: 83.97, GST: 15.12 = Total: 2498.09"
-10:31am, 30, milk, PhonePe UPI
-3:23pm, 80, chocolate shake, Kiwi UPI Credit Card
-5:05pm, 40, Ofc Tea n snacks, PhonePe UPI
+3:23pm, 80, Sara Fresh Juice Baar, Kiwi UPI Credit Card
+11:27pm, 2399, ANTHROPIC* CLAUDE SUB ANTHROPIC.COM US, ICICI Coral Credit card
 
 10/09/2026
-7:55pm, 315, Chicken wrap, PhonePe UPI
-7:58pm, 40, tea, PhonePe UPI
-8:48pm, 30, **mislenious snacks, PhonePe UPI
-8:52pm, 115, raw chicken, PhonePe UPI
-8:53pm, 72, raw chicken, PhonePe UPI
-8:58pm, 42, milk, PhonePe UPI
-
-11/09/2026
-6:22pm, 40, water, PhonePe UPI
+8:02am, 99, Reward Redemption Handling fees, ICICI Coral Credit card
+1:08pm, 83.97, DCC Fee, ICICI Coral Credit card
+1:08pm, 15.12, IGST-CI@18%, ICICI Coral Credit card
 
 12/09/2026
-10:50am, 1200, Doctor fees, Cash
-11:03am, 824, medecine Apollo, Kiwi UPI Credit Card
+11:03am, 824.9, 13198 Apollo Pharmacy, Kiwi UPI Credit Card
 
 13/09/2026
-7:18pm, 26, food court tea snacks, PhonePe UPI
-8:03pm, 20, food court tea snacks, PhonePe UPI
-8:06pm, 50, food court tea snacks, PhonePe UPI
-8:16pm, 120, food court tea snacks, PhonePe UPI
-8:28pm, 49, medecine apollo, Kiwi UPI Credit Card
-8:38pm, 75, food court tea snacks, PhonePe UPI
+8:28pm, 49.17, 25470 Apollo Pharmacy, Kiwi UPI Credit Card
 
 14/09/2026
-10:06am, 450, siti internet bill, PhonePe UPI
-11:14am, 2098, livpure security plus 590, Kiwi UPI Credit Card
-1:34pm, 261, blinkit, Kiwi UPI Credit Card
-8:50pm, 2706, Shopping on CC2, ICICI Amazon pay Credit card
-8:53pm, 40, "moori, chocolate", Kiwi UPI Credit Card
-8:55pm, 70, **mislenious snacks, Kiwi UPI Credit Card
-8:56pm, 20, eleichi, Kiwi UPI Credit Card
-9:00pm, 88, paneer, PhonePe UPI
+11:14am, 2098, Livpure, Kiwi UPI Credit Card
+1:34pm, 261, Blinkit, Kiwi UPI Credit Card
+6:30pm, 2706, LIFE STYLE INTERNATION KOLKATTA IN, ICICI Amazon pay credit card
+8:53pm, 40, Shyam Store, Kiwi UPI Credit Card
+8:55pm, 70, Akhtar Pan Shope, Kiwi UPI Credit Card
+8:56pm, 20, Akhtar Pan Shope, Kiwi UPI Credit Card
 
 15/09/2026
-8:07pm, 312, sabji chal, Kiwi UPI Credit Card
-9:08pm, 20, sabji, Kiwi UPI Credit Card
-9:14pm, 52, sweets, PhonePe UPI
-9:33pm, 40, water, PhonePe UPI
+9:07pm, 312, Nazrul Store, Kiwi UPI Credit Card
+9:08pm, 20, Nazrul Store, Kiwi UPI Credit Card
 
 16/09/2026
-12:27am, 666, jio recharge, Kiwi UPI Credit Card
-8:10pm, 24, banana, PhonePe UPI
-8:13pm, 150, **mislenious snacks, PhonePe UPI
-8:18pm, 75, sweets dahi, PhonePe UPI
-9:19pm, 107, Recharge mobile baba, ICICI Amazon pay Credit card
+12:27am, 666, Reliance Jio Infocomm, Kiwi UPI Credit Card
 
 17/09/2026
-11:59am, 900, livpure iron filter, PhonePe UPI
-9:04pm, 45, egg, Kiwi UPI Credit Card
-
-18/09/2026
-11:20am, 407, BT receiver for car, Amazon pay wallet
+9:04pm, 45, Shyam Store, Kiwi UPI Credit Card
 
 19/09/2026
-10:51am, 116.4, train ticket, PhonePe UPI
-11:01am, 140, rapido, PhonePe UPI
-11:07am, 80, "bhujia, cake, water", PhonePe UPI
-3:15pm, 584, Order kid toy from amazon, ICICI Amazon pay Credit Card
-4:28pm, 54, chips & cake, PhonePe UPI
-4:29pm, 16, chips & cake, PhonePe UPI
-4:47pm, 360, sweets, Kiwi UPI Credit Card
-4:58pm, 60, rapido to swati apartment, PhonePe UPI
+4:47pm, 360, New Bombay Sweets, Kiwi UPI Credit Card
 
 20/09/2026
-12:05am, 951, Cake and pestry, Amazon pay wallet
-12:19am, 424, Blinkit essencials, Kiwi UPI Credit Card
-8:10am, 646, Order Sidebag from amazon for didi B'day, ICICI Amazon pay Credit card
-9:10am, 1082, baba medecine, Kiwi UPI Credit Card
-10:10am, +7000, Received from baba for pujo shopping, Cash
-12:30pm, +4000, Received from Chandan, PhonePe UPI
-12:33pm, 5000, scooty repair, PhonePe UPI
-
-21/09/2026
-5:18am, 80, rapido to dhn station, PhonePe UPI
-11:10am, 20, bus to moonbeam, Cash
-1:05pm, 500, scooty mobel change, Cash
+12:19am, 424, Blinkit, Kiwi UPI Credit Card
+9:01pm, 1082, Sastasundar, Kiwi UPI Credit Card
 
 22/09/2026
-8:10pm, 400, ***mislenious food, Cash
-8:43pm, 280, egg n fruits, Kiwi UPI Debit
-8:49pm, 155, **mislenious snacks, Kiwi UPI Credit Card
-9:10pm, 30, tea munsi, Kiwi UPI Credit Card
+8:43pm, 280, Mintu Store, Kiwi UPI Credit Card
+8:49pm, 155, Md Sahin, Kiwi UPI Credit Card
+9:10pm, 30, Munshi Tea, Kiwi UPI Credit Card
 
 23/09/2026
-4:57pm, 40, ofc tiffin cake n jhalmuri, Kiwi UPI Debit
-11:48pm, 4000, Send cash to Keka, Cash
-11:50pm, +4000, Received from keka upi, PhonePe UPI
-11:51pm, +2000, Received from keka for petrol, PhonePe UPI
-11:58pm, 4000, Send to Chandan, PhonePe UPI
+4:57pm, 40, Sl Enterprise, Kiwi UPI Credit Card
 
 24/09/2026
-2:59pm, 60, ofc cafeteria tiffin, PhonePe UPI
-3:10pm, 13, tea, PhonePe UPI
-3:34pm, 20, **mislenious snacks, PhonePe UPI
-8:08pm, 3394.78, petrol, Kiwi UPI Credit Card
+8:08pm, 3394.78, Coco Auto Care Centre, Kiwi UPI Credit Card
 
 25/09/2026
-7:10pm, 100, chingri fish, Kiwi UPI Credit Card
-7:15pm, 125, toothpaste, Kiwi UPI Debit
-7:17pm, 85, angoor, Kiwi UPI Debit
-7:20pm, 155, **mislenious snacks, Kiwi UPI Credit Card
-7:25pm, 130, thumbs up n cake, Kiwi UPI Debit
-9:43pm, 2050, ***mislenious food, Kiwi UPI Credit Card
+7:10pm, 100, Thakur Fish, Kiwi UPI Credit Card
+7:15pm, 125, Nazrul Stores, Kiwi UPI Credit Card
+7:17pm, 85, Soumen Chatterjee, Kiwi UPI Credit Card
+7:20pm, 155, Md Sahin, Kiwi UPI Credit Card
+7:25pm, 130, Bengal Dairy 109, Kiwi UPI Credit Card
+9:43pm, 2050, M S Mehak E Punjab Hotel, Kiwi UPI Credit Card
 
 26/09/2026
-9:19am, 280, lancha sitavog at shaktigarh, Kiwi UPI Credit Card
+9:19am, 280, Adi Lancha Nilay 3, Kiwi UPI Credit Card
 
 27/09/2026
-12:15pm, 8000, car service n repair Pay by Keka, Due, Pay by Keka
-5:27pm, 4100, pujo shopping matara stores, Kiwi UPI Credit Card
-6:13pm, 5000, pujo shopping matara stores, Kiwi UPI Credit Card
-7:13pm, 5107, pujo shopping trends, Kiwi UPI Credit Card
-8:20pm, 4300, pujo shopping rajesh Pay by Keka, Due, Pay by Keka
-8:42pm, 24, ruti, Kiwi UPI Credit Card
-8:49pm, 100, alta sindoor, Kiwi UPI Credit Card
+5:27pm, 4100, New Joy Maa Tara Store, Kiwi UPI Credit Card
+6:13pm, 5000, Joy Maa Tara Store, Kiwi UPI Credit Card
+7:13pm, 5107, Trends Rampurhat Tkt9, Kiwi UPI Credit Card
+8:40pm, 4300, Sadguru Textile, Kiwi UPI Credit Card, FAILED
+8:42pm, 24, Puja Sharma, Kiwi UPI Credit Card
+8:49pm, 100, Uma Varieties Gift Corner, Kiwi UPI Credit Card
 
 28/09/2026
-5:41am, 1003, Fastag recharge, PhonePe UPI
-1:13pm, 380, ***mislenious food, Kiwi UPI Credit Card
-6:47pm, +1600, received from keka for train tickit, PhonePe UPI, Received from Keka
-7:00pm, 1005.35, ticket book for me n keka KOAA to DHN, ICICI Amazon pay credit card
-7:05pm, 1087.06, ticket book for me n keka DHN to HWH, ICICI Amazon pay credit card
+1:13pm, 380, M S Mehak E Punjab Hotel, Kiwi UPI Credit Card
 
 29/09/2026
-6:55pm, 477, grocery blinkit, Kiwi UPI Credit Card
+6:55pm, 477, Blinkit, Kiwi UPI Credit Card
 
-01/10/2026
-12:00am, +3735, Available Cash In hand, Cash
-10:00am, +3366, Total available balance in bank, Bank Transfer
-10:01am, +94122, Salary Credited, Bank Transfer
-10:01am, 10961, Loan EMI, PhonePe UPI
-10:02am, 13600, Room Rent, PhonePe UPI
-10:03am, 3799, ICICI Coral credit bill, PhonePe UPI
-10:04am, 14433, Kiwi UPI Credit Bill, PhonePe UPI
-10:05am, 5152, ICICI Amazon pay Credit bill, PhonePe UPI
-10:07am, 13900, Sent to keka due amount, PhonePe UPI, 8000+4300+1600
-10:07am, 30000, Send to keka, PhonePe UPI
-8:00pm, +5000, Cash withdrawl, Cash
-8:00pm, 5000, Cash withdrawl, PhonePe UPI
-9:05pm, 1361.4, Medecine for hemorrhoids Apollo, Kiwi UPI Credit Card
-9:10pm, 60, "Alu, tomato", Kiwi UPI Credit Card
-
-02/10/2026
-6:39am, 20, Bus to hwh station, Cash
-6:53am, 75, Train ticket to bolpur, PhonePe UPI
-10:05am, 10, Chal vaja, Cash
-12:05pm, 2000, "Saptami di chele, pujo boksis, fees", Cash
-12:36pm, 40, Homeopathy medecine, Kiwi UPI Credit Card
-12:50pm, 6000, "Bolpur ghor dakar jonno fees, sagar", Cash
-12:54pm, 140, Baba medecine sugar, PhonePe UPI
-12:55pm, 190, Sensodyne paste, PhonePe UPI
-1:35pm, 944, Monmohoni purchase puchka dress and baromunda, ICICI Amazon pay credit card
-2:05pm, 56, Veg thali, Cash
-3:30pm, 40, Train ticket bhp to sdah, Cash
-3:31pm, 10, Toto to bhp station, Cash
-4:05pm, 20, Water, Cash
-4:33pm, 10, Kucho Biskit, Cash
-8:50pm, 28, Bus sdah to room 18+10, Cash
-
-03/10/2026
-12:05pm, 90, Bus plus auto to kolkata station 30+60, Cash
-1:45pm, 60, Misti doi, Cash
-2:10pm, 10, Expenses during train travel, Cash
-6:00pm, 100, Toto dhanbad station to didi bari, Cash
-
-04/10/2026
-10:55am, 160, Paan, Kiwi UPI Credit Card
-3:30pm, 120, Toto to dhanbad station, Cash
-3:43pm, +200, Cash received from keka, Cash, Received cash from keka
-3:44pm, 200, Send 200 online, PhonePe UPI, Send 200 online upi
-3:44pm, 250, Train ticket DHN to HWH, Cash
-5:18pm, 40, "Water, tea", Cash
-11:30pm, 40, Bus to moonbeam, Cash
-
-06/10/2026
-11:12am, +12000, Received from keka, PhonePe UPI
-11:30am, +2000, Received from keka, PhonePe UPI
-8:43pm, 329, "Sabji, muri, piaj, kumro, pepe", PhonePe UPI
-8:45pm, 300, Fish, PhonePe UPI
-9:30pm, +830, IRCTC refund tickit, ICICI Amazon pay credit card
-
-07/10/2026
-11:40am, 12, Bus to office, Cash
-3:23pm, 107, Recharge baba phone BSNL, Amazon pay wallet
-4:45pm, 22, From ofc to home 12+10, Cash
-8:40pm, 4000, Cash withdrawl, PhonePe UPI
-8:41pm, +4000, Cash withdrawl, Cash
-8:55pm, 1900, ESSE, PhonePe UPI
-9:13pm, 133, "Biskit, sabji", PhonePe UPI
-
-08/10/2026
-2:50pm, 2000, Electric bill prepaid recharge, Cash
-9:12pm, 900, Beer, PhonePe UPI
-9:19pm, 85, Gold flake small, PhonePe UPI
-9:24pm, 150, Chicken, PhonePe UPI
-
-09/10/2026
-3:04pm, 66, Office tiffin, PhonePe UPI
-3:19pm, 27, Medicine office, PhonePe UPI
-7:25pm, 60, "Kumro, chips", PhonePe UPI
-
-10/10/2026
-9:40am, 236, ATM charges, PhonePe UPI
-12:30pm, 200, Car repair Jumpstart, PhonePe UPI
-1:05pm, 1200, Petrol for car, PhonePe UPI
-
-11/10/2026
-11:00am, 500, Pujo boksis security, Cash
-11:12am, 130, Fish, PhonePe UPI
-11:15am, 166, "Sabji, paner", PhonePe UPI
-12:10pm, 150, Car dent repair, PhonePe UPI
-4:25pm, 300, Pujo boksis cleaning stuff, Cash
+30/09/2026
+11:34am, 14433.48, Yes Bank Credit Card, Kiwi UPI Credit Card
+11:46am, 3799, Icici Credit Card

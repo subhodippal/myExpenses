@@ -1035,8 +1035,11 @@
   }
 
   /** Entries the list page is showing before filters: one month, or every month in long-list view. */
-  const monthEntries = () =>
-    entries.filter((e) => e.list_id === currentListId && (viewMode === 'all' || e.spent_on.startsWith(shownMonth())));
+  // The period on screen: the shown month (month / calendar view), its year (year view), or everything (long list).
+  const periodEntries = () => {
+    const period = viewMode === 'all' ? '' : viewMode === 'year' ? shownMonth().slice(0, 4) : shownMonth();
+    return entries.filter((e) => e.list_id === currentListId && e.spent_on.startsWith(period));
+  };
 
   function openFilterSheet() {
     draftFilters = copyFilters(filters);
@@ -1079,8 +1082,10 @@
     const byKey = new Map();
     for (const m of [...getOptions('pay'), ...used]) if (!byKey.has(m.toLowerCase())) byKey.set(m.toLowerCase(), m);
     const methods = [...byKey.values()];
+    // Counts: entries in the period on screen (month / year / everything, as the view shows).
+    const inPeriod = periodEntries().filter((e) => e.kind !== 'note');
     const viaCount = new Map();
-    for (const v of used) viaCount.set(v.toLowerCase(), (viaCount.get(v.toLowerCase()) || 0) + 1);
+    for (const e of inPeriod) if (e.pay_via) viaCount.set(e.pay_via.toLowerCase(), (viaCount.get(e.pay_via.toLowerCase()) || 0) + 1);
     // One method per line, grouped: ☐ name ……… entries
     $('f-via').innerHTML = groupPayMethods(methods)
       .map(
@@ -1101,14 +1106,15 @@
       )
       .join('');
 
-    // Paid by: the names on this list's entries (plus your saved names), most used first.
-    const byCount = new Map(); // lower-case name → [name, count]
+    // Paid by: the names on this list's entries (plus your saved names), most used in the period first.
+    const byCount = new Map(); // lower-case name → [name, count in period]
+    const inPeriodSet = new Set(inPeriod);
     for (const e of entries) {
       if (e.list_id !== currentListId || e.kind === 'note') continue;
       const n = entryPaidBy(e);
       if (!n || n === '—') continue;
       const k = n.toLowerCase();
-      byCount.set(k, [byCount.get(k)?.[0] || n, (byCount.get(k)?.[1] || 0) + 1]);
+      byCount.set(k, [byCount.get(k)?.[0] || n, (byCount.get(k)?.[1] || 0) + (inPeriodSet.has(e) ? 1 : 0)]);
     }
     for (const n of getOptions('people')) if (!byCount.has(n.toLowerCase())) byCount.set(n.toLowerCase(), [n, 0]);
     const people = [...byCount.values()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], undefined, { sensitivity: 'base' }));
@@ -1123,19 +1129,23 @@
 
     const usedCats = new Set(entries.filter((e) => e.list_id === currentListId).map((e) => e.category));
     const cats = [...CATEGORIES, ...RETIRED_CATEGORIES.filter((c) => usedCats.has(c.id))];
+    // Entries per category in the month being shown (whole list in "All" view).
+    const catCount = new Map();
+    for (const e of inPeriod) catCount.set(e.category, (catCount.get(e.category) || 0) + 1);
     // Same category chips as the entry form (here you can pick several).
     $('f-cats').innerHTML = cats
       .map((c) => {
         const on = draftFilters.cats.has(c.id);
-        return `<button type="button" data-f-cat="${c.id}" aria-label="${c.label}" aria-pressed="${on}" class="chip ${on ? 'chip-active' : ''}">
-          <span class="chip-icon" aria-hidden="true">${c.icon}</span>${chipLabel(c.label)}</button>`;
+        const n = catCount.get(c.id) || 0;
+        return `<button type="button" data-f-cat="${c.id}" aria-label="${c.label}${n ? `, ${n} entries` : ''}" aria-pressed="${on}" class="chip ${on ? 'chip-active' : ''}">
+          ${n ? `<span class="chip-count" aria-hidden="true">${n}</span>` : ''}<span class="chip-icon" aria-hidden="true">${c.icon}</span>${chipLabel(c.label)}</button>`;
       })
       .join('');
     updateFilterCount();
   }
 
   function updateFilterCount() {
-    const matching = monthEntries().filter((e) => matchesFilters(e, draftFilters));
+    const matching = periodEntries().filter((e) => matchesFilters(e, draftFilters));
     const n = matching.length;
     $('f-apply').textContent = `Show ${n} ${n === 1 ? 'entry' : 'entries'}`;
 

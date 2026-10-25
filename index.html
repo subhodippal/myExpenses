@@ -322,7 +322,8 @@
     </dialog>
 
     <!-- Search & filter the entries of the month being viewed. -->
-    <dialog id="filter-sheet" class="dialog sheet" aria-labelledby="f-title">
+    <!-- autofocus on the dialog itself so showModal() doesn't focus (and pop the keyboard for) the search box. -->
+    <dialog id="filter-sheet" class="dialog sheet" aria-labelledby="f-title" autofocus>
       <div class="sheet-handle" aria-hidden="true"></div>
       <h3 id="f-title">🔍 Search &amp; filter</h3>
       <form id="f-form" class="filter-form" novalidate>

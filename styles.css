@@ -330,6 +330,7 @@ button.avatar-wrap:focus-visible { outline: 2px solid var(--primary); outline-of
 .month-btn.is-other-month { background: var(--primary-soft); color: var(--primary); border-color: transparent; }
 
 /* Search & filter */
+#filter-sheet:focus { outline: none; }
 .filter-btn { position: relative; }
 .filter-btn.is-active { background: var(--primary-soft); box-shadow: inset 0 0 0 2px var(--primary); }
 .filter-count {
@@ -522,6 +523,9 @@ button.avatar-wrap:focus-visible { outline: 2px solid var(--primary); outline-of
 }
 .chip .chip-icon { font-size: 1.25rem; }
 .chip-sub { font-size: 0.6rem; opacity: 0.75; margin-top: -2px; }
+/* Filter sheet: entries this month in that category, in the chip's top-right corner */
+#f-cats .chip { position: relative; }
+.chip-count { position: absolute; top: 3px; right: 5px; font-size: 0.58rem; font-weight: 600; opacity: 0.65; }
 .chip-active { border-color: var(--primary); background: var(--primary-soft); color: var(--primary); }
 .input {
   border: 1px solid var(--border); background: var(--bg); border-radius: 10px;
