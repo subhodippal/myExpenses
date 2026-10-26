@@ -1062,7 +1062,7 @@
   /** Entries the list page is showing before filters: one month, or every month in long-list view. */
   // The period on screen: the shown month (month / calendar view), its year (year view), or everything (long list).
   const periodEntries = () => {
-    const period = viewMode === 'all' ? '' : viewMode === 'year' ? shownMonth().slice(0, 4) : shownMonth();
+    const period = viewMode === 'all' ? '' : viewMode === 'year' || chartByYear() ? shownMonth().slice(0, 4) : shownMonth();
     return entries.filter((e) => e.list_id === currentListId && e.spent_on.startsWith(period));
   };
 
@@ -1943,6 +1943,8 @@
     { id: 'all', icon: '📜', label: 'Long list', hint: 'All months in one list, newest at the bottom like a chat. Scroll up for older months.' },
     { id: 'calendar', icon: '🗓️', label: 'Calendar', hint: 'Each day of the month with its total. Tap a day to see its entries.' },
     { id: 'year', icon: '📆', label: 'Year view', hint: 'All 12 months of the year with each month’s total. Tap a month to see its entries.' },
+    { id: 'chart', icon: '🍩', label: 'Charts', hint: 'The month or year as a donut, pie, bar or column chart: by category, payment method, or over time.' },
+    { id: 'budget', icon: '🎯', label: 'Budget plan', hint: 'Split the month’s income into needs, personal, luxury and savings (e.g. 50 · 30 · 20) and see how you’re doing.' },
   ];
   let viewMode = storage((s) => s.getItem(VIEW_KEY)) || 'month';
   if (!VIEW_MODES.some((m) => m.id === viewMode)) viewMode = 'month';
@@ -2262,7 +2264,7 @@
     const yearCount = [...monthCounts].reduce((t, [ym, n]) => t + (ym.startsWith(year) ? n : 0), 0);
     $('month-label').textContent = longList
       ? `All months (${allEntries.length})`
-      : viewMode === 'year'
+      : viewMode === 'year' || chartByYear()
         ? `${year} (${yearCount})`
         : `${shortMonth(month)} (${monthCounts.get(month) || 0})`;
     $('month-btn').classList.toggle('is-other-month', !longList && month !== currentMonth());
@@ -2293,6 +2295,23 @@
     } else if (viewMode === 'year') {
       const inYear = allEntries.filter((e) => e.spent_on.startsWith(year) && matchesFilters(e, filters));
       calendarHtml = yearGridHtml(year, inYear, month);
+    }
+    // Charts view: the chart takes the place of the list (filters still apply).
+    if (viewMode === 'chart') {
+      selectedEntryIds.clear();
+      lastRenderKey = '';
+      const chartRows = chartByYear() ? allEntries.filter((e) => e.spent_on.startsWith(year) && matchesFilters(e, filters)) : filtered;
+      $('entries').innerHTML = chartCardHtml(month, chartRows);
+      renderSelection();
+      return;
+    }
+    // Budget plan view: the whole month (income included), so filters don't apply.
+    if (viewMode === 'budget') {
+      selectedEntryIds.clear();
+      lastRenderKey = '';
+      $('entries').innerHTML = budgetCardHtml(month, inMonth, budgetFor(list.id));
+      renderSelection();
+      return;
     }
     const listEntries = sortEntries(shown);
     // Notes of the same period (and day, in calendar view). Money filters hide them; a search still finds them.
@@ -2410,6 +2429,661 @@
         ${cell('Received', `+ ${money.format(inn)}`, 'amount-in', inCash, inn - inCash)}
         ${cell('Available', `${left < 0 ? '− ' : ''}${money.format(Math.abs(left))}`, left < 0 ? 'amount-out' : 'amount-in', inCash - outCash, inn - inCash - (out - outCash))}
       </div>`;
+  }
+
+  // ---------- charts view ----------
+
+  const CHART_KEY = 'myExpenses.chart';
+  const CHART_VIEWS = [
+    { id: 'category', label: '🏷️ Category' },
+    { id: 'method', label: '💳 Payment method' },
+    { id: 'daily', label: '📅 Over time' },
+  ];
+  const CHART_SHAPES = [
+    { id: 'donut', label: 'Donut' },
+    { id: 'pie', label: 'Pie' },
+    { id: 'bars', label: 'Bar' },
+    { id: 'column', label: 'Column' },
+  ];
+  // Shapes that make sense for each view; the first is used when the chosen shape doesn't fit.
+  const VIEW_SHAPES = {
+    category: ['donut', 'pie', 'bars', 'column'],
+    method: ['donut', 'pie', 'bars', 'column'],
+    daily: ['column', 'bars'],
+  };
+  const CHART_PERIODS = [
+    { id: 'month', label: 'Month' },
+    { id: 'year', label: 'Year' },
+  ];
+  const CHART_SLOTS = 7; // categorical colours --s1…--s7; the rest fold into "Other"
+  const chartState = { view: 'category', shape: 'donut', period: 'month', ...storage((s) => JSON.parse(s.getItem(CHART_KEY) || '{}')) };
+  if (!VIEW_SHAPES[chartState.view]) chartState.view = 'category'; // e.g. a saved view that no longer exists
+  const chartShape = () => {
+    const ok = VIEW_SHAPES[chartState.view] || VIEW_SHAPES.category;
+    return ok.includes(chartState.shape) ? chartState.shape : ok[0];
+  };
+  // Charts can cover the shown month or its whole year; ◀ ▶ and the month button follow.
+  const chartByYear = () => viewMode === 'chart' && chartState.period === 'year';
+  const periodWord = () => (chartState.period === 'year' ? 'this year' : 'this month');
+
+  function setChart(patch) {
+    Object.assign(chartState, patch);
+    storage((s) => s.setItem(CHART_KEY, JSON.stringify(chartState)));
+    renderListDetail();
+  }
+
+  const pctLabel = (v, total) => {
+    const p = (v / total) * 100;
+    return p > 0 && p < 1 ? '<1%' : `${Math.round(p)}%`;
+  };
+
+  /** Pie / donut of { label, value, color } slices; a donut shows `center` in its hole. Marks carry a tap / hover tip. */
+  function donutHtml(slices, { pie = false, size = 168, center = '' } = {}) {
+    const total = slices.reduce((t, s) => t + s.value, 0);
+    const c = size / 2;
+    const r = c - 1;
+    const inner = pie ? 0 : r * 0.62;
+    const pt = (a, rad) => `${(c + rad * Math.sin(a)).toFixed(2)} ${(c - rad * Math.cos(a)).toFixed(2)}`;
+    let a0 = 0;
+    const marks = slices.map((s, i) => {
+      const tip = escapeHtml(`${s.label}: ${money.format(s.value)} · ${pctLabel(s.value, total)}`);
+      const attrs = `fill="${s.color}" class="chart-mark" data-tip="${tip}" data-slice="${i}"`;
+      if (s.value >= total) {
+        // One slice is the whole circle (an arc can't start and end at the same point).
+        return inner
+          ? `<path ${attrs} fill-rule="evenodd" d="M${c} ${c - r}a${r} ${r} 0 1 1 0 ${2 * r}a${r} ${r} 0 1 1 0 ${-2 * r}ZM${c} ${c - inner}a${inner} ${inner} 0 1 0 0 ${2 * inner}a${inner} ${inner} 0 1 0 0 ${-2 * inner}Z"><title>${tip}</title></path>`
+          : `<circle ${attrs} cx="${c}" cy="${c}" r="${r}"><title>${tip}</title></circle>`;
+      }
+      const a1 = a0 + (s.value / total) * 2 * Math.PI;
+      const large = a1 - a0 > Math.PI ? 1 : 0;
+      const d = inner
+        ? `M${pt(a0, r)}A${r} ${r} 0 ${large} 1 ${pt(a1, r)}L${pt(a1, inner)}A${inner} ${inner} 0 ${large} 0 ${pt(a0, inner)}Z`
+        : `M${c} ${c}L${pt(a0, r)}A${r} ${r} 0 ${large} 1 ${pt(a1, r)}Z`;
+      a0 = a1;
+      return `<path ${attrs} d="${d}"><title>${tip}</title></path>`;
+    });
+    return `
+      <div class="chart-donut" style="width:${size}px;height:${size}px">
+        <svg viewBox="0 0 ${size} ${size}" width="${size}" height="${size}" aria-hidden="true">${marks.join('')}</svg>
+        ${center && inner ? `<div class="chart-center">${center}</div>` : ''}
+      </div>`;
+  }
+
+  /**
+   * Category / payment method: share of spending (or of money received, with the "+ Received" filter) per group.
+   * `groupOf(e)` gives { key, label, icon, short } — `short` labels the axis of a column chart.
+   */
+  function groupChartHtml(rows, groupOf) {
+    const dir = filters.type === 'received' ? 'credit' : 'debit';
+    const byKey = new Map();
+    for (const e of rows) {
+      if (e.direction !== dir) continue;
+      const g = groupOf(e);
+      const t = byKey.get(g.key) || { ...g, value: 0, n: 0 };
+      t.value += e.amount;
+      t.n++;
+      byKey.set(g.key, t);
+    }
+    const sorted = [...byKey.values()].sort((a, b) => b.value - a.value);
+    if (!sorted.length) return `<p class="empty muted">No ${dir === 'credit' ? 'money received' : 'spending'} to chart ${periodWord()}.</p>`;
+    // Biggest first in fixed colour order; past the palette, the rest fold into one grey "Other".
+    const many = sorted.length > CHART_SLOTS + 1;
+    // (With exactly one group past the palette it keeps its own row, in the "Other" grey.)
+    const slices = (many ? sorted.slice(0, CHART_SLOTS) : sorted).map((t, i) => ({ ...t, color: i < CHART_SLOTS ? `var(--s${i + 1})` : 'var(--s-other)' }));
+    if (many) {
+      const rest = sorted.slice(CHART_SLOTS);
+      slices.push({ label: 'Other', icon: '➕', short: 'Other', value: rest.reduce((t, x) => t + x.value, 0), n: rest.reduce((t, x) => t + x.n, 0), color: 'var(--s-other)' });
+    }
+    const total = slices.reduce((t, s) => t + s.value, 0);
+    const sign = dir === 'credit' ? '+' : '−';
+    const max = slices[0].value;
+    const shape = chartShape();
+    const bars = shape === 'bars';
+    // Each row carries its full numbers, so tapping a slice / column just highlights its row (data-slice links them).
+    const legend = slices
+      .map((s, i) => {
+        const tip = escapeHtml(`${s.label}: ${money.format(s.value)} · ${pctLabel(s.value, total)} · ${s.n} ${s.n === 1 ? 'entry' : 'entries'}`);
+        return `
+        <li class="cl-row" data-tip="${tip}" data-slice="${i}">
+          <span class="cl-swatch" style="background:${s.color}" aria-hidden="true"></span>
+          <span class="cl-name"><span aria-hidden="true">${s.icon}</span> ${escapeHtml(s.label)} <span class="cl-n">· ${s.n} ${s.n === 1 ? 'entry' : 'entries'}</span></span>
+          <span class="cl-value">${sign} ${money.format(s.value)}</span>
+          <span class="cl-pct">${pctLabel(s.value, total)}</span>
+          ${bars ? `<span class="cl-bar"><span style="width:${((s.value / max) * 100).toFixed(1)}%;background:${s.color}"></span></span>` : ''}
+        </li>`;
+      })
+      .join('');
+    const center = `<span class="cc-label">${dir === 'credit' ? 'Received' : 'Spent'}</span><strong>${sign} ${moneyWhole.format(total)}</strong>`;
+    if (shape === 'column') {
+      const points = slices.map((s, i) => ({
+        slice: i,
+        axis: s.short,
+        value: s.value,
+        color: s.color,
+        tip: `${s.label}: ${sign} ${money.format(s.value)} · ${pctLabel(s.value, total)}`,
+      }));
+      return `
+        ${columnChartHtml(points, { isIn: dir === 'credit', label: `${dir === 'credit' ? 'Received' : 'Spent'} by group` })}
+        <ul class="chart-legend">${legend}</ul>
+        <p class="chart-note muted small">Total ${sign} ${money.format(total)}</p>`;
+    }
+    return `
+      <div class="chart-body">
+        ${bars ? '' : donutHtml(slices, { pie: shape === 'pie', center })}
+        <ul class="chart-legend${bars ? ' is-bars' : ''}">${legend}</ul>
+      </div>
+      ${bars ? `<p class="chart-note muted small">Total ${sign} ${money.format(total)}</p>` : ''}`;
+  }
+
+  const categoryGroup = (e) => {
+    const cat = categoryOf(e.category);
+    return { key: e.category, label: cat.label, icon: cat.icon, short: cat.icon };
+  };
+  const methodGroup = (e) => {
+    const via = (e.pay_via || '').trim() || 'Not set';
+    return { key: via.toLowerCase(), label: via, icon: isCash(e) ? '💵' : '💳', short: via.length > 7 ? `${via.slice(0, 6)}…` : via };
+  };
+
+  /**
+   * Column chart of { axis, value, tip, color? } points on one scale, with an axis label under each point,
+   * an optional dashed average line, and a full-height tap / hover area per point.
+   */
+  function columnChartHtml(points, { isIn = false, avg = null, label = '' } = {}) {
+    const n = points.length;
+    const max = Math.max(...points.map((p) => p.value)) || 1;
+    const W = 320;
+    const H = 150;
+    const padTop = 16;
+    const padBottom = 18;
+    const plotH = H - padTop - padBottom;
+    const slot = W / n;
+    const bw = Math.max(2, Math.min(slot - 3, 40));
+    const base = padTop + plotH;
+    const yOf = (v) => base - (v / max) * plotH;
+    const cx = (i) => (i + 0.5) * slot;
+    const fill = (p) => (p.color ? ` style="fill:${p.color}"` : '');
+    const marks = points
+      .map((p, i) => {
+        const tip = escapeHtml(p.tip);
+        let mark = '';
+        if (p.value) {
+          const x = cx(i) - bw / 2;
+          const h = (p.value / max) * plotH;
+          const rr = Math.min(4, bw / 2, h);
+          // Bar with rounded top corners, square on the baseline.
+          mark = `<path class="cd-bar"${fill(p)} d="M${x.toFixed(2)} ${base}V${(base - h + rr).toFixed(2)}Q${x.toFixed(2)} ${(base - h).toFixed(2)} ${(x + rr).toFixed(2)} ${(base - h).toFixed(2)}H${(x + bw - rr).toFixed(2)}Q${(x + bw).toFixed(2)} ${(base - h).toFixed(2)} ${(x + bw).toFixed(2)} ${(base - h + rr).toFixed(2)}V${base}Z"/>`;
+        }
+        return `<g class="cd-day" data-tip="${tip}"${p.slice == null ? '' : ` data-slice="${p.slice}"`}><title>${tip}</title><rect x="${(i * slot).toFixed(2)}" y="0" width="${slot.toFixed(2)}" height="${H}" fill="transparent"/>${mark}</g>`;
+      })
+      .join('');
+    // A label under every point (smaller when there are many, e.g. the days of a month).
+    const ticks = points
+      .map((p, i) => `<text class="cd-axis${n > 16 ? ' cd-day-num' : ''}" x="${cx(i).toFixed(2)}" y="${H - 5}" text-anchor="middle">${escapeHtml(p.axis)}</text>`)
+      .join('');
+    const avgLine = avg == null ? '' : `<line class="cd-avg" x1="0" x2="${W}" y1="${yOf(avg).toFixed(2)}" y2="${yOf(avg).toFixed(2)}"/>`;
+    return `
+      <svg class="chart-daily ${isIn ? 'is-in' : ''}" viewBox="0 0 ${W} ${H}" role="img" aria-label="${escapeHtml(label)}">
+        <line class="cd-grid" x1="0" x2="${W}" y1="${padTop}" y2="${padTop}"/>
+        <text class="cd-axis" x="0" y="${padTop - 5}">${moneyWhole.format(max)}</text>
+        <line class="cd-base" x1="0" x2="${W}" y1="${base}" y2="${base}"/>
+        ${marks}
+        ${avgLine}
+        ${ticks}
+      </svg>`;
+  }
+
+  /**
+   * Over time: spending (or money received, with the "+ Received" filter) on each day of the month,
+   * or in each month of the year.
+   */
+  function timeChartHtml(month, rows) {
+    const dir = filters.type === 'received' ? 'credit' : 'debit';
+    const byYear = chartState.period === 'year';
+    const [y, m] = month.split('-').map(Number);
+    const n = byYear ? 12 : new Date(y, m, 0).getDate();
+    const per = Array(n).fill(0);
+    for (const e of rows) if (e.direction === dir) per[Number(byYear ? e.spent_on.slice(5, 7) : e.spent_on.slice(8, 10)) - 1] += e.amount;
+    const max = Math.max(...per);
+    if (!max) return `<p class="empty muted">No ${dir === 'credit' ? 'money received' : 'spending'} to chart ${periodWord()}.</p>`;
+    const total = per.reduce((t, v) => t + v, 0);
+    // Average over the days (months) so far this month (year); the whole period for past ones.
+    const today = todayISO();
+    const soFar = byYear
+      ? String(y) === today.slice(0, 4) ? Number(today.slice(5, 7)) : 12
+      : month === today.slice(0, 7) ? Number(today.slice(8, 10)) : n;
+    const avg = total / soFar;
+    const top = per.indexOf(max);
+    const sign = dir === 'credit' ? '+' : '−';
+    const name = (i) => (byYear ? longMonth(`${y}-${pad2(i + 1)}`) : formatDay(`${month}-${pad2(i + 1)}`));
+    const axis = (i) => (byYear ? new Date(y, i, 1).toLocaleDateString(LOCALE, { month: 'short' }) : String(i + 1));
+    const unit = byYear ? 'month' : 'day';
+    let visual;
+    if (chartShape() === 'bars') {
+      // One horizontal bar per day / month that has an amount.
+      visual = `<ul class="chart-legend is-bars${dir === 'credit' ? ' is-in' : ''}">${per
+        .map((v, i) => {
+          if (!v) return '';
+          const tip = escapeHtml(`${name(i)}: ${sign} ${money.format(v)}`);
+          return `
+          <li class="cl-row" data-tip="${tip}">
+            <span class="cl-swatch cd-hbar" aria-hidden="true"></span>
+            <span class="cl-name">${escapeHtml(name(i))}</span>
+            <span class="cl-value">${sign} ${money.format(v)}</span>
+            <span class="cl-pct">${pctLabel(v, total)}</span>
+            <span class="cl-bar"><span class="cd-hbar" style="width:${((v / max) * 100).toFixed(1)}%"></span></span>
+          </li>`;
+        })
+        .join('')}</ul>`;
+    } else {
+      const points = per.map((v, i) => ({ axis: axis(i), value: v, tip: `${name(i)}: ${v ? `${sign} ${money.format(v)}` : 'nothing'}` }));
+      visual = columnChartHtml(points, {
+        isIn: dir === 'credit',
+        avg,
+        label: `${dir === 'credit' ? 'Received' : 'Spent'} per ${unit}, highest ${money.format(max)} in ${name(top)}`,
+      });
+    }
+    return `
+      ${visual}
+      <div class="cd-stats">
+        <span>Total <b class="${dir === 'credit' ? 'amount-in' : 'amount-out'}">${sign} ${money.format(total)}</b></span>
+        <span><span class="cd-avg-key" aria-hidden="true"></span>Avg <b>${money.format(avg)}</b>/${unit}</span>
+        <span>Top <b>${escapeHtml(name(top))}</b></span>
+      </div>`;
+  }
+
+  /** Charts view: what to chart, the shape, the chart, and (over time) a line that shows the tapped mark. */
+  function chartCardHtml(month, rows) {
+    const pills = (items, attr, on) =>
+      items.map((x) => `<button type="button" class="pill ${x.id === on ? 'is-on' : ''}" ${attr}="${x.id}" aria-pressed="${x.id === on}">${x.label}</button>`).join('');
+    const body =
+      chartState.view === 'daily' ? timeChartHtml(month, rows) : groupChartHtml(rows, chartState.view === 'method' ? methodGroup : categoryGroup);
+    const shapes = CHART_SHAPES.filter((x) => VIEW_SHAPES[chartState.view].includes(x.id));
+    return `
+      <div class="card chart-card">
+        <div class="chart-tabs" role="group" aria-label="What to chart">${pills(CHART_VIEWS, 'data-chart-view', chartState.view)}</div>
+        <div class="chart-opts">
+          <div class="chart-shapes" role="group" aria-label="Period">${pills(CHART_PERIODS, 'data-chart-period', chartState.period)}</div>
+          <div class="chart-shapes" role="group" aria-label="Chart type">${pills(shapes, 'data-chart-shape', chartShape())}</div>
+        </div>
+        ${body}
+        ${chartState.view === 'daily' ? '<p id="chart-tip" class="chart-tip muted small" aria-live="polite">Tap the chart to see an amount.</p>' : ''}
+      </div>`;
+  }
+
+  // ---------- budget plan view ----------
+
+  // A budget rule splits the month's income into named buckets (e.g. Needs 50 · Wants 30 · Savings 20), and each
+  // spending category counts towards one bucket. A bucket is a limit (spend up to), a goal (put away at least),
+  // or keeps what's left: income minus every other bucket, usually Savings.
+  // Rules are kept on this device and offered in every list; each list picks its rule and may set a fixed income.
+  // The default 50 · 30 · 20 rule always exists and its split is fixed; only its category map can change.
+  // Rules people add can be renamed, reshaped and deleted.
+  const BUDGET_RULES_KEY = 'myExpenses.budgetRules';
+  const BUDGET_KEY = 'myExpenses.budget'; // { [listId]: { ruleId, income } }
+  const BUCKET_KINDS = [
+    { id: 'limit', label: 'Spend up to' },
+    { id: 'goal', label: 'Save at least' },
+    { id: 'rest', label: 'What’s left' },
+  ];
+  const NEEDS_CATS = ['bills', 'rent', 'food', 'groceries', 'health', 'fuel', 'transport'];
+  const SAVE_CATS = ['investment', 'savings'];
+  const catMap = (groups) => Object.fromEntries(Object.entries(groups).flatMap(([b, cats]) => cats.map((c) => [c, b])));
+  const DEFAULT_RULE = {
+    id: '50-30-20',
+    name: '50 · 30 · 20',
+    buckets: [
+      { id: 'needs', label: 'Needs', pct: 50, kind: 'limit' },
+      { id: 'wants', label: 'Wants', pct: 30, kind: 'limit' },
+      { id: 'savings', label: 'Savings', pct: 20, kind: 'rest' },
+    ],
+    map: catMap({ needs: NEEDS_CATS, wants: ['spend', 'personal', 'other', 'shopping', 'liquor', 'fun'], savings: SAVE_CATS }),
+  };
+  const RETIRED_RULE_IDS = ['30-30-20-20']; // built-in in an earlier version
+  const isDefaultRule = (r) => r.id === DEFAULT_RULE.id;
+  const SPEND_CATEGORIES = CATEGORIES.filter((c) => !RECEIVE_CATEGORIES.includes(c.id));
+  const bucketColor = (i) => (i < CHART_SLOTS ? `var(--s${i + 1})` : 'var(--s-other)');
+  const newBudgetId = () => `b${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`;
+
+  /** The default rule first (its split from the code, its saved category map), then the rules people added. */
+  function budgetRules() {
+    const saved = storage((s) => JSON.parse(s.getItem(BUDGET_RULES_KEY) || 'null'));
+    const rules = Array.isArray(saved) ? saved : [];
+    const def = structuredClone(DEFAULT_RULE);
+    Object.assign(def.map, rules.find(isDefaultRule)?.map);
+    return [def, ...rules.filter((r) => !isDefaultRule(r) && !RETIRED_RULE_IDS.includes(r.id))];
+  }
+  const budgetStore = () => storage((s) => JSON.parse(s.getItem(BUDGET_KEY) || '{}')) || {};
+
+  /** The list's rule (the first rule when none is picked) and its fixed monthly income, if set. */
+  function budgetFor(listId) {
+    const b = budgetStore()[listId] || {};
+    const rules = budgetRules();
+    return { rule: rules.find((r) => r.id === b.ruleId) || rules[0], income: b.income > 0 ? b.income : null };
+  }
+
+  /** Income, the plan's amount per bucket and what actually went to each, for one month's entries. */
+  function budgetNumbers(rows, { rule, income: fixed }) {
+    const { buckets, map } = rule;
+    const rest = buckets.find((b) => b.kind === 'rest');
+    const fallback = buckets.find((b) => b.kind === 'limit') || buckets[0]; // for categories not in the map
+    const spent = Object.fromEntries(buckets.map((b) => [b.id, 0]));
+    let received = 0;
+    let out = 0;
+    for (const e of rows) {
+      if (e.direction === 'credit') {
+        received += e.amount;
+        continue;
+      }
+      out += e.amount;
+      spent[map[e.category] in spent ? map[e.category] : fallback.id] += e.amount;
+    }
+    const income = fixed ?? received;
+    const actual = { ...spent };
+    // "What's left" = income not spent in the other buckets (its own entries, e.g. investments, stay in it).
+    if (rest) actual[rest.id] = income - buckets.reduce((t, b) => (b === rest ? t : t + spent[b.id]), 0);
+    const target = Object.fromEntries(buckets.map((b) => [b.id, (income * b.pct) / 100]));
+    return { income, received, out, spent, actual, target };
+  }
+
+  const pctOf = (v, income) => (income ? `${Math.round((v / income) * 100)}%` : '—');
+
+  /** Plan (pale) and actual (coloured) column per bucket, on one scale. */
+  function budgetColumnsHtml(buckets, n) {
+    const W = 320;
+    const H = 160;
+    const padTop = 16;
+    const padBottom = 20;
+    const plotH = H - padTop - padBottom;
+    const base = padTop + plotH;
+    const max = Math.max(1, ...buckets.flatMap((b) => [n.target[b.id], Math.max(0, n.actual[b.id])]));
+    const slot = W / buckets.length;
+    const bw = Math.min(28, slot / 2 - 4);
+    const bar = (x, v, cls, color) => {
+      const h = (Math.max(0, v) / max) * plotH;
+      return h ? `<rect class="${cls}" x="${x.toFixed(2)}" y="${(base - h).toFixed(2)}" width="${bw.toFixed(2)}" height="${h.toFixed(2)}" rx="3" style="--c:${color}"/>` : '';
+    };
+    const groups = buckets
+      .map((b, i) => {
+        const x0 = i * slot + slot / 2;
+        const tip = escapeHtml(`${b.label}: ${money.format(n.actual[b.id])} (${pctOf(n.actual[b.id], n.income)}) · plan ${money.format(n.target[b.id])}`);
+        const axis = b.label.length > 9 ? `${b.label.slice(0, 8)}…` : b.label;
+        return `<g class="cd-day" data-tip="${tip}" data-slice="${i}"><title>${tip}</title>
+        <rect x="${(i * slot).toFixed(2)}" y="0" width="${slot.toFixed(2)}" height="${H}" fill="transparent"/>
+        ${bar(x0 - bw - 1.5, n.target[b.id], 'bp-col-plan', bucketColor(i))}${bar(x0 + 1.5, n.actual[b.id], 'bp-col-actual', bucketColor(i))}
+        <text class="cd-axis" x="${x0.toFixed(2)}" y="${H - 5}" text-anchor="middle">${escapeHtml(axis)}</text></g>`;
+      })
+      .join('');
+    return `
+      <svg class="chart-daily" viewBox="0 0 ${W} ${H}" role="img" aria-label="Plan and actual per bucket">
+        <line class="cd-grid" x1="0" x2="${W}" y1="${padTop}" y2="${padTop}"/>
+        <text class="cd-axis" x="0" y="${padTop - 5}">${moneyWhole.format(max)}</text>
+        <line class="cd-base" x1="0" x2="${W}" y1="${base}" y2="${base}"/>
+        ${groups}
+      </svg>
+      <p class="bp-key muted small"><span class="bp-key-plan" aria-hidden="true"></span>Plan <span class="bp-key-actual" aria-hidden="true"></span>Actual</p>`;
+  }
+
+  /** Plan (pale) and actual (coloured) horizontal bar per bucket, on one scale. */
+  function budgetBarsHtml(buckets, n) {
+    const max = Math.max(1, ...buckets.flatMap((b) => [n.target[b.id], Math.max(0, n.actual[b.id])]));
+    const w = (v) => `${((Math.max(0, v) / max) * 100).toFixed(1)}%`;
+    const rows = buckets
+      .map((b, i) => {
+        const tip = escapeHtml(`${b.label}: ${money.format(n.actual[b.id])} (${pctOf(n.actual[b.id], n.income)}) · plan ${money.format(n.target[b.id])}`);
+        return `
+        <div class="bp-hbar-row" data-tip="${tip}" data-slice="${i}" title="${tip}">
+          <span class="bp-hbar-label">${escapeHtml(b.label)}</span>
+          <span class="bp-hbars" style="--c:${bucketColor(i)}">
+            <span class="bp-hbar is-plan" style="width:${w(n.target[b.id])}"></span>
+            <span class="bp-hbar" style="width:${w(n.actual[b.id])}"></span>
+          </span>
+        </div>`;
+      })
+      .join('');
+    return `
+      <div class="bp-hbar-chart">${rows}</div>
+      <p class="bp-key muted small"><span class="bp-key-plan" aria-hidden="true"></span>Plan <span class="bp-key-actual" aria-hidden="true"></span>Actual</p>`;
+  }
+
+  /** Budget plan view: income · spent · left, a donut, pie, bar or column chart, and each bucket against its plan. */
+  function budgetCardHtml(month, rows, plan) {
+    const { rule } = plan;
+    const n = budgetNumbers(rows, plan);
+    const BUDGET_SHAPES = [
+      { id: 'donut', label: 'Donut' },
+      { id: 'pie', label: 'Pie' },
+      { id: 'bars', label: 'Bar' },
+      { id: 'column', label: 'Column' },
+    ];
+    const shape = BUDGET_SHAPES.some((x) => x.id === chartState.budgetShape) ? chartState.budgetShape : 'donut';
+    const shapes = BUDGET_SHAPES
+      .map((x) => `<button type="button" class="pill ${x.id === shape ? 'is-on' : ''}" data-budget-shape="${x.id}" aria-pressed="${x.id === shape}">${x.label}</button>`)
+      .join('');
+    const split = rule.buckets.map((b) => `${escapeHtml(b.label)} ${b.pct}`).join(' · ');
+    const head = `
+      <div class="bp-head">
+        <div><strong>🎯 ${shortMonth(month)} · ${escapeHtml(rule.name)}${isDefaultRule(rule) ? '<span class="bp-default-tag">★ Default</span>' : ''}</strong><span class="muted small">${split}</span></div>
+        <button type="button" class="btn btn-ghost bp-set" data-budget-set>⚙️ Set</button>
+      </div>`;
+    if (!n.income && !n.out) {
+      return `<div class="card chart-card budget-card">${head}<p class="empty muted">No income or spending in ${longMonth(month)} yet. Tap ⚙️ Set to enter your monthly income.</p></div>`;
+    }
+    const left = n.income - n.out;
+    const summary = `
+      <div class="bp-summary">
+        <div><span class="ef-label">Income</span><strong class="amount-in">${money.format(n.income)}</strong><span class="muted small">100%${plan.income ? ' · set' : ''}</span></div>
+        <div><span class="ef-label">Spent</span><strong class="amount-out">${money.format(n.out)}</strong><span class="muted small">${pctOf(n.out, n.income)}</span></div>
+        <div><span class="ef-label">Left</span><strong class="${left < 0 ? 'amount-out' : 'amount-in'}">${left < 0 ? '− ' : ''}${money.format(Math.abs(left))}</strong><span class="muted small">${pctOf(left, n.income)}</span></div>
+      </div>`;
+    let visual;
+    if (shape === 'column') {
+      visual = budgetColumnsHtml(rule.buckets, n);
+    } else if (shape === 'bars') {
+      visual = budgetBarsHtml(rule.buckets, n);
+    } else {
+      // Where the income went (a bucket below zero, e.g. overspent savings, has no slice).
+      const slices = rule.buckets.map((b, i) => ({ label: b.label, value: Math.max(0, n.actual[b.id]), color: bucketColor(i) }));
+      const center = `<span class="cc-label">Income</span><strong>${moneyWhole.format(n.income)}</strong>`;
+      visual = slices.some((s) => s.value > 0)
+        ? `<div class="chart-body">${donutHtml(slices.filter((s) => s.value > 0), { pie: shape === 'pie', center })}</div>`
+        : '';
+    }
+    const items = rule.buckets
+      .map((b, i) => {
+        const act = n.actual[b.id];
+        const tgt = n.target[b.id];
+        const limit = b.kind === 'limit';
+        // A limit should stay under plan; a goal (or what's left) should reach it.
+        const off = limit ? act > tgt : act < tgt;
+        const gap = Math.abs(tgt - act);
+        const status = limit
+          ? off ? `Over by ${money.format(gap)}` : `${money.format(gap)} left`
+          : off ? `${money.format(gap)} to goal` : `Goal reached${act > tgt ? ` · + ${money.format(act - tgt)}` : ''}`;
+        const fill = tgt > 0 ? Math.min(100, (Math.max(0, act) / tgt) * 100) : act > 0 ? 100 : 0;
+        const extra = b.kind === 'rest' && n.spent[b.id] ? ` · incl. entries ${money.format(n.spent[b.id])}` : '';
+        const tip = escapeHtml(`${b.label}: ${money.format(act)} (${pctOf(act, n.income)}) · plan ${b.pct}% = ${money.format(tgt)}`);
+        return `
+        <li class="bp-row ${off ? (limit ? 'is-over' : 'is-short') : ''}" data-tip="${tip}" data-slice="${i}">
+          <span class="cl-swatch" style="background:${bucketColor(i)}" aria-hidden="true"></span>
+          <span class="bp-name">${escapeHtml(b.label)} <span class="muted small">${BUCKET_KINDS.find((k) => k.id === b.kind)?.label || ''}</span></span>
+          <span class="bp-amt">${act < 0 ? '− ' : ''}${money.format(Math.abs(act))} <b>${pctOf(act, n.income)}</b></span>
+          <span class="bp-bar"><span style="width:${fill.toFixed(1)}%;background:${bucketColor(i)}"></span></span>
+          <span class="bp-plan muted small">Plan ${b.pct}% · ${money.format(tgt)}${extra}</span>
+          <span class="bp-status small">${status}</span>
+        </li>`;
+      })
+      .join('');
+    const incomeNote = plan.income
+      ? `Income is the amount you set${n.received ? ` (received this month: ${money.format(n.received)})` : ''}.`
+      : n.income
+        ? 'Income is the money received this month.'
+        : 'No money received this month. Tap ⚙️ Set to enter your monthly income.';
+    return `
+      <div class="card chart-card budget-card">
+        ${head}
+        ${summary}
+        <div class="chart-shapes" role="group" aria-label="Chart type">${shapes}</div>
+        ${visual}
+        <ul class="bp-list">${items}</ul>
+        <p class="chart-note muted small">${incomeNote}</p>
+      </div>`;
+  }
+
+  // Set sheet: pick or add a rule, name it, edit its buckets, map categories to buckets, set the income.
+  // Edits go to a draft copy and are saved together.
+  let bpRules = [];
+  let bpRuleId = '';
+  const bpRule = () => bpRules.find((r) => r.id === bpRuleId);
+
+  function openBudgetSheet() {
+    const plan = budgetFor(currentListId);
+    bpRules = structuredClone(budgetRules());
+    bpRuleId = plan.rule.id;
+    $('bp-income').value = plan.income ?? '';
+    renderBudgetSheet();
+    openSheet($('budget-sheet'));
+  }
+
+  function renderBudgetSheet() {
+    const rule = bpRule();
+    const locked = isDefaultRule(rule); // the default rule: fixed name and split
+    $('bp-rules').innerHTML =
+      bpRules
+        .map((r) => {
+          const def = isDefaultRule(r);
+          return `<button type="button" class="pill ${def ? 'is-default' : ''} ${r.id === bpRuleId ? 'is-on' : ''}" data-bp-rule="${r.id}" aria-pressed="${r.id === bpRuleId}">${def ? '★ ' : ''}${escapeHtml(r.name || 'Untitled')}</button>`;
+        })
+        .join('') + '<button type="button" class="pill bp-new" data-bp-new>＋ New rule</button>';
+    $('bp-name').value = rule.name;
+    $('bp-name').disabled = locked;
+    const off = locked ? 'disabled' : '';
+    $('bp-buckets').innerHTML = rule.buckets
+      .map(
+        (b, i) => `
+        <div class="bp-bucket">
+          <span class="cl-swatch" style="background:${bucketColor(i)}" aria-hidden="true"></span>
+          <input class="input" type="text" maxlength="24" value="${escapeHtml(b.label)}" data-bp-label="${i}" aria-label="Bucket name" placeholder="Name" ${off} />
+          <input class="input bp-pct" type="number" inputmode="numeric" min="0" max="100" step="1" value="${b.pct}" data-bp-pct="${i}" aria-label="${escapeHtml(b.label)} %" ${off} />
+          <select class="input" data-bp-kind="${i}" aria-label="${escapeHtml(b.label)} type" ${off}>${BUCKET_KINDS.map((k) => `<option value="${k.id}" ${k.id === b.kind ? 'selected' : ''}>${k.label}</option>`).join('')}</select>
+          ${locked ? '<span></span>' : `<button type="button" class="bp-remove" data-bp-remove="${i}" aria-label="Remove ${escapeHtml(b.label)}" ${rule.buckets.length < 2 ? 'disabled' : ''}>✕</button>`}
+        </div>`,
+      )
+      .join('');
+    $('bp-form').classList.toggle('is-default-rule', locked);
+    $('bp-add').hidden = locked;
+    $('bp-delete').hidden = locked;
+    $('bp-sum').hidden = locked;
+    renderBudgetMap();
+    updateBudgetSum();
+  }
+
+  function renderBudgetMap() {
+    const rule = bpRule();
+    const fallback = rule.buckets.find((b) => b.kind === 'limit') || rule.buckets[0];
+    $('bp-map').innerHTML = SPEND_CATEGORIES.map((c) => {
+      const on = rule.buckets.some((b) => b.id === rule.map[c.id]) ? rule.map[c.id] : fallback.id;
+      return `
+        <label class="bp-map-row">
+          <span><span aria-hidden="true">${c.icon}</span> ${escapeHtml(c.label)}</span>
+          <select class="input" data-bp-map="${c.id}">${rule.buckets.map((b) => `<option value="${b.id}" ${b.id === on ? 'selected' : ''}>${escapeHtml(b.label || 'Untitled')}</option>`).join('')}</select>
+        </label>`;
+    }).join('');
+  }
+
+  const ruleSum = (r) => r.buckets.reduce((t, b) => t + (Number(b.pct) || 0), 0);
+
+  function updateBudgetSum() {
+    const sum = ruleSum(bpRule());
+    $('bp-sum').textContent = sum === 100 ? '✓ Adds up to 100%' : `Adds up to ${sum}%. Make it 100%.`;
+    $('bp-sum').classList.toggle('is-bad', sum !== 100);
+  }
+
+  function onBudgetInput(event) {
+    const t = event.target;
+    const rule = bpRule();
+    if (isDefaultRule(rule) && t.dataset.bpMap == null) return; // only its category map can change
+    if (t.id === 'bp-name') {
+      rule.name = t.value;
+      const pill = document.querySelector(`[data-bp-rule="${bpRuleId}"]`);
+      if (pill) pill.textContent = t.value || 'Untitled';
+    } else if (t.dataset.bpLabel != null) {
+      rule.buckets[t.dataset.bpLabel].label = t.value;
+      renderBudgetMap();
+    } else if (t.dataset.bpPct != null) {
+      rule.buckets[t.dataset.bpPct].pct = Math.max(0, Math.round(Number(t.value) || 0));
+      updateBudgetSum();
+    } else if (t.dataset.bpKind != null && event.type === 'change') {
+      // Only one bucket can keep what's left.
+      if (t.value === 'rest') for (const b of rule.buckets) if (b.kind === 'rest') b.kind = 'goal';
+      rule.buckets[t.dataset.bpKind].kind = t.value;
+      renderBudgetSheet();
+    } else if (t.dataset.bpMap != null) {
+      rule.map[t.dataset.bpMap] = t.value;
+    }
+  }
+
+  function onBudgetClick(event) {
+    const t = event.target.closest('button');
+    if (!t) return;
+    const rule = bpRule();
+    if (t.dataset.bpRule) {
+      bpRuleId = t.dataset.bpRule;
+    } else if (t.hasAttribute('data-bp-new')) {
+      // A new rule starts as a copy of the default 50 · 30 · 20 split.
+      const copy = { ...structuredClone(DEFAULT_RULE), id: newBudgetId(), name: `My rule ${bpRules.length}` };
+      bpRules.push(copy);
+      bpRuleId = copy.id;
+      renderBudgetSheet();
+      $('bp-name').select();
+      return;
+    } else if (isDefaultRule(rule) && (t.id === 'bp-add' || t.id === 'bp-delete' || t.dataset.bpRemove != null)) {
+      return; // the default rule's split is fixed and it can't be deleted
+    } else if (t.id === 'bp-add') {
+      rule.buckets.push({ id: newBudgetId(), label: '', pct: 0, kind: 'limit' });
+      renderBudgetSheet();
+      document.querySelector(`[data-bp-label="${rule.buckets.length - 1}"]`)?.focus();
+      return;
+    } else if (t.dataset.bpRemove != null) {
+      if (rule.buckets.length < 2) return;
+      rule.buckets.splice(Number(t.dataset.bpRemove), 1);
+    } else if (t.id === 'bp-delete') {
+      bpRules = bpRules.filter((r) => r.id !== bpRuleId);
+      bpRuleId = bpRules[0].id;
+    } else {
+      return;
+    }
+    renderBudgetSheet();
+  }
+
+  function onBudgetSubmit(event) {
+    event.preventDefault();
+    // Every added rule needs a name, named buckets and a split of exactly 100%.
+    for (const r of bpRules.filter((x) => !isDefaultRule(x))) {
+      r.name = r.name.trim();
+      r.buckets.forEach((b) => (b.label = b.label.trim()));
+      const problem = !r.name
+        ? 'Give the rule a name'
+        : r.buckets.some((b) => !b.label)
+          ? 'Give every bucket a name'
+          : ruleSum(r) !== 100
+            ? 'The split must add up to 100%'
+            : '';
+      if (problem) {
+        if (r.id !== bpRuleId) {
+          bpRuleId = r.id;
+          renderBudgetSheet();
+        }
+        return toast(`${r.name || 'Rule'}: ${problem}`);
+      }
+    }
+    storage((s) => s.setItem(BUDGET_RULES_KEY, JSON.stringify(bpRules)));
+    const income = Number($('bp-income').value);
+    const all = budgetStore();
+    all[currentListId] = { ruleId: bpRuleId, income: income > 0 ? income : null };
+    storage((s) => s.setItem(BUDGET_KEY, JSON.stringify(all)));
+    closeSheet($('budget-sheet'));
+    renderListDetail();
+    toast(`🎯 ${bpRule().name} saved`);
   }
 
   // ---------- long list (chat style) & calendar helpers ----------
@@ -2771,6 +3445,28 @@
   async function onAction(event) {
     // Row checkboxes and sort headers have their own handlers (and must keep their default behaviour).
     if (event.target.closest('.row-check')) return;
+    const chartPick = event.target.closest('[data-chart-view], [data-chart-shape], [data-chart-period]');
+    if (chartPick) {
+      const d = chartPick.dataset;
+      return setChart(d.chartView ? { view: d.chartView } : d.chartPeriod ? { period: d.chartPeriod } : { shape: d.chartShape });
+    }
+    if (event.target.closest('[data-budget-set]')) return openBudgetSheet();
+    const budgetShape = event.target.closest('[data-budget-shape]');
+    if (budgetShape) return setChart({ budgetShape: budgetShape.dataset.budgetShape });
+    const chartTip = event.target.closest('.chart-card [data-tip]');
+    if (chartTip) {
+      document.querySelectorAll('.chart-card .is-tipped').forEach((el) => el.classList.remove('is-tipped'));
+      chartTip.classList.add('is-tipped');
+      // A slice / column and its legend row light up together; the row already shows the numbers.
+      const slice = chartTip.dataset.slice;
+      if (slice != null) {
+        const linked = document.querySelectorAll(`.chart-card [data-slice="${slice}"]`);
+        linked.forEach((el) => el.classList.add('is-tipped'));
+        [...linked].find((el) => el.matches('.cl-row'))?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      }
+      if ($('chart-tip')) $('chart-tip').textContent = chartTip.dataset.tip;
+      return;
+    }
     const yearMonth = event.target.closest('[data-year-month]');
     if (yearMonth) return showMonth(yearMonth.dataset.yearMonth);
     const calDay = event.target.closest('[data-cal-day]');
@@ -3395,8 +4091,8 @@
     $('es-actions').addEventListener('click', onEntrySheetAction);
     // List toolbar: month picker works now; the other buttons are placeholders for upcoming features.
     // ◀ ▶ step a month (a whole year in year view).
-    $('month-prev').addEventListener('click', () => showMonth(addMonths(shownMonth(), viewMode === 'year' ? -12 : -1)));
-    $('month-next').addEventListener('click', () => showMonth(addMonths(shownMonth(), viewMode === 'year' ? 12 : 1)));
+    $('month-prev').addEventListener('click', () => showMonth(addMonths(shownMonth(), viewMode === 'year' || chartByYear() ? -12 : -1)));
+    $('month-next').addEventListener('click', () => showMonth(addMonths(shownMonth(), viewMode === 'year' || chartByYear() ? 12 : 1)));
     $('month-btn').addEventListener('click', openMonthSheet);
     $('filter-btn').addEventListener('click', openFilterSheet);
     $('view-mode-btn').addEventListener('click', openViewSheet);
@@ -3434,6 +4130,10 @@
       $('f-text').value = '';
       renderFilterSheet();
     });
+    $('bp-form').addEventListener('submit', onBudgetSubmit);
+    $('bp-form').addEventListener('input', onBudgetInput);
+    $('bp-form').addEventListener('change', onBudgetInput);
+    $('bp-form').addEventListener('click', onBudgetClick);
     $('f-form').addEventListener('submit', (e) => {
       e.preventDefault(); // Enter in the search box also applies
       applyFilters(copyFilters(draftFilters));

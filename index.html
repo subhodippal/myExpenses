@@ -445,6 +445,42 @@
       <button class="btn btn-ghost sheet-full" type="button" data-close="cancel">Close</button>
     </dialog>
 
+    <!-- Budget plan: pick or add a named rule (e.g. 50 · 30 · 20), its buckets, and which bucket each category counts in. -->
+    <dialog id="budget-sheet" class="dialog sheet" aria-labelledby="bp-title">
+      <div class="sheet-handle" aria-hidden="true"></div>
+      <h3 id="bp-title">🎯 Set budget plan</h3>
+      <form id="bp-form" class="filter-form" novalidate>
+        <div class="field">
+          <span class="field-label">Rule</span>
+          <div id="bp-rules" class="pill-group" aria-label="Rule"></div>        </div>
+        <div class="field">
+          <label class="field-label" for="bp-name">Rule name</label>
+          <input id="bp-name" class="input" type="text" maxlength="40" autocomplete="off" placeholder="e.g. My 30 · 20 · 15 · 30 · 5" />
+        </div>
+        <div class="field">
+          <span class="field-label">Split of income (%)</span>
+          <div id="bp-buckets" class="bp-buckets"></div>
+          <button id="bp-add" class="btn btn-ghost" type="button">＋ Add bucket</button>
+          <p id="bp-sum" class="bp-sum small"></p>
+        </div>
+        <div class="field">
+          <label class="field-label" for="bp-income">Monthly income <span class="optional muted">(optional)</span></label>
+          <input id="bp-income" class="input" type="number" inputmode="decimal" min="0" step="any" placeholder="Blank = money received in the month" />
+        </div>
+        <details class="bp-map-wrap">
+          <summary class="field-label">Which bucket each category counts in</summary>
+          <div id="bp-map" class="bp-map"></div>
+        </details>
+        <button id="bp-delete" class="btn btn-ghost bp-delete" type="button">🗑 Delete this rule</button>
+        <div class="sheet-footer">
+          <div class="row sheet-actions">
+            <button class="btn btn-ghost grow" type="button" data-close="cancel">Cancel</button>
+            <button class="btn btn-gradient grow" type="submit">Save</button>
+          </div>
+        </div>
+      </form>
+    </dialog>
+
     <!-- Month calendar: pick any month of any year, or jump back to this month. -->
     <dialog id="month-sheet" class="dialog sheet" aria-labelledby="ms-year">
       <div class="sheet-handle" aria-hidden="true"></div>
