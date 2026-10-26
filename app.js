@@ -101,7 +101,32 @@
 
   // ---------- entry fields ----------
 
-  const PAY_VIA = ['Cash', 'UPI', 'Card', 'Net banking', 'Wallet', 'Other'];
+  const PAY_VIA = ['Cash', 'UPI', 'Wallet']; // starting list; more can be added / renamed in the form
+
+  // Which pay-via method is cash (it can be renamed). Totals split into cash and balance (everything else).
+  const CASH_KEY = 'myExpenses.cashMethod';
+  const cashMethod = () => storage((s) => s.getItem(CASH_KEY)) || 'Cash';
+  const isCash = (e) => (e.pay_via || '').toLowerCase() === cashMethod().toLowerCase();
+
+  /** Spent / received of some entries, each also counted for cash only. */
+  function moneyTotals(rows) {
+    const t = { out: 0, inn: 0, outCash: 0, inCash: 0 };
+    for (const e of rows) {
+      const cash = isCash(e);
+      if (e.direction === 'credit') {
+        t.inn += e.amount;
+        if (cash) t.inCash += e.amount;
+      } else {
+        t.out += e.amount;
+        if (cash) t.outCash += e.amount;
+      }
+    }
+    return t;
+  }
+
+  /** "− ₹10", "+ ₹10" or "₹0", coloured by sign. */
+  const signedAmount = (n) =>
+    `<b class="${n < 0 ? 'amount-out' : n > 0 ? 'amount-in' : 'amount-zero'}">${n < 0 ? '− ' : n > 0 ? '+ ' : ''}${money.format(Math.abs(n))}</b>`;
 
   // Note rows: a highlighted one-liner in the list that expands to the full text (text only, never money).
   const NOTE_TYPES = [
@@ -1068,12 +1093,34 @@
   function renderFilterSheet() {
     const pill = (attr, value, label, on) =>
       `<button type="button" class="pill ${on ? 'is-on' : ''}" ${attr}="${escapeHtml(value)}" aria-pressed="${on}">${label}</button>`;
+    // Counts and totals: entries in the period on screen (month / year / everything, as the view shows).
+    const inPeriod = periodEntries().filter((e) => e.kind !== 'note');
+    /** Spent / received per option (key → { out, inn }). */
+    const sums = (keyOf) => {
+      const m = new Map();
+      for (const e of inPeriod) {
+        const k = keyOf(e);
+        if (!k) continue;
+        const s = m.get(k) || { out: 0, inn: 0 };
+        if (e.direction === 'credit') s.inn += e.amount;
+        else s.out += e.amount;
+        m.set(k, s);
+      }
+      return m;
+    };
+    /** "+ ₹1,000 − ₹300" (only the non-zero sides). */
+    const sumHtml = (s, fmt = money.format) =>
+      s ? `${s.inn ? `<b class="amount-in">+ ${fmt(s.inn)}</b>` : ''}${s.out ? `<b class="amount-out">− ${fmt(s.out)}</b>` : ''}` : '';
+
+    const all = moneyTotals(inPeriod);
     $('f-type').innerHTML = [
-      ['all', 'All'],
-      ['spent', '− Spent'],
-      ['received', '+ Received'],
+      ['all', 'All', all.inn - all.out],
+      ['spent', '− Spent', -all.out],
+      ['received', '+ Received', all.inn],
     ]
-      .map(([v, label]) => pill('data-f-type', v, label, draftFilters.type === v).replace('class="pill', `class="pill type-${v}`))
+      .map(([v, label, total]) =>
+        pill('data-f-type', v, `${label}<span class="pill-sum">${signedAmount(total)}</span>`, draftFilters.type === v).replace('class="pill', `class="pill type-${v}`),
+      )
       .join('');
 
     // Your payment methods, plus any older value still used by entries in this list.
@@ -1082,11 +1129,10 @@
     const byKey = new Map();
     for (const m of [...getOptions('pay'), ...used]) if (!byKey.has(m.toLowerCase())) byKey.set(m.toLowerCase(), m);
     const methods = [...byKey.values()];
-    // Counts: entries in the period on screen (month / year / everything, as the view shows).
-    const inPeriod = periodEntries().filter((e) => e.kind !== 'note');
     const viaCount = new Map();
     for (const e of inPeriod) if (e.pay_via) viaCount.set(e.pay_via.toLowerCase(), (viaCount.get(e.pay_via.toLowerCase()) || 0) + 1);
-    // One method per line, grouped: ☐ name ……… entries
+    const viaSum = sums((e) => e.pay_via?.toLowerCase());
+    // One method per line, grouped: ☐ name ……… + received − spent · entries
     $('f-via').innerHTML = groupPayMethods(methods)
       .map(
         (g) => `<div class="via-group">
@@ -1098,6 +1144,7 @@
               return `<button type="button" class="via-row ${on ? 'is-on' : ''}" data-f-via="${escapeHtml(v)}" aria-pressed="${on}">
                 <span class="via-check" aria-hidden="true">${on ? '✓' : ''}</span>
                 <span class="via-name">${escapeHtml(v)}</span>
+                <span class="via-sum">${sumHtml(viaSum.get(v.toLowerCase()))}</span>
                 <span class="via-count">${n || ''}</span>
               </button>`;
             })
@@ -1118,11 +1165,13 @@
     }
     for (const n of getOptions('people')) if (!byCount.has(n.toLowerCase())) byCount.set(n.toLowerCase(), [n, 0]);
     const people = [...byCount.values()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], undefined, { sensitivity: 'base' }));
+    const bySum = sums((e) => { const n = entryPaidBy(e); return n === '—' ? '' : n.toLowerCase(); });
     $('f-by').innerHTML = people.length
       ? people
           .map(([n, count]) => {
             const on = [...draftFilters.by].some((x) => x.toLowerCase() === n.toLowerCase());
-            return `<button type="button" class="pill ${on ? 'is-on' : ''}" data-f-by="${escapeHtml(n)}" aria-pressed="${on}">${escapeHtml(n)}${count ? ` <span class="pill-count">${count}</span>` : ''}</button>`;
+            const sum = sumHtml(bySum.get(n.toLowerCase()));
+            return `<button type="button" class="pill ${on ? 'is-on' : ''}" data-f-by="${escapeHtml(n)}" aria-pressed="${on}">${escapeHtml(n)}${count ? ` <span class="pill-count">${count}</span>` : ''}${sum ? `<span class="pill-sum">${sum}</span>` : ''}</button>`;
           })
           .join('')
       : '<span class="muted small">No names yet.</span>';
@@ -1132,13 +1181,15 @@
     // Entries per category in the month being shown (whole list in "All" view).
     const catCount = new Map();
     for (const e of inPeriod) catCount.set(e.category, (catCount.get(e.category) || 0) + 1);
-    // Same category chips as the entry form (here you can pick several).
+    const catSum = sums((e) => e.category);
+    // Same category chips as the entry form (here you can pick several), with the total underneath (whole rupees to fit).
     $('f-cats').innerHTML = cats
       .map((c) => {
         const on = draftFilters.cats.has(c.id);
         const n = catCount.get(c.id) || 0;
+        const sum = sumHtml(catSum.get(c.id), (x) => moneyWhole.format(x));
         return `<button type="button" data-f-cat="${c.id}" aria-label="${c.label}${n ? `, ${n} entries` : ''}" aria-pressed="${on}" class="chip ${on ? 'chip-active' : ''}">
-          ${n ? `<span class="chip-count" aria-hidden="true">${n}</span>` : ''}<span class="chip-icon" aria-hidden="true">${c.icon}</span>${chipLabel(c.label)}</button>`;
+          ${n ? `<span class="chip-count" aria-hidden="true">${n}</span>` : ''}<span class="chip-icon" aria-hidden="true">${c.icon}</span>${chipLabel(c.label)}${sum ? `<span class="chip-sum">${sum}</span>` : ''}</button>`;
       })
       .join('');
     updateFilterCount();
@@ -2095,22 +2146,19 @@
     }
     if (!chosen.length) return;
     $('sel-delete').hidden = !chosen.some(canDeleteEntry);
-    let out = 0;
-    let inn = 0;
-    for (const e of chosen) {
-      if (e.direction === 'credit') inn += e.amount;
-      else out += e.amount;
-    }
+    const { out, inn, outCash, inCash } = moneyTotals(chosen);
     const net = inn - out;
     $('sel-count').textContent = `(${chosen.length})`;
     $('sel-count').title = `${chosen.length} selected`;
     $('sel-total').textContent = `${net < 0 ? '−' : net > 0 ? '+' : ''} ${money.format(Math.abs(net))}`;
     $('sel-total').className = net < 0 ? 'amount-out' : 'amount-in';
-    $('sel-breakdown').innerHTML = [
-      out ? `<span class="amount-out">− ${money.format(out)}</span>` : '',
-      inn ? `<span class="amount-in">+ ${money.format(inn)}</span>` : '',
-    ].filter(Boolean).join('<span class="sel-dot">,</span>');
-    $('sel-breakdown').hidden = !(out && inn);
+    // Spent / received / available, each as total · cash · balance (not cash).
+    const row = (label, total, cash) => `<span class="ss-label">${label}</span>${signedAmount(total)}${signedAmount(cash)}${signedAmount(total - cash)}`;
+    $('sel-breakdown').innerHTML = `
+      <span></span><span class="ss-head">Total</span><span class="ss-head">Cash</span><span class="ss-head">Balance</span>
+      ${row('Spent', -out, -outCash)}
+      ${row('Received', inn, inCash)}
+      ${row('Available', net, inCash - outCash)}`;
   }
 
   /** Ids of the entries in the list right now: from the rows, or from the day headers in "day totals only". */
@@ -2349,19 +2397,18 @@
 
   /** Month view: Spent · Received · Available (received − spent) of the shown entries. */
   function monthFooterHtml(rows) {
-    let out = 0;
-    let inn = 0;
-    for (const e of rows) {
-      if (e.direction === 'credit') inn += e.amount;
-      else out += e.amount;
-    }
+    const { out, inn, outCash, inCash } = moneyTotals(rows);
     const left = inn - out;
-    const cell = (label, value, cls) => `<div class="ef-cell"><span class="ef-label">${label}</span><strong class="${cls}">${value}</strong></div>`;
+    // Each total, then its cash part and the balance part (UPI, bank, cards…) underneath.
+    const cell = (label, value, cls, cash, bal) => `
+      <div class="ef-cell"><span class="ef-label">${label}</span><strong class="${cls}">${value}</strong>
+        <span class="ef-split"><span>Cash ${signedAmount(cash)}</span><span title="Balance (not cash)">Bal ${signedAmount(bal)}</span></span>
+      </div>`;
     return `
       <div class="entry-foot" aria-label="Month totals">
-        ${cell('Spent', `− ${money.format(out)}`, 'amount-out')}
-        ${cell('Received', `+ ${money.format(inn)}`, 'amount-in')}
-        ${cell('Available', `${left < 0 ? '− ' : ''}${money.format(Math.abs(left))}`, left < 0 ? 'amount-out' : 'amount-in')}
+        ${cell('Spent', `− ${money.format(out)}`, 'amount-out', -outCash, -(out - outCash))}
+        ${cell('Received', `+ ${money.format(inn)}`, 'amount-in', inCash, inn - inCash)}
+        ${cell('Available', `${left < 0 ? '− ' : ''}${money.format(Math.abs(left))}`, left < 0 ? 'amount-out' : 'amount-in', inCash - outCash, inn - inCash - (out - outCash))}
       </div>`;
   }
 
@@ -2945,10 +2992,22 @@
     setError('opt-error', '');
     values[i] = name;
     setOptions(managingKind, values);
+    if (managingKind === 'pay' && old.toLowerCase() === cashMethod().toLowerCase()) storage((s) => s.setItem(CASH_KEY, name));
     if (selectedPayVia === old && managingKind === 'pay') selectedPayVia = name;
     if (selectedPaidBy === old && managingKind === 'people') selectedPaidBy = name;
     renderPayVia();
     renderPaidBy();
+    renameInEntries(managingKind === 'pay' ? 'pay_via' : 'paid_by', old, name);
+  }
+
+  /** A renamed pay method / person: every entry of yours that used the old name gets the new one. */
+  async function renameInEntries(field, old, name) {
+    const now = nowISO();
+    const rows = (await DB.all('expenses')).filter((r) => !r.deleted && (r[field] || '').toLowerCase() === old.toLowerCase() && canDeleteEntry(r));
+    if (!rows.length) return;
+    await DB.putMany('expenses', rows.map((r) => ({ ...r, [field]: name, updated_at: now, synced: 0 })));
+    await afterWrite();
+    toast(`Renamed in ${rows.length} ${rows.length === 1 ? 'entry' : 'entries'}`);
   }
 
   function onOptionDelete(event) {
