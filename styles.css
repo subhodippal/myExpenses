@@ -23,7 +23,6 @@
   --ok-bg: #dcfce7;
   --error: #b91c1c;
   --error-bg: #fee2e2;
-  --gold: #d97706; /* the default budget rule */
   --radius: 14px;
   color-scheme: light;
 }
@@ -54,7 +53,6 @@
     --ok-bg: #052e16;
     --error: #f87171;
     --error-bg: #450a0a;
-    --gold: #f59e0b;
     color-scheme: dark;
   }
 }
@@ -82,7 +80,6 @@
   --ok-bg: #052e16;
   --error: #f87171;
   --error-bg: #450a0a;
-  --gold: #f59e0b;
   color-scheme: dark;
 }
 
@@ -755,14 +752,19 @@ button.avatar-wrap:focus-visible { outline: 2px solid var(--primary); outline-of
 .amount-zero { color: var(--muted); }
 .sel-actions { flex-shrink: 0; display: flex; align-items: center; gap: 10px; }
 .sel-count { margin-right: 10px; padding-right: 10px; border-right: 1px solid var(--border); font-weight: 700; font-size: 0.8rem; color: var(--text); white-space: nowrap; }
-.sel-delete, .sel-clear {
+.sel-edit, .sel-delete, .sel-clear {
   display: grid; place-items: center; width: 34px; height: 34px; padding: 0; border: 0; border-radius: 10px; cursor: pointer;
   background: none; font-size: 1rem; line-height: 1;
 }
 .sel-delete { color: var(--error); }
-.sel-clear { color: var(--muted); }
 .sel-delete:hover { background: rgb(220 38 38 / 0.1); }
+.sel-clear { color: var(--muted); }
 .sel-clear:hover { background: var(--primary-soft); color: var(--text); }
+.sel-edit { color: var(--primary); }
+.sel-edit:hover { background: var(--primary-soft); }
+/* Delete, inside the "Edit N entries" sheet */
+.bulk-delete { color: var(--error); border-color: color-mix(in srgb, var(--error) 40%, transparent); }
+.bulk-delete:hover { background: var(--error-bg); }
 /* Keep room for the floating bar below the table (the table shrinks; its rows still scroll). */
 #entries.has-selection { padding-bottom: 76px; }
 body.list-mode .toast { bottom: calc(env(safe-area-inset-bottom) + 96px); }
@@ -884,6 +886,18 @@ body.list-mode .access-note { padding: 6px 10px; }
   background: rgb(107 114 128 / 0.14); color: var(--text); font-size: 0.62rem; font-weight: 600; line-height: 1.5;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
+/* Expense type: Need (blue) · Want (amber) · Saving (green) */
+.stype-need { --st: #2563eb; }
+.stype-want { --st: #d97706; }
+.stype-saving { --st: var(--ok); }
+.spend-tag {
+  display: inline-block; padding: 1px 6px; border-radius: 999px; white-space: nowrap;
+  background: color-mix(in srgb, var(--st) 16%, transparent); color: var(--st); font-size: 0.62rem; font-weight: 700; line-height: 1.5;
+}
+/* Need / Want / Saving: three equal pills across the full width */
+#spend-type, #f-stype, #bulk-stype { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+#spend-type .pill, #f-stype .pill, #bulk-stype .pill { justify-content: center; text-align: center; }
+.pill[class*='stype-'].is-on { background: color-mix(in srgb, var(--st) 16%, transparent); border-color: var(--st); color: var(--st); }
 
 /* Note tooltip */
 .note-tip {
@@ -1081,6 +1095,12 @@ body.list-mode .chart-card > .chart-legend { max-height: none; }
 /* Budget plan view */
 .bp-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
 .bp-head > div { min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.bp-head { align-items: flex-start; }
+.bp-info-btn {
+  flex-shrink: 0; width: 26px; height: 26px; border: 1.5px solid var(--muted); border-radius: 50%; background: transparent;
+  color: var(--muted); font: italic 700 0.85rem/1 Georgia, serif; cursor: pointer;
+}
+.bp-info-btn:hover { border-color: var(--primary); color: var(--primary); }
 .bp-set { min-height: 34px; padding: 6px 12px; font-size: 0.85rem; flex-shrink: 0; }
 .bp-summary { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
 .bp-summary > div { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 4px; border-radius: 10px; background: var(--bg); text-align: center; }
@@ -1088,25 +1108,25 @@ body.list-mode .chart-card > .chart-legend { max-height: none; }
 .bp-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
 .bp-row {
   display: grid; grid-template-columns: 10px minmax(0, 1fr) auto; align-items: center; column-gap: 8px; row-gap: 4px;
-  padding: 8px 4px; border-radius: 8px; font-size: 0.82rem; cursor: pointer;
+  padding: 8px 4px; font-size: 0.82rem;
 }
 .bp-row + .bp-row { border-top: 1px solid var(--border); }
-.bp-row:hover, .bp-row.is-tipped { background: var(--primary-soft); }
 .bp-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600; }
 .bp-amt { font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .bp-amt b { margin-left: 4px; font-size: 0.74rem; color: var(--muted); }
-.bp-bar { grid-column: 2 / -1; height: 8px; border-radius: 4px; background: var(--border); overflow: hidden; }
-.bp-bar span { display: block; height: 100%; border-radius: 4px; }
+.bp-bar { position: relative; grid-column: 2 / -1; height: 16px; border-radius: 8px; background: var(--border); overflow: hidden; }
+.bp-bar span { display: block; height: 100%; border-radius: 8px; }
+/* % of income, inside the progress bar */
+.bp-bar-pct { position: absolute; inset: 0 8px; display: flex; align-items: center; font-size: 0.68rem; font-weight: 700; line-height: 1; color: var(--text); font-variant-numeric: tabular-nums; }
 .bp-plan { grid-column: 2; font-variant-numeric: tabular-nums; }
 .bp-status { grid-column: 3; text-align: right; font-weight: 600; color: var(--ok); font-variant-numeric: tabular-nums; white-space: nowrap; }
 .bp-row.is-over .bp-status, .bp-row.is-short .bp-status { color: var(--error); }
 .bp-row.is-over .bp-bar span { background: var(--error) !important; }
 .bp-col-plan { fill: var(--c); opacity: 0.3; }
 .bp-col-actual { fill: var(--c); }
-.cd-day:hover .bp-col-actual, .cd-day.is-tipped .bp-col-actual { opacity: 0.75; }
 .bp-hbar-chart { display: flex; flex-direction: column; gap: 8px; }
-.bp-hbar-row { display: grid; grid-template-columns: 5.5rem minmax(0, 1fr); align-items: center; gap: 8px; padding: 2px 4px; border-radius: 8px; cursor: pointer; }
-.bp-hbar-row:hover, .bp-hbar-row.is-tipped { background: var(--primary-soft); }
+.bp-hbar-row { display: grid; grid-template-columns: 5.5rem minmax(0, 1fr); align-items: center; gap: 8px; padding: 2px 4px; }
+.budget-card .chart-mark { cursor: default; }
 .bp-hbar-label { font-size: 0.78rem; font-weight: 600; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .bp-hbars { display: flex; flex-direction: column; gap: 3px; }
 .bp-hbar { display: block; height: 10px; min-width: 2px; border-radius: 0 4px 4px 0; background: var(--c); }
@@ -1115,31 +1135,9 @@ body.list-mode .chart-card > .chart-legend { max-height: none; }
 .bp-key-plan, .bp-key-actual { display: inline-block; width: 10px; height: 10px; border-radius: 3px; background: var(--s1); }
 .bp-key-plan { opacity: 0.3; }
 .bp-key-actual { margin-left: 8px; }
-/* Set sheet */
-.bp-new { border-style: dashed; }
-/* The default rule stands out: amber border (thicker when picked) and a ★. */
-.pill.is-default { border: 2px solid var(--gold); color: var(--text); font-weight: 700; }
-.pill.is-default.is-on { background: color-mix(in srgb, var(--gold) 16%, var(--surface)); color: var(--text); box-shadow: 0 0 0 2px color-mix(in srgb, var(--gold) 35%, transparent); }
-#bp-form.is-default-rule .bp-bucket .input:disabled, #bp-name:disabled { opacity: 1; color: var(--text); background: var(--bg); border-style: dashed; cursor: not-allowed; }
-.bp-default-tag { display: inline-block; margin-left: 4px; padding: 0 6px; border: 1.5px solid var(--gold); border-radius: 999px; font-size: 0.66rem; font-weight: 700; vertical-align: 1px; }
-.bp-buckets, .bp-map { display: flex; flex-direction: column; gap: 6px; }
-/* Bucket row: colour · name · % · type · ✕ */
-.bp-bucket { display: grid; grid-template-columns: 10px minmax(0, 1fr) 3.6rem 7.4rem 30px; align-items: center; gap: 6px; }
-.bp-bucket .input { min-height: 38px; padding: 6px 8px; font-size: 0.86rem; }
-.bp-bucket select.input { padding: 6px 4px; font-size: 0.78rem; }
-.bp-pct { text-align: right; font-variant-numeric: tabular-nums; }
-.bp-remove { width: 30px; height: 30px; border: 0; border-radius: 8px; background: transparent; color: var(--muted); font-size: 0.9rem; }
-.bp-remove:hover:not(:disabled) { background: var(--error-bg); color: var(--error); }
-.bp-remove:disabled { opacity: 0.3; }
-.bp-delete { color: var(--error); }
-.bp-map-row { display: grid; grid-template-columns: minmax(0, 1fr) 8rem; align-items: center; gap: 10px; font-size: 0.88rem; }
-.bp-map-row select { min-height: 38px; padding: 6px 8px; }
-.bp-sum { margin: 0; color: var(--ok); font-weight: 600; }
-.bp-sum.is-bad { color: var(--error); }
-.bp-map-wrap summary { cursor: pointer; padding: 4px 0; }
-.bp-map-wrap[open] summary { margin-bottom: 8px; }
 .cd-stats { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 12px; font-size: 0.76rem; color: var(--muted); }
 .cd-stats b { color: var(--text); font-variant-numeric: tabular-nums; }
 .cd-stats b.amount-out { color: var(--error); }
 .cd-stats b.amount-in { color: var(--ok); }
 .cd-avg-key { display: inline-block; width: 14px; margin-right: 5px; vertical-align: middle; border-top: 1.5px dashed var(--text); opacity: 0.55; }
+.bp-row.is-unset .bp-plan { grid-column: 2 / -1; }

@@ -93,6 +93,7 @@ create table if not exists myexpenses.expenses (
   note         text not null default '',            -- optional extra details
   pay_via      text not null default '',            -- Cash | UPI | Card | Net banking | Wallet | Other
   paid_by      text not null default '',            -- who paid / received it
+  spend_type   text not null default '' check (spend_type in ('', 'need', 'want', 'saving')), -- expense type of a spent entry ('' = not set)
   spent_on     date not null default current_date,
   spent_time   text not null default '',            -- 'HH:MM' local time ('' for old entries → created_at is used)
   author_name  text not null default '',            -- shown on shared lists as "by …"
@@ -110,6 +111,7 @@ alter table myexpenses.expenses add column if not exists author_name text not nu
 alter table myexpenses.expenses add column if not exists purpose text not null default '';
 alter table myexpenses.expenses add column if not exists pay_via text not null default '';
 alter table myexpenses.expenses add column if not exists paid_by text not null default '';
+alter table myexpenses.expenses add column if not exists spend_type text not null default '' check (spend_type in ('', 'need', 'want', 'saving'));
 alter table myexpenses.expenses add column if not exists spent_time text not null default '';
 -- Notes: a kind column, and amount 0 allowed (a note without an amount).
 alter table myexpenses.expenses add column if not exists kind text not null default 'entry' check (kind in ('entry', 'note'));

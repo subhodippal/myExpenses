@@ -4,7 +4,7 @@
 // Stores (each row has `synced: 0|1`; 0 = still needs uploading to Supabase):
 //   lists    { id, user_id, name, kind, favorite, created_at, updated_at, deleted, synced }
 //   expenses { id, user_id, list_id, direction: 'debit'|'credit', amount, category, purpose, note,
-//              pay_via, paid_by, author_name, spent_on: 'YYYY-MM-DD', spent_time: 'HH:MM',
+//              pay_via, paid_by, spend_type, author_name, spent_on: 'YYYY-MM-DD', spent_time: 'HH:MM',
 //              created_at, updated_at, deleted, synced }
 //   members  { id, user_id (list owner), list_id, email, role: 'view'|'edit', owner_name,
 //              created_at, updated_at, deleted, synced }

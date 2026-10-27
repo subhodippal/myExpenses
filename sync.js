@@ -85,6 +85,7 @@ const Cloud = (() => {
     purpose: r.purpose || '',
     pay_via: r.pay_via || '',
     paid_by: r.paid_by || '',
+    spend_type: r.spend_type || '',
     spent_time: r.spent_time || '',
     author_name: r.author_name || '',
     direction: r.direction || 'debit',

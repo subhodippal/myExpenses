@@ -138,6 +138,9 @@
             <div class="sel-total"><span id="sel-count" class="sel-count"></span><span class="sel-total-label">Total:</span> <strong id="sel-total"></strong></div>
           </div>
           <div class="sel-actions">
+          <button id="sel-edit" class="sel-edit" type="button" aria-label="Edit or delete selected entries" title="Edit or delete selected">
+            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16v4zM14 6l4 4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
           <button id="sel-delete" class="sel-delete" type="button" aria-label="Delete selected entries" title="Delete selected">
             <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M4 7h16M10 11v6M14 11v6M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2l1-12M9 7V4h6v3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </button>
@@ -257,6 +260,11 @@
           <span class="field-label">Category</span>
           <div id="categories" class="chips" role="radiogroup" aria-label="Category"></div>
         </div>
+        <!-- Need / Want / Saving: spent entries only; tap the chosen one again to clear it. -->
+        <div id="spend-type-field" class="field">
+          <span id="spend-type-label" class="field-label">Expense type <span class="muted optional">(optional)</span></span>
+          <div id="spend-type" class="pill-group" role="radiogroup" aria-labelledby="spend-type-label"></div>
+        </div>
         <div class="field">
           <span id="pay-via-label" class="field-label">Pay via</span>
           <div id="pay-via" class="pill-group" role="radiogroup" aria-labelledby="pay-via-label"></div>
@@ -307,6 +315,40 @@
       <div id="es-actions" class="row sheet-actions"></div>
     </dialog>
 
+    <!-- Change several ticked entries at once: only the fields picked here change. -->
+    <dialog id="bulk-sheet" class="dialog sheet" aria-labelledby="bulk-title">
+      <div class="sheet-handle" aria-hidden="true"></div>
+      <h3 id="bulk-title"></h3>
+      <p id="bulk-hint" class="muted small"></p>
+      <form id="bulk-form" class="filter-form" novalidate>
+        <div id="bulk-fields" class="filter-form">
+        <div class="field">
+          <span class="field-label">Category</span>
+          <div id="bulk-cats" class="chips" aria-label="Category"></div>
+        </div>
+        <div class="field">
+          <span class="field-label">Pay via</span>
+          <div id="bulk-via" class="pill-group" aria-label="Pay via"></div>
+        </div>
+        <div class="field">
+          <span class="field-label">Paid by</span>
+          <div id="bulk-by" class="pill-group" aria-label="Paid by"></div>
+        </div>
+        <div class="field">
+          <span class="field-label">Expense type <span class="muted optional">(spent entries only)</span></span>
+          <div id="bulk-stype" class="pill-group" aria-label="Expense type"></div>
+        </div>
+        </div>
+        <button id="bulk-delete" class="btn btn-ghost bulk-delete" type="button"></button>
+        <div class="sheet-footer">
+          <div class="row sheet-actions">
+            <button class="btn btn-ghost grow" type="button" data-close="cancel">Cancel</button>
+            <button id="bulk-apply" class="btn btn-gradient grow" type="submit">Update</button>
+          </div>
+        </div>
+      </form>
+    </dialog>
+
     <!-- Add / rename / delete payment methods or "paid by" names. -->
     <dialog id="options-sheet" class="dialog sheet" aria-labelledby="opt-title">
       <div class="sheet-handle" aria-hidden="true"></div>
@@ -335,6 +377,10 @@
         <div class="field">
           <span class="field-label">Pay via</span>
           <div id="f-via" class="via-groups" aria-label="Pay via"></div>
+        </div>
+        <div class="field">
+          <span class="field-label">Expense type</span>
+          <div id="f-stype" class="pill-group" aria-label="Expense type"></div>
         </div>
         <div class="field">
           <span class="field-label">Paid by</span>
@@ -443,42 +489,6 @@
       <h3 id="vm-title">📊 View mode</h3>
       <div id="vm-options" class="vm-options" role="radiogroup" aria-labelledby="vm-title"></div>
       <button class="btn btn-ghost sheet-full" type="button" data-close="cancel">Close</button>
-    </dialog>
-
-    <!-- Budget plan: pick or add a named rule (e.g. 50 · 30 · 20), its buckets, and which bucket each category counts in. -->
-    <dialog id="budget-sheet" class="dialog sheet" aria-labelledby="bp-title">
-      <div class="sheet-handle" aria-hidden="true"></div>
-      <h3 id="bp-title">🎯 Set budget plan</h3>
-      <form id="bp-form" class="filter-form" novalidate>
-        <div class="field">
-          <span class="field-label">Rule</span>
-          <div id="bp-rules" class="pill-group" aria-label="Rule"></div>        </div>
-        <div class="field">
-          <label class="field-label" for="bp-name">Rule name</label>
-          <input id="bp-name" class="input" type="text" maxlength="40" autocomplete="off" placeholder="e.g. My 30 · 20 · 15 · 30 · 5" />
-        </div>
-        <div class="field">
-          <span class="field-label">Split of income (%)</span>
-          <div id="bp-buckets" class="bp-buckets"></div>
-          <button id="bp-add" class="btn btn-ghost" type="button">＋ Add bucket</button>
-          <p id="bp-sum" class="bp-sum small"></p>
-        </div>
-        <div class="field">
-          <label class="field-label" for="bp-income">Monthly income <span class="optional muted">(optional)</span></label>
-          <input id="bp-income" class="input" type="number" inputmode="decimal" min="0" step="any" placeholder="Blank = money received in the month" />
-        </div>
-        <details class="bp-map-wrap">
-          <summary class="field-label">Which bucket each category counts in</summary>
-          <div id="bp-map" class="bp-map"></div>
-        </details>
-        <button id="bp-delete" class="btn btn-ghost bp-delete" type="button">🗑 Delete this rule</button>
-        <div class="sheet-footer">
-          <div class="row sheet-actions">
-            <button class="btn btn-ghost grow" type="button" data-close="cancel">Cancel</button>
-            <button class="btn btn-gradient grow" type="submit">Save</button>
-          </div>
-        </div>
-      </form>
     </dialog>
 
     <!-- Month calendar: pick any month of any year, or jump back to this month. -->

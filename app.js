@@ -158,6 +158,15 @@
   const entryNote = (e) => (e.purpose ? e.note : '');
   const firstName = () => myName().split(' ')[0] || 'Me';
   const entryPaidBy = (e) => e.paid_by || (isMine(e) ? firstName() : (e.author_name || '').split(' ')[0] || '—');
+  // Expense type of a spent entry ('' = not set).
+  const SPEND_TYPES = [
+    { id: 'need', icon: '🛒', label: 'Need' },
+    { id: 'want', icon: '🛍️', label: 'Want' },
+    { id: 'saving', icon: '💰', label: 'Saving' },
+  ];
+  const spendTypeOf = (e) => (e.direction === 'credit' ? null : SPEND_TYPES.find((t) => t.id === e.spend_type) || null);
+  // Your own entries paid by you don't show a name; only someone else's name is worth showing.
+  const paidByMe = (e) => isMine(e) && entryPaidBy(e).toLowerCase() === firstName().toLowerCase();
 
   /** "Mon, 1/02/26" */
   function formatDay(iso) {
@@ -1030,12 +1039,12 @@
 
   // ---------- search & filter (applies to the month being viewed) ----------
 
-  const emptyFilters = () => ({ type: 'all', via: new Set(), by: new Set(), cats: new Set(), text: '' });
-  const copyFilters = (f) => ({ type: f.type, via: new Set(f.via), by: new Set(f.by), cats: new Set(f.cats), text: f.text });
+  const emptyFilters = () => ({ type: 'all', via: new Set(), stypes: new Set(), by: new Set(), cats: new Set(), text: '' });
+  const copyFilters = (f) => ({ type: f.type, via: new Set(f.via), stypes: new Set(f.stypes), by: new Set(f.by), cats: new Set(f.cats), text: f.text });
   let filters = emptyFilters(); // applied
   let draftFilters = emptyFilters(); // being edited in the sheet
 
-  const activeFilterCount = (f) => (f.type !== 'all') + f.via.size + f.by.size + f.cats.size + (f.text.trim() ? 1 : 0);
+  const activeFilterCount = (f) => (f.type !== 'all') + f.via.size + f.stypes.size + f.by.size + f.cats.size + (f.text.trim() ? 1 : 0);
 
   function matchesFilters(e, f) {
     if (f.type === 'spent' && e.direction === 'credit') return false;
@@ -1044,6 +1053,7 @@
       const via = (e.pay_via || '').toLowerCase(); // "Credit card" and "Credit Card" are the same method
       if (![...f.via].some((v) => v.toLowerCase() === via)) return false;
     }
+    if (f.stypes.size && !f.stypes.has(spendTypeOf(e)?.id)) return false;
     if (f.by.size) {
       const by = entryPaidBy(e).toLowerCase();
       if (![...f.by].some((n) => n.toLowerCase() === by)) return false;
@@ -1051,7 +1061,7 @@
     if (f.cats.size && !f.cats.has(e.category)) return false;
     const words = f.text.trim().toLowerCase().split(/\s+/).filter(Boolean);
     if (words.length) {
-      const haystack = [entryPurpose(e), entryNote(e), e.pay_via, entryPaidBy(e), categoryOf(e.category).label, String(e.amount), money.format(e.amount)]
+      const haystack = [entryPurpose(e), entryNote(e), e.pay_via, entryPaidBy(e), categoryOf(e.category).label, spendTypeOf(e)?.label, String(e.amount), money.format(e.amount)]
         .join(' ')
         .toLowerCase();
       if (!words.every((w) => haystack.includes(w))) return false;
@@ -1071,6 +1081,8 @@
     $('f-text').value = draftFilters.text;
     renderFilterSheet();
     openSheet($('filter-sheet'));
+    // Focus the selected Type pill ("All" by default), not the search box, so the phone keyboard stays closed.
+    $('f-type').querySelector('.is-on')?.focus({ preventScroll: true });
   }
 
   /** Pay-via options in three groups: cash & bank first, then UPI / wallets / others, then cards. */
@@ -1153,6 +1165,20 @@
       )
       .join('');
 
+    // Expense type: Need / Want / Saving with the count and spent total in the period.
+    const stypeCount = new Map();
+    for (const e of inPeriod) {
+      const t = spendTypeOf(e);
+      if (t) stypeCount.set(t.id, (stypeCount.get(t.id) || 0) + 1);
+    }
+    const stypeSum = sums((e) => spendTypeOf(e)?.id);
+    $('f-stype').innerHTML = SPEND_TYPES.map((t) => {
+      const on = draftFilters.stypes.has(t.id);
+      const count = stypeCount.get(t.id) || 0;
+      const sum = sumHtml(stypeSum.get(t.id));
+      return `<button type="button" class="pill stype-${t.id} ${on ? 'is-on' : ''}" data-f-stype="${t.id}" aria-pressed="${on}">${t.icon} ${t.label}${count ? ` <span class="pill-count">${count}</span>` : ''}${sum ? `<span class="pill-sum">${sum}</span>` : ''}</button>`;
+    }).join('');
+
     // Paid by: the names on this list's entries (plus your saved names), most used in the period first.
     const byCount = new Map(); // lower-case name → [name, count in period]
     const inPeriodSet = new Set(inPeriod);
@@ -1175,6 +1201,8 @@
           })
           .join('')
       : '<span class="muted small">No names yet.</span>';
+    // Only you so far: nothing to filter by, so hide "Paid by" until someone else's name shows up.
+    $('f-by').closest('.field').hidden = people.length < 2;
 
     const usedCats = new Set(entries.filter((e) => e.list_id === currentListId).map((e) => e.category));
     const cats = [...CATEGORIES, ...RETIRED_CATEGORIES.filter((c) => usedCats.has(c.id))];
@@ -1216,11 +1244,12 @@
   }
 
   function onFilterSheetClick(event) {
-    const t = event.target.closest('[data-f-type], [data-f-via], [data-f-by], [data-f-cat]');
+    const t = event.target.closest('[data-f-type], [data-f-via], [data-f-stype], [data-f-by], [data-f-cat]');
     if (!t) return;
     if (t.dataset.fType) draftFilters.type = t.dataset.fType;
     const toggle = (set, v) => (set.has(v) ? set.delete(v) : set.add(v));
     if (t.dataset.fVia !== undefined) toggle(draftFilters.via, t.dataset.fVia);
+    if (t.dataset.fStype) toggle(draftFilters.stypes, t.dataset.fStype);
     if (t.dataset.fBy !== undefined) toggle(draftFilters.by, t.dataset.fBy);
     if (t.dataset.fCat) toggle(draftFilters.cats, t.dataset.fCat);
     renderFilterSheet();
@@ -1237,6 +1266,7 @@
     const parts = [];
     if (f.type !== 'all') parts.push(f.type === 'spent' ? '− Spent' : '+ Received');
     if (f.via.size) parts.push([...f.via].map(escapeHtml).join(', '));
+    if (f.stypes.size) parts.push(SPEND_TYPES.filter((t) => f.stypes.has(t.id)).map((t) => `${t.icon} ${t.label}`).join(', '));
     if (f.by.size) parts.push(`👤 ${[...f.by].map(escapeHtml).join(', ')}`);
     if (f.cats.size) parts.push([...f.cats].map((id) => `${categoryOf(id).icon} ${categoryOf(id).label}`).join(', '));
     if (f.text.trim()) parts.push(`“${escapeHtml(f.text.trim())}”`);
@@ -1260,6 +1290,7 @@
     { id: 'purpose', label: 'Purpose', width: 40 },
     { id: 'category', label: 'Category', width: 16 },
     { id: 'via', label: 'Pay via', width: 18 },
+    { id: 'stype', label: 'Expense type', width: 13 },
     { id: 'by', label: 'Paid by', width: 14 },
     { id: 'note', label: 'Note', width: 40 },
   ];
@@ -1479,6 +1510,8 @@
         return categoryOf(e.category).label;
       case 'via':
         return e.pay_via || '';
+      case 'stype':
+        return spendTypeOf(e)?.label || '';
       case 'by': {
         const v = entryPaidBy(e);
         return v === '—' ? '' : v;
@@ -1944,7 +1977,7 @@
     { id: 'calendar', icon: '🗓️', label: 'Calendar', hint: 'Each day of the month with its total. Tap a day to see its entries.' },
     { id: 'year', icon: '📆', label: 'Year view', hint: 'All 12 months of the year with each month’s total. Tap a month to see its entries.' },
     { id: 'chart', icon: '🍩', label: 'Charts', hint: 'The month or year as a donut, pie, bar or column chart: by category, payment method, or over time.' },
-    { id: 'budget', icon: '🎯', label: 'Budget plan', hint: 'Split the month’s income into needs, personal, luxury and savings (e.g. 50 · 30 · 20) and see how you’re doing.' },
+    { id: 'budget', icon: '🎯', label: 'Budget plan', hint: 'The month’s income split 50 · 30 · 20 into Needs, Wants and Savings, from each entry’s expense type.' },
   ];
   let viewMode = storage((s) => s.getItem(VIEW_KEY)) || 'month';
   if (!VIEW_MODES.some((m) => m.id === viewMode)) viewMode = 'month';
@@ -2147,6 +2180,7 @@
       dayBox.indeterminate = checked > 0 && checked < ids.length;
     }
     if (!chosen.length) return;
+    $('sel-edit').hidden = !chosen.some(canDeleteEntry);
     $('sel-delete').hidden = !chosen.some(canDeleteEntry);
     const { out, inn, outCash, inCash } = moneyTotals(chosen);
     const net = inn - out;
@@ -2228,6 +2262,79 @@
     toast(`🗑️ ${label} deleted`);
   }
 
+  // ---------- edit several entries at once ----------
+
+  // Your own money entries (not notes) can be changed together; empty = keep each entry's own value.
+  const canBulkEdit = (e) => e.kind !== 'note' && canDeleteEntry(e);
+  const emptyBulk = () => ({ category: '', pay_via: '', paid_by: '', spend_type: '' });
+  let bulk = emptyBulk();
+
+  function openBulkSheet() {
+    const chosen = entries.filter((e) => selectedEntryIds.has(e.id));
+    const n = chosen.filter(canBulkEdit).length;
+    const deletable = chosen.filter(canDeleteEntry).length;
+    if (!deletable) return;
+    const kept = chosen.length - n;
+    const count = (x) => `${x} ${x === 1 ? 'entry' : 'entries'}`;
+    bulk = emptyBulk();
+    $('bulk-title').textContent = `✏️ Edit ${count(n || deletable)}`;
+    $('bulk-hint').textContent = n
+      ? 'Pick only what you want to change; everything else stays as it is. Tap a picked option again to undo it.' +
+        (kept ? ` ${kept} added by friends or notes won’t change.` : '')
+      : 'Notes can’t be changed here, only deleted.';
+    // Only notes ticked: nothing to change, just delete.
+    $('bulk-fields').hidden = !n;
+    $('bulk-apply').hidden = !n;
+    $('bulk-delete').textContent = `🗑️ Delete ${count(deletable)}`;
+    renderBulkSheet();
+    openSheet($('bulk-sheet'));
+  }
+
+  function renderBulkSheet() {
+    const pill = (field, value, label, extra = '') => {
+      const on = bulk[field] === value;
+      return `<button type="button" class="pill ${extra} ${on ? 'is-on' : ''}" data-bulk-field="${field}" data-bulk-value="${escapeHtml(value)}" aria-pressed="${on}">${label}</button>`;
+    };
+    $('bulk-cats').innerHTML = CATEGORIES.map((c) => {
+      const on = bulk.category === c.id;
+      return `<button type="button" class="chip ${on ? 'chip-active' : ''}" data-bulk-field="category" data-bulk-value="${c.id}" aria-label="${c.label}" aria-pressed="${on}">
+        <span class="chip-icon" aria-hidden="true">${c.icon}</span>${chipLabel(c.label)}</button>`;
+    }).join('');
+    $('bulk-via').innerHTML = getOptions('pay').map((v) => pill('pay_via', v, escapeHtml(v))).join('');
+    $('bulk-by').innerHTML = getOptions('people').map((v) => pill('paid_by', v, escapeHtml(v))).join('');
+    $('bulk-stype').innerHTML = SPEND_TYPES.map((t) => pill('spend_type', t.id, `${t.icon} ${t.label}`, `stype-${t.id}`)).join('');
+    $('bulk-apply').disabled = !Object.values(bulk).some(Boolean);
+  }
+
+  function onBulkClick(event) {
+    const t = event.target.closest('[data-bulk-field]');
+    if (!t) return;
+    const { bulkField: field, bulkValue: value } = t.dataset;
+    bulk[field] = bulk[field] === value ? '' : value;
+    renderBulkSheet();
+  }
+
+  async function onBulkSubmit(event) {
+    event.preventDefault();
+    const patch = Object.fromEntries(Object.entries(bulk).filter(([, v]) => v));
+    if (!Object.keys(patch).length) return;
+    const mine = entries.filter((e) => selectedEntryIds.has(e.id) && canBulkEdit(e));
+    const now = nowISO();
+    const rows = (await Promise.all(mine.map((e) => DB.get('expenses', e.id)))).filter(Boolean);
+    await DB.putMany(
+      'expenses',
+      rows.map((r) => {
+        const next = { ...r, ...patch, updated_at: now, synced: 0 };
+        if (r.direction === 'credit') next.spend_type = ''; // Need / Want / Saving is for money spent
+        return next;
+      }),
+    );
+    closeSheet($('bulk-sheet'));
+    clearSelection();
+    await afterWrite();
+    toast(`✏️ ${rows.length} ${rows.length === 1 ? 'entry' : 'entries'} updated`);
+  }
+
   function clearSelection() {
     selectedEntryIds.clear();
     for (const b of document.querySelectorAll('#entries .entry-row .row-check input')) {
@@ -2241,12 +2348,10 @@
     const list = findList(currentListId);
     if (!list) return;
     const role = roleFor(list);
-    const people = listMembers(list.id);
 
     let access = '';
     if (role === 'view') access = `👁 View only · shared by ${escapeHtml(sharedBy(list))}`;
     else if (role === 'edit') access = `✏️ You can add entries · shared by ${escapeHtml(sharedBy(list))}`;
-    else if (people.length) access = `👥 Shared with ${people.map((m) => `${escapeHtml(shortEmail(m.email))} ${roleIcon(m.role)}`).join(', ')}`;
     $('list-access').innerHTML = access;
     $('list-access').hidden = !access;
     $('add-entry-btn').hidden = !canAddEntries(list);
@@ -2309,7 +2414,7 @@
     if (viewMode === 'budget') {
       selectedEntryIds.clear();
       lastRenderKey = '';
-      $('entries').innerHTML = budgetCardHtml(month, inMonth, budgetFor(list.id));
+      $('entries').innerHTML = budgetCardHtml(month, inMonth);
       renderSelection();
       return;
     }
@@ -2712,77 +2817,42 @@
 
   // ---------- budget plan view ----------
 
-  // A budget rule splits the month's income into named buckets (e.g. Needs 50 · Wants 30 · Savings 20), and each
-  // spending category counts towards one bucket. A bucket is a limit (spend up to), a goal (put away at least),
-  // or keeps what's left: income minus every other bucket, usually Savings.
-  // Rules are kept on this device and offered in every list; each list picks its rule and may set a fixed income.
-  // The default 50 · 30 · 20 rule always exists and its split is fixed; only its category map can change.
-  // Rules people add can be renamed, reshaped and deleted.
-  const BUDGET_RULES_KEY = 'myExpenses.budgetRules';
-  const BUDGET_KEY = 'myExpenses.budget'; // { [listId]: { ruleId, income } }
-  const BUCKET_KINDS = [
-    { id: 'limit', label: 'Spend up to' },
-    { id: 'goal', label: 'Save at least' },
-    { id: 'rest', label: 'What’s left' },
+  // One fixed 50 · 30 · 20 plan: the month's income split into Needs, Wants and Savings. Each spent entry counts in
+  // the bucket of its expense type (Need / Want / Saving, set on the entry); entries without a type show as "Not set".
+  // Needs and Wants are limits (spend up to); Savings is a goal (put away at least).
+  const BUDGET_BUCKETS = [
+    { id: 'need', label: 'Needs', pct: 50, kind: 'limit', color: 'var(--s1)' },
+    { id: 'want', label: 'Wants', pct: 30, kind: 'limit', color: 'var(--s4)' },
+    { id: 'saving', label: 'Savings', pct: 20, kind: 'goal', color: 'var(--s3)' },
   ];
-  const NEEDS_CATS = ['bills', 'rent', 'food', 'groceries', 'health', 'fuel', 'transport'];
-  const SAVE_CATS = ['investment', 'savings'];
-  const catMap = (groups) => Object.fromEntries(Object.entries(groups).flatMap(([b, cats]) => cats.map((c) => [c, b])));
-  const DEFAULT_RULE = {
-    id: '50-30-20',
-    name: '50 · 30 · 20',
-    buckets: [
-      { id: 'needs', label: 'Needs', pct: 50, kind: 'limit' },
-      { id: 'wants', label: 'Wants', pct: 30, kind: 'limit' },
-      { id: 'savings', label: 'Savings', pct: 20, kind: 'rest' },
-    ],
-    map: catMap({ needs: NEEDS_CATS, wants: ['spend', 'personal', 'other', 'shopping', 'liquor', 'fun'], savings: SAVE_CATS }),
-  };
-  const RETIRED_RULE_IDS = ['30-30-20-20']; // built-in in an earlier version
-  const isDefaultRule = (r) => r.id === DEFAULT_RULE.id;
-  const SPEND_CATEGORIES = CATEGORIES.filter((c) => !RECEIVE_CATEGORIES.includes(c.id));
-  const bucketColor = (i) => (i < CHART_SLOTS ? `var(--s${i + 1})` : 'var(--s-other)');
-  const newBudgetId = () => `b${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`;
+  const BUDGET_KIND_LABELS = { limit: 'Spend up to', goal: 'Save at least' };
+  const BUDGET_INFO = `The 50 · 30 · 20 rule splits the money you receive in a month into three parts:
 
-  /** The default rule first (its split from the code, its saved category map), then the rules people added. */
-  function budgetRules() {
-    const saved = storage((s) => JSON.parse(s.getItem(BUDGET_RULES_KEY) || 'null'));
-    const rules = Array.isArray(saved) ? saved : [];
-    const def = structuredClone(DEFAULT_RULE);
-    Object.assign(def.map, rules.find(isDefaultRule)?.map);
-    return [def, ...rules.filter((r) => !isDefaultRule(r) && !RETIRED_RULE_IDS.includes(r.id))];
-  }
-  const budgetStore = () => storage((s) => JSON.parse(s.getItem(BUDGET_KEY) || '{}')) || {};
+🛒 Needs 50%: must-pay costs like rent, bills, groceries, EMIs, transport and health. Spend up to this.
+🛍️ Wants 30%: nice-to-haves like eating out, shopping, trips and fun. Spend up to this.
+💰 Savings 20%: savings, investments and extra loan payments. Put away at least this.
 
-  /** The list's rule (the first rule when none is picked) and its fixed monthly income, if set. */
-  function budgetFor(listId) {
-    const b = budgetStore()[listId] || {};
-    const rules = budgetRules();
-    return { rule: rules.find((r) => r.id === b.ruleId) || rules[0], income: b.income > 0 ? b.income : null };
-  }
+Each spent entry counts in the part you pick for it (Need, Want or Saving) when you add or edit it.`;
 
-  /** Income, the plan's amount per bucket and what actually went to each, for one month's entries. */
-  function budgetNumbers(rows, { rule, income: fixed }) {
-    const { buckets, map } = rule;
-    const rest = buckets.find((b) => b.kind === 'rest');
-    const fallback = buckets.find((b) => b.kind === 'limit') || buckets[0]; // for categories not in the map
-    const spent = Object.fromEntries(buckets.map((b) => [b.id, 0]));
-    let received = 0;
+  /** Income (money received in the month), the plan's amount per bucket and what went to each. */
+  function budgetNumbers(rows) {
+    const actual = Object.fromEntries(BUDGET_BUCKETS.map((b) => [b.id, 0]));
+    let income = 0;
     let out = 0;
+    let unset = 0;
     for (const e of rows) {
+      if (e.kind === 'note') continue;
       if (e.direction === 'credit') {
-        received += e.amount;
+        income += e.amount;
         continue;
       }
       out += e.amount;
-      spent[map[e.category] in spent ? map[e.category] : fallback.id] += e.amount;
+      const t = spendTypeOf(e)?.id;
+      if (t in actual) actual[t] += e.amount;
+      else unset += e.amount;
     }
-    const income = fixed ?? received;
-    const actual = { ...spent };
-    // "What's left" = income not spent in the other buckets (its own entries, e.g. investments, stay in it).
-    if (rest) actual[rest.id] = income - buckets.reduce((t, b) => (b === rest ? t : t + spent[b.id]), 0);
-    const target = Object.fromEntries(buckets.map((b) => [b.id, (income * b.pct) / 100]));
-    return { income, received, out, spent, actual, target };
+    const target = Object.fromEntries(BUDGET_BUCKETS.map((b) => [b.id, (income * b.pct) / 100]));
+    return { income, out, unset, actual, target };
   }
 
   const pctOf = (v, income) => (income ? `${Math.round((v / income) * 100)}%` : '—');
@@ -2806,11 +2876,10 @@
       .map((b, i) => {
         const x0 = i * slot + slot / 2;
         const tip = escapeHtml(`${b.label}: ${money.format(n.actual[b.id])} (${pctOf(n.actual[b.id], n.income)}) · plan ${money.format(n.target[b.id])}`);
-        const axis = b.label.length > 9 ? `${b.label.slice(0, 8)}…` : b.label;
         return `<g class="cd-day" data-tip="${tip}" data-slice="${i}"><title>${tip}</title>
         <rect x="${(i * slot).toFixed(2)}" y="0" width="${slot.toFixed(2)}" height="${H}" fill="transparent"/>
-        ${bar(x0 - bw - 1.5, n.target[b.id], 'bp-col-plan', bucketColor(i))}${bar(x0 + 1.5, n.actual[b.id], 'bp-col-actual', bucketColor(i))}
-        <text class="cd-axis" x="${x0.toFixed(2)}" y="${H - 5}" text-anchor="middle">${escapeHtml(axis)}</text></g>`;
+        ${bar(x0 - bw - 1.5, n.target[b.id], 'bp-col-plan', b.color)}${bar(x0 + 1.5, n.actual[b.id], 'bp-col-actual', b.color)}
+        <text class="cd-axis" x="${x0.toFixed(2)}" y="${H - 5}" text-anchor="middle">${escapeHtml(b.label)}</text></g>`;
       })
       .join('');
     return `
@@ -2833,7 +2902,7 @@
         return `
         <div class="bp-hbar-row" data-tip="${tip}" data-slice="${i}" title="${tip}">
           <span class="bp-hbar-label">${escapeHtml(b.label)}</span>
-          <span class="bp-hbars" style="--c:${bucketColor(i)}">
+          <span class="bp-hbars" style="--c:${b.color}">
             <span class="bp-hbar is-plan" style="width:${w(n.target[b.id])}"></span>
             <span class="bp-hbar" style="width:${w(n.actual[b.id])}"></span>
           </span>
@@ -2846,9 +2915,8 @@
   }
 
   /** Budget plan view: income · spent · left, a donut, pie, bar or column chart, and each bucket against its plan. */
-  function budgetCardHtml(month, rows, plan) {
-    const { rule } = plan;
-    const n = budgetNumbers(rows, plan);
+  function budgetCardHtml(month, rows) {
+    const n = budgetNumbers(rows);
     const BUDGET_SHAPES = [
       { id: 'donut', label: 'Donut' },
       { id: 'pie', label: 'Pie' },
@@ -2859,231 +2927,75 @@
     const shapes = BUDGET_SHAPES
       .map((x) => `<button type="button" class="pill ${x.id === shape ? 'is-on' : ''}" data-budget-shape="${x.id}" aria-pressed="${x.id === shape}">${x.label}</button>`)
       .join('');
-    const split = rule.buckets.map((b) => `${escapeHtml(b.label)} ${b.pct}`).join(' · ');
+    const split = BUDGET_BUCKETS.map((b) => `${b.label} ${b.pct}`).join(' · ');
     const head = `
       <div class="bp-head">
-        <div><strong>🎯 ${shortMonth(month)} · ${escapeHtml(rule.name)}${isDefaultRule(rule) ? '<span class="bp-default-tag">★ Default</span>' : ''}</strong><span class="muted small">${split}</span></div>
-        <button type="button" class="btn btn-ghost bp-set" data-budget-set>⚙️ Set</button>
+        <div><strong>🎯 50 · 30 · 20 Rule</strong><span class="muted small">${split}</span></div>
+        <button type="button" class="bp-info-btn" data-action="budget-info" aria-label="About the 50 · 30 · 20 rule" title="About the 50 · 30 · 20 rule">i</button>
       </div>`;
     if (!n.income && !n.out) {
-      return `<div class="card chart-card budget-card">${head}<p class="empty muted">No income or spending in ${longMonth(month)} yet. Tap ⚙️ Set to enter your monthly income.</p></div>`;
+      return `<div class="card chart-card budget-card">${head}<p class="empty muted">No income or spending in ${longMonth(month)} yet.</p></div>`;
     }
     const left = n.income - n.out;
     const summary = `
       <div class="bp-summary">
-        <div><span class="ef-label">Income</span><strong class="amount-in">${money.format(n.income)}</strong><span class="muted small">100%${plan.income ? ' · set' : ''}</span></div>
+        <div><span class="ef-label">Income</span><strong class="amount-in">${money.format(n.income)}</strong><span class="muted small">100%</span></div>
         <div><span class="ef-label">Spent</span><strong class="amount-out">${money.format(n.out)}</strong><span class="muted small">${pctOf(n.out, n.income)}</span></div>
         <div><span class="ef-label">Left</span><strong class="${left < 0 ? 'amount-out' : 'amount-in'}">${left < 0 ? '− ' : ''}${money.format(Math.abs(left))}</strong><span class="muted small">${pctOf(left, n.income)}</span></div>
       </div>`;
     let visual;
     if (shape === 'column') {
-      visual = budgetColumnsHtml(rule.buckets, n);
+      visual = budgetColumnsHtml(BUDGET_BUCKETS, n);
     } else if (shape === 'bars') {
-      visual = budgetBarsHtml(rule.buckets, n);
+      visual = budgetBarsHtml(BUDGET_BUCKETS, n);
     } else {
-      // Where the income went (a bucket below zero, e.g. overspent savings, has no slice).
-      const slices = rule.buckets.map((b, i) => ({ label: b.label, value: Math.max(0, n.actual[b.id]), color: bucketColor(i) }));
+      // Where the spending went, with entries that have no expense type as "Not set".
+      const slices = [
+        ...BUDGET_BUCKETS.map((b) => ({ label: b.label, value: n.actual[b.id], color: b.color })),
+        { label: 'Not set', value: n.unset, color: 'var(--s-other)' },
+      ].filter((s) => s.value > 0);
       const center = `<span class="cc-label">Income</span><strong>${moneyWhole.format(n.income)}</strong>`;
-      visual = slices.some((s) => s.value > 0)
-        ? `<div class="chart-body">${donutHtml(slices.filter((s) => s.value > 0), { pie: shape === 'pie', center })}</div>`
-        : '';
+      visual = slices.length ? `<div class="chart-body">${donutHtml(slices, { pie: shape === 'pie', center })}</div>` : '';
     }
-    const items = rule.buckets
-      .map((b, i) => {
-        const act = n.actual[b.id];
-        const tgt = n.target[b.id];
-        const limit = b.kind === 'limit';
-        // A limit should stay under plan; a goal (or what's left) should reach it.
-        const off = limit ? act > tgt : act < tgt;
-        const gap = Math.abs(tgt - act);
-        const status = limit
-          ? off ? `Over by ${money.format(gap)}` : `${money.format(gap)} left`
-          : off ? `${money.format(gap)} to goal` : `Goal reached${act > tgt ? ` · + ${money.format(act - tgt)}` : ''}`;
-        const fill = tgt > 0 ? Math.min(100, (Math.max(0, act) / tgt) * 100) : act > 0 ? 100 : 0;
-        const extra = b.kind === 'rest' && n.spent[b.id] ? ` · incl. entries ${money.format(n.spent[b.id])}` : '';
-        const tip = escapeHtml(`${b.label}: ${money.format(act)} (${pctOf(act, n.income)}) · plan ${b.pct}% = ${money.format(tgt)}`);
-        return `
+    const items = BUDGET_BUCKETS.map((b, i) => {
+      const act = n.actual[b.id];
+      const tgt = n.target[b.id];
+      const limit = b.kind === 'limit';
+      // A limit should stay under plan; a goal should reach it.
+      const off = limit ? act > tgt : act < tgt;
+      const gap = Math.abs(tgt - act);
+      const status = limit
+        ? off ? `Over by ${money.format(gap)}` : `${money.format(gap)} left`
+        : off ? `${money.format(gap)} to goal` : `Goal reached${act > tgt ? ` · + ${money.format(act - tgt)}` : ''}`;
+      const fill = tgt > 0 ? Math.min(100, (act / tgt) * 100) : act > 0 ? 100 : 0;
+      const tip = escapeHtml(`${b.label}: ${money.format(act)} (${pctOf(act, n.income)}) · plan ${b.pct}% = ${money.format(tgt)}`);
+      return `
         <li class="bp-row ${off ? (limit ? 'is-over' : 'is-short') : ''}" data-tip="${tip}" data-slice="${i}">
-          <span class="cl-swatch" style="background:${bucketColor(i)}" aria-hidden="true"></span>
-          <span class="bp-name">${escapeHtml(b.label)} <span class="muted small">${BUCKET_KINDS.find((k) => k.id === b.kind)?.label || ''}</span></span>
-          <span class="bp-amt">${act < 0 ? '− ' : ''}${money.format(Math.abs(act))} <b>${pctOf(act, n.income)}</b></span>
-          <span class="bp-bar"><span style="width:${fill.toFixed(1)}%;background:${bucketColor(i)}"></span></span>
-          <span class="bp-plan muted small">Plan ${b.pct}% · ${money.format(tgt)}${extra}</span>
+          <span class="cl-swatch" style="background:${b.color}" aria-hidden="true"></span>
+          <span class="bp-name">${b.label} <span class="muted small">${BUDGET_KIND_LABELS[b.kind]}</span></span>
+          <span class="bp-amt">${money.format(act)}</span>
+          <span class="bp-bar"><span style="width:${fill.toFixed(1)}%;background:${b.color}"></span><b class="bp-bar-pct">${pctOf(act, n.income)}</b></span>
+          <span class="bp-plan muted small">Plan ${b.pct}% · ${money.format(tgt)}</span>
           <span class="bp-status small">${status}</span>
         </li>`;
-      })
-      .join('');
-    const incomeNote = plan.income
-      ? `Income is the amount you set${n.received ? ` (received this month: ${money.format(n.received)})` : ''}.`
-      : n.income
-        ? 'Income is the money received this month.'
-        : 'No money received this month. Tap ⚙️ Set to enter your monthly income.';
+    }).join('');
+    const unsetRow = n.unset
+      ? `
+        <li class="bp-row is-unset">
+          <span class="cl-swatch" style="background:var(--s-other)" aria-hidden="true"></span>
+          <span class="bp-name">Not set</span>
+          <span class="bp-amt">${money.format(n.unset)} <b>${pctOf(n.unset, n.income)}</b></span>
+          <span class="bp-plan muted small">Spent entries with no Need / Want / Saving type</span>
+        </li>`
+      : '';
     return `
       <div class="card chart-card budget-card">
         ${head}
         ${summary}
         <div class="chart-shapes" role="group" aria-label="Chart type">${shapes}</div>
         ${visual}
-        <ul class="bp-list">${items}</ul>
-        <p class="chart-note muted small">${incomeNote}</p>
+        <ul class="bp-list">${items}${unsetRow}</ul>
       </div>`;
-  }
-
-  // Set sheet: pick or add a rule, name it, edit its buckets, map categories to buckets, set the income.
-  // Edits go to a draft copy and are saved together.
-  let bpRules = [];
-  let bpRuleId = '';
-  const bpRule = () => bpRules.find((r) => r.id === bpRuleId);
-
-  function openBudgetSheet() {
-    const plan = budgetFor(currentListId);
-    bpRules = structuredClone(budgetRules());
-    bpRuleId = plan.rule.id;
-    $('bp-income').value = plan.income ?? '';
-    renderBudgetSheet();
-    openSheet($('budget-sheet'));
-  }
-
-  function renderBudgetSheet() {
-    const rule = bpRule();
-    const locked = isDefaultRule(rule); // the default rule: fixed name and split
-    $('bp-rules').innerHTML =
-      bpRules
-        .map((r) => {
-          const def = isDefaultRule(r);
-          return `<button type="button" class="pill ${def ? 'is-default' : ''} ${r.id === bpRuleId ? 'is-on' : ''}" data-bp-rule="${r.id}" aria-pressed="${r.id === bpRuleId}">${def ? '★ ' : ''}${escapeHtml(r.name || 'Untitled')}</button>`;
-        })
-        .join('') + '<button type="button" class="pill bp-new" data-bp-new>＋ New rule</button>';
-    $('bp-name').value = rule.name;
-    $('bp-name').disabled = locked;
-    const off = locked ? 'disabled' : '';
-    $('bp-buckets').innerHTML = rule.buckets
-      .map(
-        (b, i) => `
-        <div class="bp-bucket">
-          <span class="cl-swatch" style="background:${bucketColor(i)}" aria-hidden="true"></span>
-          <input class="input" type="text" maxlength="24" value="${escapeHtml(b.label)}" data-bp-label="${i}" aria-label="Bucket name" placeholder="Name" ${off} />
-          <input class="input bp-pct" type="number" inputmode="numeric" min="0" max="100" step="1" value="${b.pct}" data-bp-pct="${i}" aria-label="${escapeHtml(b.label)} %" ${off} />
-          <select class="input" data-bp-kind="${i}" aria-label="${escapeHtml(b.label)} type" ${off}>${BUCKET_KINDS.map((k) => `<option value="${k.id}" ${k.id === b.kind ? 'selected' : ''}>${k.label}</option>`).join('')}</select>
-          ${locked ? '<span></span>' : `<button type="button" class="bp-remove" data-bp-remove="${i}" aria-label="Remove ${escapeHtml(b.label)}" ${rule.buckets.length < 2 ? 'disabled' : ''}>✕</button>`}
-        </div>`,
-      )
-      .join('');
-    $('bp-form').classList.toggle('is-default-rule', locked);
-    $('bp-add').hidden = locked;
-    $('bp-delete').hidden = locked;
-    $('bp-sum').hidden = locked;
-    renderBudgetMap();
-    updateBudgetSum();
-  }
-
-  function renderBudgetMap() {
-    const rule = bpRule();
-    const fallback = rule.buckets.find((b) => b.kind === 'limit') || rule.buckets[0];
-    $('bp-map').innerHTML = SPEND_CATEGORIES.map((c) => {
-      const on = rule.buckets.some((b) => b.id === rule.map[c.id]) ? rule.map[c.id] : fallback.id;
-      return `
-        <label class="bp-map-row">
-          <span><span aria-hidden="true">${c.icon}</span> ${escapeHtml(c.label)}</span>
-          <select class="input" data-bp-map="${c.id}">${rule.buckets.map((b) => `<option value="${b.id}" ${b.id === on ? 'selected' : ''}>${escapeHtml(b.label || 'Untitled')}</option>`).join('')}</select>
-        </label>`;
-    }).join('');
-  }
-
-  const ruleSum = (r) => r.buckets.reduce((t, b) => t + (Number(b.pct) || 0), 0);
-
-  function updateBudgetSum() {
-    const sum = ruleSum(bpRule());
-    $('bp-sum').textContent = sum === 100 ? '✓ Adds up to 100%' : `Adds up to ${sum}%. Make it 100%.`;
-    $('bp-sum').classList.toggle('is-bad', sum !== 100);
-  }
-
-  function onBudgetInput(event) {
-    const t = event.target;
-    const rule = bpRule();
-    if (isDefaultRule(rule) && t.dataset.bpMap == null) return; // only its category map can change
-    if (t.id === 'bp-name') {
-      rule.name = t.value;
-      const pill = document.querySelector(`[data-bp-rule="${bpRuleId}"]`);
-      if (pill) pill.textContent = t.value || 'Untitled';
-    } else if (t.dataset.bpLabel != null) {
-      rule.buckets[t.dataset.bpLabel].label = t.value;
-      renderBudgetMap();
-    } else if (t.dataset.bpPct != null) {
-      rule.buckets[t.dataset.bpPct].pct = Math.max(0, Math.round(Number(t.value) || 0));
-      updateBudgetSum();
-    } else if (t.dataset.bpKind != null && event.type === 'change') {
-      // Only one bucket can keep what's left.
-      if (t.value === 'rest') for (const b of rule.buckets) if (b.kind === 'rest') b.kind = 'goal';
-      rule.buckets[t.dataset.bpKind].kind = t.value;
-      renderBudgetSheet();
-    } else if (t.dataset.bpMap != null) {
-      rule.map[t.dataset.bpMap] = t.value;
-    }
-  }
-
-  function onBudgetClick(event) {
-    const t = event.target.closest('button');
-    if (!t) return;
-    const rule = bpRule();
-    if (t.dataset.bpRule) {
-      bpRuleId = t.dataset.bpRule;
-    } else if (t.hasAttribute('data-bp-new')) {
-      // A new rule starts as a copy of the default 50 · 30 · 20 split.
-      const copy = { ...structuredClone(DEFAULT_RULE), id: newBudgetId(), name: `My rule ${bpRules.length}` };
-      bpRules.push(copy);
-      bpRuleId = copy.id;
-      renderBudgetSheet();
-      $('bp-name').select();
-      return;
-    } else if (isDefaultRule(rule) && (t.id === 'bp-add' || t.id === 'bp-delete' || t.dataset.bpRemove != null)) {
-      return; // the default rule's split is fixed and it can't be deleted
-    } else if (t.id === 'bp-add') {
-      rule.buckets.push({ id: newBudgetId(), label: '', pct: 0, kind: 'limit' });
-      renderBudgetSheet();
-      document.querySelector(`[data-bp-label="${rule.buckets.length - 1}"]`)?.focus();
-      return;
-    } else if (t.dataset.bpRemove != null) {
-      if (rule.buckets.length < 2) return;
-      rule.buckets.splice(Number(t.dataset.bpRemove), 1);
-    } else if (t.id === 'bp-delete') {
-      bpRules = bpRules.filter((r) => r.id !== bpRuleId);
-      bpRuleId = bpRules[0].id;
-    } else {
-      return;
-    }
-    renderBudgetSheet();
-  }
-
-  function onBudgetSubmit(event) {
-    event.preventDefault();
-    // Every added rule needs a name, named buckets and a split of exactly 100%.
-    for (const r of bpRules.filter((x) => !isDefaultRule(x))) {
-      r.name = r.name.trim();
-      r.buckets.forEach((b) => (b.label = b.label.trim()));
-      const problem = !r.name
-        ? 'Give the rule a name'
-        : r.buckets.some((b) => !b.label)
-          ? 'Give every bucket a name'
-          : ruleSum(r) !== 100
-            ? 'The split must add up to 100%'
-            : '';
-      if (problem) {
-        if (r.id !== bpRuleId) {
-          bpRuleId = r.id;
-          renderBudgetSheet();
-        }
-        return toast(`${r.name || 'Rule'}: ${problem}`);
-      }
-    }
-    storage((s) => s.setItem(BUDGET_RULES_KEY, JSON.stringify(bpRules)));
-    const income = Number($('bp-income').value);
-    const all = budgetStore();
-    all[currentListId] = { ruleId: bpRuleId, income: income > 0 ? income : null };
-    storage((s) => s.setItem(BUDGET_KEY, JSON.stringify(all)));
-    closeSheet($('budget-sheet'));
-    renderListDetail();
-    toast(`🎯 ${bpRule().name} saved`);
   }
 
   // ---------- long list (chat style) & calendar helpers ----------
@@ -3354,7 +3266,8 @@
           <span class="er-via">${escapeHtml(e.pay_via || '—')}</span>
           <span class="er-by">
             ${note ? `<button type="button" class="note-btn" data-action="show-note" data-id="${e.id}" aria-label="Show note" title="Show note">📝</button>` : ''}
-            <span class="paid-by">${escapeHtml(entryPaidBy(e))}</span>
+            ${spendTypeOf(e) ? `<span class="spend-tag stype-${spendTypeOf(e).id}">${spendTypeOf(e).label}</span>` : ''}
+            ${paidByMe(e) ? '' : `<span class="paid-by">${escapeHtml(entryPaidBy(e))}</span>`}
           </span>
         </span>
       </li>`;
@@ -3381,6 +3294,7 @@
       ['📅', 'Date & time', formatWhen(e.spent_on, entryTime(e))],
       [cat.icon, 'Category', cat.label],
       ['💳', credit ? 'Received via' : 'Pay via', e.pay_via || '—'],
+      ...(credit ? [] : [[spendTypeOf(e)?.icon || '🏷️', 'Expense type', spendTypeOf(e)?.label || '—']]),
       ['👤', credit ? 'Received by' : 'Paid by', entryPaidBy(e)],
       ['📝', 'Note', entryNote(e) || '—'],
     ];
@@ -3422,12 +3336,16 @@
   }
 
   function showNoteTip(btn) {
-    const tip = $('note-tip');
-    if (!tip.hidden && tip.dataset.for === btn.dataset.id) return hideNoteTip(); // tap again to close
     const e = entries.find((x) => x.id === btn.dataset.id);
-    if (!e) return;
-    tip.textContent = entryNote(e);
-    tip.dataset.for = e.id;
+    if (e) showTip(btn, e.id, entryNote(e));
+  }
+
+  /** The tooltip under (or above) `btn` with `text`; tapping the same button again closes it. */
+  function showTip(btn, forId, text) {
+    const tip = $('note-tip');
+    if (!tip.hidden && tip.dataset.for === forId) return hideNoteTip();
+    tip.textContent = text;
+    tip.dataset.for = forId;
     tip.hidden = false;
     const r = btn.getBoundingClientRect();
     const left = Math.min(Math.max(8, r.left + r.width / 2 - tip.offsetWidth / 2), innerWidth - tip.offsetWidth - 8);
@@ -3450,10 +3368,10 @@
       const d = chartPick.dataset;
       return setChart(d.chartView ? { view: d.chartView } : d.chartPeriod ? { period: d.chartPeriod } : { shape: d.chartShape });
     }
-    if (event.target.closest('[data-budget-set]')) return openBudgetSheet();
     const budgetShape = event.target.closest('[data-budget-shape]');
     if (budgetShape) return setChart({ budgetShape: budgetShape.dataset.budgetShape });
-    const chartTip = event.target.closest('.chart-card [data-tip]');
+    // The budget plan card is read-only: tapping its rows or chart does nothing.
+    const chartTip = event.target.closest('.chart-card:not(.budget-card) [data-tip]');
     if (chartTip) {
       document.querySelectorAll('.chart-card .is-tipped').forEach((el) => el.classList.remove('is-tipped'));
       chartTip.classList.add('is-tipped');
@@ -3540,6 +3458,8 @@
       openNoteIds.delete(id);
       await updateRow('expenses', id, { deleted: true });
       toast('Note deleted');
+    } else if (action === 'budget-info') {
+      showTip(btn, 'budget-info', BUDGET_INFO);
     } else if (action === 'show-note') {
       showNoteTip(btn);
     }
@@ -3575,6 +3495,15 @@
     $('amount-row').classList.toggle('is-credit', credit);
     $('pay-via-label').textContent = credit ? 'Received via' : 'Pay via';
     $('paid-by-label').textContent = credit ? 'Received by' : 'Paid by';
+    $('spend-type-field').hidden = credit; // Need / Want / Saving is for money spent
+  }
+
+  let selectedSpendType = '';
+  function renderSpendType() {
+    $('spend-type').innerHTML = SPEND_TYPES.map(
+      (t) => `<button type="button" role="radio" data-spend-type="${t.id}" aria-checked="${t.id === selectedSpendType}"
+        class="pill stype-${t.id} ${t.id === selectedSpendType ? 'is-on' : ''}">${t.icon} ${t.label}</button>`,
+    ).join('');
   }
 
   // ---------- pay via / paid by options (editable, saved on this device) ----------
@@ -3825,9 +3754,11 @@
     // Default "paid by": the first saved name (your name, or "Me" when signed out).
     const paidBy = entry ? entryPaidBy(entry) : getOptions('people')[0] || firstName();
     selectedPaidBy = paidBy === '—' ? '' : paidBy;
+    selectedSpendType = (entry && entry.spend_type) || '';
     $('entry-submit').textContent = entry ? 'Update entry' : 'Save entry';
     renderDirection();
     renderCategories();
+    renderSpendType();
     renderPayVia();
     renderPaidBy();
     setError('entry-error', '');
@@ -3850,6 +3781,7 @@
       note: $('note').value.trim(),
       pay_via: selectedPayVia,
       paid_by: selectedPaidBy || firstName(),
+      spend_type: entryDirection === 'credit' ? '' : selectedSpendType,
       spent_on: $('date').value,
       spent_time: $('time').value || nowTime(),
     };
@@ -3935,9 +3867,15 @@
       setHeader({ compact: true, title: '📋 Your Expenses', back: '#/' });
     } else if (page === 'list' && findList(a)) {
       const list = findList(a);
-      if (currentListId !== list.id) {
+      // Opening a list (from a card, not re-routing within it): start fresh with no filters, month view, this month.
+      if (view !== 'list' || currentListId !== list.id) {
         selectedEntryIds.clear();
-        filters = emptyFilters(); // filters belong to the list you set them on
+        filters = emptyFilters();
+        selectedMonthByList.delete(list.id);
+        if (viewMode !== 'month') {
+          viewMode = 'month';
+          storage((s) => s.setItem(VIEW_KEY, viewMode));
+        }
       }
       currentListId = list.id;
       const title = `${kindOf(list.kind).icon} ${list.name}`;
@@ -4085,6 +4023,13 @@
       selectedPaidBy = pill.dataset.paidBy;
       renderPaidBy();
     });
+    $('spend-type').addEventListener('click', (e) => {
+      const pill = e.target.closest('[data-spend-type]');
+      if (!pill) return;
+      // Tap the chosen type again to clear it.
+      selectedSpendType = selectedSpendType === pill.dataset.spendType ? '' : pill.dataset.spendType;
+      renderSpendType();
+    });
     $('opt-add').addEventListener('submit', onOptionAdd);
     $('opt-list').addEventListener('change', onOptionRename);
     $('opt-list').addEventListener('click', onOptionDelete);
@@ -4130,10 +4075,6 @@
       $('f-text').value = '';
       renderFilterSheet();
     });
-    $('bp-form').addEventListener('submit', onBudgetSubmit);
-    $('bp-form').addEventListener('input', onBudgetInput);
-    $('bp-form').addEventListener('change', onBudgetInput);
-    $('bp-form').addEventListener('click', onBudgetClick);
     $('f-form').addEventListener('submit', (e) => {
       e.preventDefault(); // Enter in the search box also applies
       applyFilters(copyFilters(draftFilters));
@@ -4174,10 +4115,17 @@
     $('entries').addEventListener('change', onRowCheck);
     $('entries').addEventListener('scroll', onRowsScroll, true); // long list: load older months
     $('sel-clear').addEventListener('click', clearSelection);
+    $('sel-edit').addEventListener('click', openBulkSheet);
     $('sel-delete').addEventListener('click', deleteSelected);
+    $('bulk-form').addEventListener('click', onBulkClick);
+    $('bulk-form').addEventListener('submit', onBulkSubmit);
+    $('bulk-delete').addEventListener('click', () => {
+      closeSheet($('bulk-sheet'));
+      deleteSelected(); // asks to confirm first
+    });
     // Note tooltip closes on any tap elsewhere, on scroll and on navigation.
     document.addEventListener('click', (e) => {
-      if (!e.target.closest('[data-action="show-note"], #note-tip')) hideNoteTip();
+      if (!e.target.closest('[data-action="show-note"], [data-action="budget-info"], #note-tip')) hideNoteTip();
     });
     window.addEventListener('scroll', hideNoteTip, { passive: true });
     window.addEventListener('hashchange', hideNoteTip);
