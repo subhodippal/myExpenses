@@ -262,8 +262,9 @@
         </div>
         <!-- Need / Want / Saving: spent entries only; tap the chosen one again to clear it. -->
         <div id="spend-type-field" class="field">
-          <span id="spend-type-label" class="field-label">Expense type <span class="muted optional">(optional)</span></span>
+          <span id="spend-type-label" class="field-label">Expenses budget type <span class="muted optional">(optional)</span></span>
           <div id="spend-type" class="pill-group" role="radiogroup" aria-labelledby="spend-type-label"></div>
+          <p class="muted small">See budget analysis in Budget view.</p>
         </div>
         <div class="field">
           <span id="pay-via-label" class="field-label">Pay via</span>
@@ -313,6 +314,17 @@
       </div>
       <dl id="es-details" class="detail-list"></dl>
       <div id="es-actions" class="row sheet-actions"></div>
+    </dialog>
+
+    <!-- Budget plan view: the month's entries of one Need / Want / Saving bucket (opened by tapping its row). -->
+    <dialog id="bucket-sheet" class="dialog sheet bucket-sheet" aria-labelledby="bs-title">
+      <div class="sheet-handle" aria-hidden="true"></div>
+      <div class="bs-head">
+        <strong id="bs-title" class="sheet-subject-name"></strong>
+        <span id="bs-meta" class="muted small"></span>
+      </div>
+      <div id="bs-body" class="bs-body"></div>
+      <button class="btn btn-ghost sheet-full" type="button" data-close="cancel">Close</button>
     </dialog>
 
     <!-- Change several ticked entries at once: only the fields picked here change. -->

@@ -1179,7 +1179,7 @@
       return `<button type="button" class="pill stype-${t.id} ${on ? 'is-on' : ''}" data-f-stype="${t.id}" aria-pressed="${on}">${t.icon} ${t.label}${count ? ` <span class="pill-count">${count}</span>` : ''}${sum ? `<span class="pill-sum">${sum}</span>` : ''}</button>`;
     }).join('');
 
-    // Paid by: the names on this list's entries (plus your saved names), most used in the period first.
+    // Paid by: only names that have entries in this list (a saved name with no entries isn't shown), most used in the period first.
     const byCount = new Map(); // lower-case name → [name, count in period]
     const inPeriodSet = new Set(inPeriod);
     for (const e of entries) {
@@ -1189,7 +1189,6 @@
       const k = n.toLowerCase();
       byCount.set(k, [byCount.get(k)?.[0] || n, (byCount.get(k)?.[1] || 0) + (inPeriodSet.has(e) ? 1 : 0)]);
     }
-    for (const n of getOptions('people')) if (!byCount.has(n.toLowerCase())) byCount.set(n.toLowerCase(), [n, 0]);
     const people = [...byCount.values()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], undefined, { sensitivity: 'base' }));
     const bySum = sums((e) => { const n = entryPaidBy(e); return n === '—' ? '' : n.toLowerCase(); });
     $('f-by').innerHTML = people.length
@@ -2377,6 +2376,7 @@
     $('month-next').disabled = longList;
     $('view-mode-btn').classList.toggle('is-active', viewMode !== 'month');
     if ($('month-sheet').open) renderMonthSheet();
+    if ($('bucket-sheet').open) renderBucketSheet(); // an entry was edited / deleted from inside it
 
     // Active filters: badge on 🔍 and a summary bar with ✕ Clear.
     const nFilters = activeFilterCount(filters);
@@ -2914,6 +2914,62 @@ Each spent entry counts in the part you pick for it (Need, Want or Saving) when 
       <p class="bp-key muted small"><span class="bp-key-plan" aria-hidden="true"></span>Plan <span class="bp-key-actual" aria-hidden="true"></span>Actual</p>`;
   }
 
+  // Tapping a bucket row opens its entries for the shown month in a bottom sheet ('unset' = spent, no expense type).
+  let bucketSheetId = null;
+
+  function openBucketSheet(id) {
+    bucketSheetId = id;
+    renderBucketSheet();
+    openSheet($('bucket-sheet'));
+  }
+
+  function renderBucketSheet() {
+    const month = shownMonth();
+    const bucket = BUDGET_BUCKETS.find((b) => b.id === bucketSheetId);
+    const type = SPEND_TYPES.find((t) => t.id === bucketSheetId);
+    const rows = sortEntries(
+      entries.filter(
+        (e) =>
+          e.list_id === currentListId &&
+          e.kind !== 'note' &&
+          e.direction !== 'credit' &&
+          e.spent_on.startsWith(month) &&
+          (bucket ? spendTypeOf(e)?.id === bucket.id : !spendTypeOf(e)),
+      ),
+    );
+    const total = rows.reduce((t, e) => t + e.amount, 0);
+    $('bs-title').textContent = bucket ? `${type.icon} ${bucket.label}` : 'Not set';
+    $('bs-meta').textContent = `${longMonth(month)} · ${rows.length} ${rows.length === 1 ? 'entry' : 'entries'} · ${money.format(total)}`;
+    $('bs-body').innerHTML = rows.length
+      ? `<div class="card entry-table bucket-list"><ul class="entry-rows">${rows.map(entryRowHtml).join('')}</ul></div>`
+      : `<p class="empty muted">No ${bucket ? bucket.label.toLowerCase() : 'untyped'} entries in ${longMonth(month)}.</p>`;
+  }
+
+  /** Short read-out of the month: what to improve, what went best and what extra was put aside. */
+  function budgetInsightHtml(n) {
+    if (!n.income) return '';
+    // Positive = on the right side of the plan (under a limit, or over a savings goal).
+    const scored = BUDGET_BUCKETS.map((b) => {
+      const diff = b.kind === 'limit' ? n.target[b.id] - n.actual[b.id] : n.actual[b.id] - n.target[b.id];
+      return { b, diff };
+    });
+    const worst = scored.reduce((a, x) => (x.diff < a.diff ? x : a));
+    const best = scored.reduce((a, x) => (x.diff > a.diff ? x : a));
+    const improve = worst.diff < 0
+      ? `${worst.b.kind === 'limit' ? `Cut ${worst.b.label} by` : `Save more in ${worst.b.label}:`} <b>${money.format(-worst.diff)}</b> to reach plan.`
+      : 'Everything is within plan.';
+    const good = best.diff > 0
+      ? `${best.b.label}, ${best.b.kind === 'limit' ? 'under plan by' : 'above goal by'} <b>${money.format(best.diff)}</b>.`
+      : 'Nothing beat the plan yet.';
+    const extra = scored.reduce((t, x) => t + Math.max(0, x.diff), 0);
+    return `
+      <p class="bp-insight">
+        <span>🔧 <strong>Improve:</strong> ${improve}</span>
+        <span>🏆 <strong>Best:</strong> ${good}</span>
+        <span>💰 <strong>Extra saved:</strong> <b>${money.format(extra)}</b> ${extra ? 'beyond the plan.' : 'so far.'}</span>
+      </p>`;
+  }
+
   /** Budget plan view: income · spent · left, a donut, pie, bar or column chart, and each bucket against its plan. */
   function budgetCardHtml(month, rows) {
     const n = budgetNumbers(rows);
@@ -2970,7 +3026,7 @@ Each spent entry counts in the part you pick for it (Need, Want or Saving) when 
       const fill = tgt > 0 ? Math.min(100, (act / tgt) * 100) : act > 0 ? 100 : 0;
       const tip = escapeHtml(`${b.label}: ${money.format(act)} (${pctOf(act, n.income)}) · plan ${b.pct}% = ${money.format(tgt)}`);
       return `
-        <li class="bp-row ${off ? (limit ? 'is-over' : 'is-short') : ''}" data-tip="${tip}" data-slice="${i}">
+        <li class="bp-row is-tappable ${off ? (limit ? 'is-over' : 'is-short') : ''}" data-tip="${tip}" data-slice="${i}" data-bucket="${b.id}" role="button" tabindex="0" aria-label="Show ${b.label} entries">
           <span class="cl-swatch" style="background:${b.color}" aria-hidden="true"></span>
           <span class="bp-name">${b.label} <span class="muted small">${BUDGET_KIND_LABELS[b.kind]}</span></span>
           <span class="bp-amt">${money.format(act)}</span>
@@ -2981,7 +3037,7 @@ Each spent entry counts in the part you pick for it (Need, Want or Saving) when 
     }).join('');
     const unsetRow = n.unset
       ? `
-        <li class="bp-row is-unset">
+        <li class="bp-row is-unset is-tappable" data-bucket="unset" role="button" tabindex="0" aria-label="Show entries with no expense type">
           <span class="cl-swatch" style="background:var(--s-other)" aria-hidden="true"></span>
           <span class="bp-name">Not set</span>
           <span class="bp-amt">${money.format(n.unset)} <b>${pctOf(n.unset, n.income)}</b></span>
@@ -2992,6 +3048,7 @@ Each spent entry counts in the part you pick for it (Need, Want or Saving) when 
       <div class="card chart-card budget-card">
         ${head}
         ${summary}
+        ${budgetInsightHtml(n)}
         <div class="chart-shapes" role="group" aria-label="Chart type">${shapes}</div>
         ${visual}
         <ul class="bp-list">${items}${unsetRow}</ul>
@@ -3266,7 +3323,7 @@ Each spent entry counts in the part you pick for it (Need, Want or Saving) when 
           <span class="er-via">${escapeHtml(e.pay_via || '—')}</span>
           <span class="er-by">
             ${note ? `<button type="button" class="note-btn" data-action="show-note" data-id="${e.id}" aria-label="Show note" title="Show note">📝</button>` : ''}
-            ${spendTypeOf(e) ? `<span class="spend-tag stype-${spendTypeOf(e).id}">${spendTypeOf(e).label}</span>` : ''}
+            ${spendTypeOf(e) ? `<span class="spend-dot stype-${spendTypeOf(e).id}" role="img" aria-label="${spendTypeOf(e).label}" title="${spendTypeOf(e).label}"></span>` : ''}
             ${paidByMe(e) ? '' : `<span class="paid-by">${escapeHtml(entryPaidBy(e))}</span>`}
           </span>
         </span>
@@ -3370,7 +3427,9 @@ Each spent entry counts in the part you pick for it (Need, Want or Saving) when 
     }
     const budgetShape = event.target.closest('[data-budget-shape]');
     if (budgetShape) return setChart({ budgetShape: budgetShape.dataset.budgetShape });
-    // The budget plan card is read-only: tapping its rows or chart does nothing.
+    const bucketRow = event.target.closest('[data-bucket]');
+    if (bucketRow) return openBucketSheet(bucketRow.dataset.bucket);
+    // The rest of the budget plan card is read-only: tapping its chart does nothing.
     const chartTip = event.target.closest('.chart-card:not(.budget-card) [data-tip]');
     if (chartTip) {
       document.querySelectorAll('.chart-card .is-tipped').forEach((el) => el.classList.remove('is-tipped'));
@@ -4034,12 +4093,20 @@ Each spent entry counts in the part you pick for it (Need, Want or Saving) when 
     $('opt-list').addEventListener('change', onOptionRename);
     $('opt-list').addEventListener('click', onOptionDelete);
     $('es-actions').addEventListener('click', onEntrySheetAction);
+    // Bucket rows are keyboard-operable too.
+    $('entries').addEventListener('keydown', (e) => {
+      const row = e.key === 'Enter' || e.key === ' ' ? e.target.closest?.('[data-bucket]') : null;
+      if (row) { e.preventDefault(); openBucketSheet(row.dataset.bucket); }
+    });
     // List toolbar: month picker works now; the other buttons are placeholders for upcoming features.
     // ◀ ▶ step a month (a whole year in year view).
     $('month-prev').addEventListener('click', () => showMonth(addMonths(shownMonth(), viewMode === 'year' || chartByYear() ? -12 : -1)));
     $('month-next').addEventListener('click', () => showMonth(addMonths(shownMonth(), viewMode === 'year' || chartByYear() ? 12 : 1)));
     $('month-btn').addEventListener('click', openMonthSheet);
-    $('filter-btn').addEventListener('click', openFilterSheet);
+    $('filter-btn').addEventListener('click', () => {
+      if (viewMode === 'budget' || viewMode === 'chart') return info('Filter', 'Not available for budget view or chart view.');
+      openFilterSheet();
+    });
     $('view-mode-btn').addEventListener('click', openViewSheet);
     $('export-btn').addEventListener('click', () => openExportSheet());
     $('add-entry-btn').addEventListener('click', (e) => {

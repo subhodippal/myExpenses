@@ -894,6 +894,9 @@ body.list-mode .access-note { padding: 6px 10px; }
   display: inline-block; padding: 1px 6px; border-radius: 999px; white-space: nowrap;
   background: color-mix(in srgb, var(--st) 16%, transparent); color: var(--st); font-size: 0.62rem; font-weight: 700; line-height: 1.5;
 }
+.spend-dot { display: inline-block; flex-shrink: 0; width: 10px; height: 10px; border-radius: 50%; background: var(--st); }
+.bp-insight { margin: 0; padding: 10px 12px; border-radius: 10px; background: var(--bg); display: flex; flex-direction: column; gap: 4px; font-size: 0.82rem; line-height: 1.4; }
+.bp-insight b { font-variant-numeric: tabular-nums; }
 /* Need / Want / Saving: three equal pills across the full width */
 #spend-type, #f-stype, #bulk-stype { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
 #spend-type .pill, #f-stype .pill, #bulk-stype .pill { justify-content: center; text-align: center; }
@@ -1141,3 +1144,19 @@ body.list-mode .chart-card > .chart-legend { max-height: none; }
 .cd-stats b.amount-in { color: var(--ok); }
 .cd-avg-key { display: inline-block; width: 14px; margin-right: 5px; vertical-align: middle; border-top: 1.5px dashed var(--text); opacity: 0.55; }
 .bp-row.is-unset .bp-plan { grid-column: 2 / -1; }
+.bp-row.is-tappable { cursor: pointer; border-radius: 8px; }
+.bp-row.is-tappable:hover { background: var(--bg); }
+.bp-row.is-tappable:focus-visible { outline: 2px solid var(--primary); outline-offset: -2px; }
+
+/* Entries of one budget bucket: a tall, scrollable sheet that reuses the list rows (no tick boxes here). */
+.bucket-sheet { overflow: hidden; }
+.bs-head { display: flex; flex-direction: column; align-items: center; gap: 2px; margin-bottom: 10px; text-align: center; }
+.bs-body { max-height: calc(75dvh - 170px); min-height: 120px; overflow-y: auto; overscroll-behavior: contain; margin-bottom: 12px; }
+.bs-body .entry-table { overflow: visible; }
+.bs-body .entry-rows { overflow: visible; list-style: none; margin: 0; padding: 0; }
+.bucket-list .entry-row { cursor: default; }
+.bucket-list .entry-row:hover { background: none; }
+.bucket-list .er-purpose { cursor: default; pointer-events: none; }
+.bucket-sheet .sheet-full { min-height: 48px; }
+.bucket-list { --er-cols: 6rem minmax(0, 1fr) 5.25rem; }
+.bucket-list .row-check { display: none; }
