@@ -246,17 +246,26 @@
             <textarea id="purpose" class="input purpose-input" rows="2" maxlength="200" placeholder="What was it for? e.g. Dinner at Barbeque Nation" required></textarea>
           </span>
         </label>
-        <label class="field">
-          <span class="field-label">Date</span>
-          <input id="date" class="input" type="date" required />
-        </label>
-        <!-- Time: pick a section of the day, or "+ Time" for an exact time. -->
+        <!-- Date: one full-width pill showing the chosen date (today by default). The real date
+             input sits invisibly on top of it, so a tap opens the phone's own calendar. -->
+        <div class="field">
+          <span id="date-label" class="field-label">Date</span>
+          <label class="time-slot date-pill is-on">
+            <span class="time-slot-icon" aria-hidden="true">📅</span>
+            <span class="time-slot-text"><span id="date-pill-name" class="time-slot-name"></span><span id="date-pill-sub" class="time-slot-sub"></span></span>
+            <span class="date-pill-change" aria-hidden="true">Change ▾</span>
+            <input id="date" class="date-pill-input" type="date" required aria-labelledby="date-label" />
+          </label>
+        </div>
+        <!-- Time: an exact time (default: now), or a section of the day. -->
         <div class="field">
           <span id="time-label" class="field-label">Time</span>
           <div id="time-slots" class="time-slots" role="radiogroup" aria-labelledby="time-label"></div>
-          <label id="time-custom" class="time-custom" hidden>
-            <span class="muted small">Exact time</span>
-            <input id="time" class="input" type="time" />
+          <!-- Exact time (default for new entries: the current time). The time input sits invisibly on top. -->
+          <label id="time-pill" class="time-slot time-custom">
+            <span class="time-slot-icon" aria-hidden="true">🕐</span>
+            <span class="time-slot-text"><span id="time-pill-name" class="time-slot-name"></span><span id="time-pill-sub" class="time-slot-sub"></span></span>
+            <input id="time" class="date-pill-input" type="time" aria-label="Exact time" />
           </label>
         </div>
         <div class="field">

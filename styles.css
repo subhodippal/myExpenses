@@ -1219,9 +1219,22 @@ body.list-mode .chart-card > .chart-legend { max-height: none; }
 .time-slot-text { display: flex; flex-direction: column; min-width: 0; }
 .time-slot-name { font-weight: 600; color: var(--text); }
 .time-slot-sub { font-size: 0.6rem; opacity: 0.85; white-space: nowrap; }
-/* "+ Time": a full-width dashed pill below the six parts of the day. */
-.time-slot.time-custom { grid-column: 1 / -1; justify-content: center; border-style: dashed; border-color: var(--primary); background: var(--bg); }
+/* "Exact time": a full-width dashed pill below the six parts of the day. */
+/* Exact time: a full-width pill under the six parts of the day, dashed until chosen. */
+.time-slot.time-custom { position: relative; width: 100%; margin-top: -2px; justify-content: center; border-style: dashed; border-color: var(--primary); background: var(--bg); }
+.time-slot.time-custom.is-on { border-style: solid; }
 .time-slot.time-custom .time-slot-text { flex-direction: row; align-items: baseline; gap: 6px; }
+.time-slot.time-custom .time-slot-name { font-size: 0.85rem; }
+/* Date: one full-width pill in the time-pill style; the invisible date input covers it. */
+.date-pill { --tc: #0ea5e9; position: relative; width: 100%; padding-right: 14px; }
+.date-pill .time-slot-text { flex: 1; }
+.date-pill .time-slot-name { font-size: 0.85rem; }
+.date-pill-change { font-size: 0.72rem; font-weight: 600; color: var(--tc); white-space: nowrap; }
+.date-pill-input {
+  position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; padding: 0; border: 0;
+  opacity: 0; cursor: pointer; -webkit-appearance: none; appearance: none;
+}
+.date-pill-input::-webkit-calendar-picker-indicator { position: absolute; inset: 0; width: auto; height: auto; opacity: 0; cursor: pointer; }
 .time-slot.is-on {
   border: 2px solid var(--tc); background: color-mix(in srgb, var(--tc) 20%, var(--bg));
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--tc) 18%, transparent);
@@ -1234,10 +1247,4 @@ body.list-mode .chart-card > .chart-legend { max-height: none; }
   .time-slot.is-on:hover { background: color-mix(in srgb, var(--tc) 26%, var(--bg)); }
 }
 .time-slot:active { transform: scale(0.97); }
-#time-custom { display: flex; align-items: center; gap: 10px; } /* the exact-time field under the pills */
-#time-custom .input { flex: 1; }
 
-/* Entry form date: always full width. iOS Safari sizes date inputs to their text and centres it,
-   so reset its native look and left-align the value. */
-#date { width: 100%; max-width: 100%; display: block; -webkit-appearance: none; appearance: none; text-align: left; }
-#date::-webkit-date-and-time-value { text-align: left; }

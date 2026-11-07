@@ -87,6 +87,11 @@
     return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
   }
   const todayISO = () => toISODate(new Date());
+  const yesterdayISO = () => {
+    const d = new Date();
+    d.setDate(d.getDate() - 1);
+    return toISODate(d);
+  };
   const currentMonth = () => todayISO().slice(0, 7);
   const parseISO = (iso) => new Date(`${iso}T00:00:00`);
   const longDate = (iso) => parseISO(iso).toLocaleDateString(LOCALE, { day: '2-digit', month: 'short', year: 'numeric' });
@@ -156,11 +161,6 @@
     { id: 'late_night', label: 'Late night', icon: '🌌', range: '12–4AM', sortAs: '02:00' },
   ];
   const timeSlotOf = (time) => TIME_SLOTS.find((t) => t.id === time) || null;
-  /** The section an 'HH:MM' falls in. */
-  function slotForTime(time) {
-    const h = Number(time.split(':')[0]);
-    return h < 4 ? 'late_night' : h < 8 ? 'early_morning' : h < 12 ? 'morning' : h < 16 ? 'afternoon' : h < 20 ? 'evening' : 'night';
-  }
   /** 'HH:MM' to sort by: a section sorts as a typical time inside it. */
   const timeSortKey = (e) => timeSlotOf(entryTime(e))?.sortAs || entryTime(e);
 
@@ -3588,6 +3588,14 @@ Each spent entry counts in the part you pick for it (Need, Want or Saving) when 
   let selectedSpendType = '';
   let selectedTimeSlot = 'morning'; // a TIME_SLOTS id, or 'custom' = exact time in #time
 
+  /** The date pill: "Sun, 8 Nov 2026" + "Today" / "Yesterday" / weekday-free hint. */
+  function renderDatePill() {
+    const value = $('date').value || todayISO();
+    const d = parseISO(value);
+    $('date-pill-name').textContent = d.toLocaleDateString(LOCALE, { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
+    $('date-pill-sub').textContent = value === todayISO() ? 'Today' : value === yesterdayISO() ? 'Yesterday' : 'Tap to change';
+  }
+
   function renderTimeSlots() {
     const btn = (id, icon, label, sub) => `
       <button type="button" role="radio" data-time-slot="${id}" aria-checked="${id === selectedTimeSlot}"
@@ -3595,11 +3603,12 @@ Each spent entry counts in the part you pick for it (Need, Want or Saving) when 
         <span class="time-slot-icon" aria-hidden="true">${icon}</span>
         <span class="time-slot-text"><span class="time-slot-name">${label}</span><span class="time-slot-sub">${sub}</span></span>
       </button>`;
+    $('time-slots').innerHTML = TIME_SLOTS.map((t) => btn(t.id, t.icon, t.label, t.range)).join('');
+    // The exact-time pill is fixed in the HTML (its input must keep its value), so just update it.
     const custom = selectedTimeSlot === 'custom';
-    $('time-slots').innerHTML =
-      TIME_SLOTS.map((t) => btn(t.id, t.icon, t.label, t.range)).join('') +
-      btn('custom', '🕐', custom ? formatTime($('time').value || nowTime()) : '+ Time', custom ? 'Change' : 'Exact time');
-    $('time-custom').hidden = !custom;
+    $('time-pill').classList.toggle('is-on', custom);
+    $('time-pill-name').textContent = custom ? formatTime($('time').value || nowTime()) : 'Exact time';
+    $('time-pill-sub').textContent = custom ? 'Tap to change' : '';
   }
 
   function renderSpendType() {
@@ -3852,9 +3861,11 @@ Each spent entry counts in the part you pick for it (Need, Want or Saving) when 
     $('amount').value = entry ? entry.amount : '';
     $('purpose').value = entry ? entry.purpose || entry.note : '';
     $('note').value = entry ? entryNote(entry) : '';
+    $('date').max = todayISO(); // refreshed here in case the app stayed open past midnight
     $('date').value = entry ? entry.spent_on : todayISO();
-    // New entry: the section it is now. Editing: its section, or its exact time ("+ Time").
-    const time = entry ? entryTime(entry) : slotForTime(nowTime());
+    renderDatePill();
+    // New entry: the current time. Editing: its section, or its exact time.
+    const time = entry ? entryTime(entry) : nowTime();
     selectedTimeSlot = timeSlotOf(time) ? time : 'custom';
     $('time').value = timeSlotOf(time) ? nowTime() : time;
     renderTimeSlots();
@@ -4061,27 +4072,41 @@ Each spent entry counts in the part you pick for it (Need, Want or Saving) when 
     });
 
     document.querySelector('main').addEventListener('click', onAction);
-    // Purpose is short one-line text: Enter moves on instead of adding a new line.
+    // Purpose is short one-line text: Enter finishes it instead of adding a new line.
     $('purpose').addEventListener('keydown', (e) => {
       if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) {
         e.preventDefault();
-        $('date').focus();
+        e.target.blur(); // done typing: closes the phone keyboard
       }
+    });
+    // Desktop browsers don't open the calendar on a plain click of a date input; ask for it.
+    $('date').addEventListener('click', () => {
+      try { $('date').showPicker?.(); } catch {}
+    });
+    $('date').addEventListener('input', () => {
+      if (!$('date').value) $('date').value = todayISO(); // "Clear" in the picker → back to today
+      renderDatePill();
     });
     $('time-slots').addEventListener('click', (e) => {
       const btn = e.target.closest('[data-time-slot]');
       if (!btn) return;
-      const wasCustom = selectedTimeSlot === 'custom';
       selectedTimeSlot = btn.dataset.timeSlot;
       renderTimeSlots();
-      if (selectedTimeSlot === 'custom') {
-        const input = $('time');
-        if (!wasCustom) input.value = nowTime();
-        input.focus();
-        try { input.showPicker?.(); } catch {} // opens the clock on browsers that support it
-      }
     });
-    $('time').addEventListener('input', () => selectedTimeSlot === 'custom' && renderTimeSlots());
+    // Tapping the exact-time pill selects it (back from a section: starts at the current time) and opens the clock.
+    $('time').addEventListener('click', () => {
+      if (selectedTimeSlot !== 'custom') {
+        selectedTimeSlot = 'custom';
+        $('time').value = nowTime();
+        renderTimeSlots();
+      }
+      try { $('time').showPicker?.(); } catch {} // desktop browsers need this to open the clock
+    });
+    $('time').addEventListener('input', () => {
+      if (!$('time').value) $('time').value = nowTime(); // "Clear" in the picker → back to now
+      selectedTimeSlot = 'custom';
+      renderTimeSlots();
+    });
     $('categories').addEventListener('click', (e) => {
       const chip = e.target.closest('[data-category]');
       if (!chip) return;
