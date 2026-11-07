@@ -23,11 +23,11 @@
   const CATEGORIES = [
     { id: 'spend', label: 'Spend / Others', icon: '💸' },
     { id: 'personal', label: 'Personal', icon: '💇' },
-    { id: 'bills', label: 'Bill / Rent / EMI / Due', icon: '🧾' },
+    { id: 'bills', label: 'Bill / Rent / EMI / Due', icon: '💡' },
     { id: 'groceries', label: 'Groceries / Shopping', icon: '🛒' },
     { id: 'liquor', label: 'Liquor & Smoke', icon: '🍷' },
     { id: 'food', label: 'Food / Tea / Snacks', icon: '☕' },
-    { id: 'restaurant', label: 'Restaurant / Hotel', icon: '🍽️' },
+    { id: 'restaurant', label: 'Restaurant / Hotel', icon: '🏨' },
     { id: 'health', label: 'Health / Medicine', icon: '💊' },
     { id: 'fuel', label: 'Fuel / Servicing', icon: '⛽' },
     { id: 'transport', label: 'Transport / Travel', icon: '🚌' },

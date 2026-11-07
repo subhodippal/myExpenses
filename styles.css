@@ -1236,3 +1236,8 @@ body.list-mode .chart-card > .chart-legend { max-height: none; }
 .time-slot:active { transform: scale(0.97); }
 #time-custom { display: flex; align-items: center; gap: 10px; } /* the exact-time field under the pills */
 #time-custom .input { flex: 1; }
+
+/* Entry form date: always full width. iOS Safari sizes date inputs to their text and centres it,
+   so reset its native look and left-align the value. */
+#date { width: 100%; max-width: 100%; display: block; -webkit-appearance: none; appearance: none; text-align: left; }
+#date::-webkit-date-and-time-value { text-align: left; }
