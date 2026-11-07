@@ -196,7 +196,7 @@ button.avatar-wrap:focus-visible { outline: 2px solid var(--primary); outline-of
   display: inline-block; font-size: 0.72rem; padding: 2px 10px; border-radius: 999px; font-weight: 600;
   background: rgb(255 255 255 / 0.18); color: #fff;
 }
-.status-error { background: rgb(239 68 68 / 0.85); }
+.status-error { background: rgb(239 68 68 / 0.85); cursor: pointer; }
 
 /* ---------- Layout ---------- */
 .container { flex: 1; width: 100%; max-width: 1200px; margin: 0 auto; padding: 20px 16px 24px; }
@@ -516,6 +516,9 @@ button.avatar-wrap:focus-visible { outline: 2px solid var(--primary); outline-of
 .input-with-icon { position: relative; display: block; }
 .input-with-icon .input { width: 100%; padding-left: 42px; }
 .input-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 1.15rem; pointer-events: none; }
+/* Taller purpose box: the icon sits by the first line instead of the middle. */
+.input-with-icon-top .input-icon { top: 11px; transform: none; }
+.purpose-input { min-height: 68px; resize: vertical; line-height: 1.4; font: inherit; }
 
 /* Label with a small ＋ (manage options) button */
 .opt-name {
@@ -525,7 +528,7 @@ button.avatar-wrap:focus-visible { outline: 2px solid var(--primary); outline-of
 .opt-name:focus { outline: 2px solid var(--primary); background: var(--bg); }
 .amount-input::-webkit-inner-spin-button,
 .amount-input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
-.chips { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; }
+.chips { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
 .chip {
   border: 1px solid var(--border); background: var(--bg); border-radius: 12px; min-width: 0;
   padding: 8px 3px; font-size: 0.64rem; color: var(--muted); line-height: 1.15; text-align: center; overflow-wrap: normal; hyphens: none;
@@ -537,6 +540,29 @@ button.avatar-wrap:focus-visible { outline: 2px solid var(--primary); outline-of
 #f-cats .chip { position: relative; }
 .chip-count { position: absolute; top: 3px; right: 5px; font-size: 0.58rem; font-weight: 600; opacity: 0.65; }
 .chip-active { border-color: var(--primary); background: var(--primary-soft); color: var(--primary); }
+/* Each category has its own colour: the chosen chip gets a border + tint in it (entry form, bulk edit, filter). */
+.cat-spend { --cc: #0ea5e9; }
+.cat-personal { --cc: #ec4899; }
+.cat-bills { --cc: #ef4444; }
+.cat-groceries { --cc: #65a30d; }
+.cat-liquor { --cc: #a855f7; }
+.cat-food { --cc: #d97706; }
+.cat-restaurant { --cc: #f97316; }
+.cat-health { --cc: #14b8a6; }
+.cat-fuel { --cc: #ca8a04; }
+.cat-transport { --cc: #3b82f6; }
+.cat-investment { --cc: #6366f1; }
+.cat-received { --cc: #16a34a; }
+.chip[class*='cat-'] { transition: background-color 0.15s, border-color 0.15s; }
+.chip[class*='cat-'].chip-active {
+  border-color: var(--cc); background: color-mix(in srgb, var(--cc) 15%, var(--bg)); color: var(--text);
+  /* inset 1px = a 2px border without shifting the layout; outer ring = soft glow */
+  box-shadow: inset 0 0 0 1px var(--cc), 0 0 0 3px color-mix(in srgb, var(--cc) 18%, transparent);
+}
+.chip[class*='cat-'].chip-active .chip-name { color: var(--cc); font-weight: 700; }
+@media (hover: hover) {
+  .chip[class*='cat-']:hover { border-color: var(--cc); }
+}
 .input {
   border: 1px solid var(--border); background: var(--bg); border-radius: 10px;
   padding: 10px 12px; min-height: 44px; min-width: 0;
@@ -900,6 +926,17 @@ body.list-mode .access-note { padding: 6px 10px; }
 /* Need / Want / Saving: three equal pills across the full width */
 #spend-type, #f-stype, #bulk-stype { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
 #spend-type .pill, #f-stype .pill, #bulk-stype .pill { justify-content: center; text-align: center; }
+/* Entry form: a little space above, and three round buttons (icon over name). */
+#spend-type-field { margin-top: 8px; }
+#spend-type-field .spend-type-hint { margin: -6px 0 2px; } /* sits tight under its heading */
+#spend-type { display: flex; justify-content: center; gap: 22px; }
+#spend-type .stype-round {
+  width: 74px; height: 74px; padding: 0; border-radius: 50%; border-width: 1.5px; flex-shrink: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+  font-size: 0.78rem; font-weight: 600;
+}
+#spend-type .stype-icon { font-size: 1.5rem; line-height: 1; }
+#spend-type .stype-round.is-on { border-width: 2px; box-shadow: 0 0 0 3px color-mix(in srgb, var(--st) 18%, transparent); }
 .pill[class*='stype-'].is-on { background: color-mix(in srgb, var(--st) 16%, transparent); border-color: var(--st); color: var(--st); }
 
 /* Note tooltip */
@@ -1160,3 +1197,42 @@ body.list-mode .chart-card > .chart-legend { max-height: none; }
 .bucket-sheet .sheet-full { min-height: 48px; }
 .bucket-list { --er-cols: 6rem minmax(0, 1fr) 5.25rem; }
 .bucket-list .row-check { display: none; }
+
+/* ---------- Entry form: time of day ----------
+   Looks different from the category tiles on purpose: rounded pills, icon on the left,
+   each part of the day tinted with its own colour (sunrise → night). */
+.time-slots { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+.time-slot {
+  --tc: var(--primary);
+  display: flex; align-items: center; gap: 6px; min-width: 0; min-height: 44px;
+  padding: 5px 10px 5px 7px; border: 1.5px solid color-mix(in srgb, var(--tc) 35%, var(--border));
+  border-radius: 999px; background: color-mix(in srgb, var(--tc) 9%, var(--bg));
+  color: var(--muted); font-size: 0.7rem; line-height: 1.15; text-align: left; cursor: pointer;
+}
+.time-early_morning { --tc: #f97316; }
+.time-morning { --tc: #eab308; }
+.time-afternoon { --tc: #f59e0b; }
+.time-evening { --tc: #e11d48; }
+.time-night { --tc: #6366f1; }
+.time-late_night { --tc: #7c3aed; }
+.time-slot-icon { font-size: 1.15rem; flex-shrink: 0; }
+.time-slot-text { display: flex; flex-direction: column; min-width: 0; }
+.time-slot-name { font-weight: 600; color: var(--text); }
+.time-slot-sub { font-size: 0.6rem; opacity: 0.85; white-space: nowrap; }
+/* "+ Time": a full-width dashed pill below the six parts of the day. */
+.time-slot.time-custom { grid-column: 1 / -1; justify-content: center; border-style: dashed; border-color: var(--primary); background: var(--bg); }
+.time-slot.time-custom .time-slot-text { flex-direction: row; align-items: baseline; gap: 6px; }
+.time-slot.is-on {
+  border: 2px solid var(--tc); background: color-mix(in srgb, var(--tc) 20%, var(--bg));
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--tc) 18%, transparent);
+}
+.time-slot.is-on .time-slot-name { font-weight: 700; }
+/* Hover: light up in the pill's own colour (mouse only, so taps on phones don't leave it stuck). */
+.time-slot { transition: background-color 0.15s, border-color 0.15s, transform 0.15s; }
+@media (hover: hover) {
+  .time-slot:hover { border-color: var(--tc); background: color-mix(in srgb, var(--tc) 15%, var(--bg)); transform: translateY(-1px); }
+  .time-slot.is-on:hover { background: color-mix(in srgb, var(--tc) 26%, var(--bg)); }
+}
+.time-slot:active { transform: scale(0.97); }
+#time-custom { display: flex; align-items: center; gap: 10px; } /* the exact-time field under the pills */
+#time-custom .input { flex: 1; }

@@ -239,23 +239,26 @@
             <input id="amount" class="amount-input" type="number" inputmode="decimal" step="0.01" min="0" placeholder="0" aria-label="Amount" />
           </div>
         </div>
-        <div class="row">
-          <label class="field grow">
-            <span class="field-label">Date</span>
-            <input id="date" class="input" type="date" required />
-          </label>
-          <label class="field grow">
-            <span class="field-label">Time</span>
+        <label class="field">
+          <span class="field-label">Purpose <span class="required" aria-hidden="true">*</span></span>
+          <span class="input-with-icon input-with-icon-top">
+            <span id="purpose-icon" class="input-icon" aria-hidden="true"></span>
+            <textarea id="purpose" class="input purpose-input" rows="2" maxlength="200" placeholder="What was it for? e.g. Dinner at Barbeque Nation" required></textarea>
+          </span>
+        </label>
+        <label class="field">
+          <span class="field-label">Date</span>
+          <input id="date" class="input" type="date" required />
+        </label>
+        <!-- Time: pick a section of the day, or "+ Time" for an exact time. -->
+        <div class="field">
+          <span id="time-label" class="field-label">Time</span>
+          <div id="time-slots" class="time-slots" role="radiogroup" aria-labelledby="time-label"></div>
+          <label id="time-custom" class="time-custom" hidden>
+            <span class="muted small">Exact time</span>
             <input id="time" class="input" type="time" />
           </label>
         </div>
-        <label class="field">
-          <span class="field-label">Purpose <span class="required" aria-hidden="true">*</span></span>
-          <span class="input-with-icon">
-            <span id="purpose-icon" class="input-icon" aria-hidden="true"></span>
-            <input id="purpose" class="input" type="text" maxlength="200" placeholder="What was it for? e.g. Dinner at Barbeque Nation" required />
-          </span>
-        </label>
         <div class="field">
           <span class="field-label">Category</span>
           <div id="categories" class="chips" role="radiogroup" aria-label="Category"></div>
@@ -263,8 +266,8 @@
         <!-- Need / Want / Saving: spent entries only; tap the chosen one again to clear it. -->
         <div id="spend-type-field" class="field">
           <span id="spend-type-label" class="field-label">Expenses budget type <span class="muted optional">(optional)</span></span>
+          <p class="muted small spend-type-hint">See budget analysis in Budget view mode.</p>
           <div id="spend-type" class="pill-group" role="radiogroup" aria-labelledby="spend-type-label"></div>
-          <p class="muted small">See budget analysis in Budget view.</p>
         </div>
         <div class="field">
           <span id="pay-via-label" class="field-label">Pay via</span>

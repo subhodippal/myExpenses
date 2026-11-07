@@ -19,34 +19,33 @@
   };
   const THEME_KEY = 'myExpenses.theme';
 
-  // Entry categories (shown in this order). The last two are for money received.
+  // Entry categories, in chip order (4 per row in the entry form).
   const CATEGORIES = [
-    { id: 'spend', label: 'Spend', icon: '💸' },
-    { id: 'bills', label: 'Bills', icon: '💡' },
-    { id: 'rent', label: 'Rent / EMI', icon: '🏠' },
-    { id: 'food', label: 'Food', icon: '🍔' },
-    { id: 'groceries', label: 'Groceries', icon: '🛒' },
-    { id: 'health', label: 'Health', icon: '💊' },
+    { id: 'spend', label: 'Spend / Others', icon: '💸' },
     { id: 'personal', label: 'Personal', icon: '💇' },
-    { id: 'fuel', label: 'Fuel', icon: '⛽' },
-    { id: 'transport', label: 'Transport', icon: '🚌' },
-    { id: 'shopping', label: 'Shopping', icon: '🛍️' },
+    { id: 'bills', label: 'Bill / Rent / EMI / Due', icon: '🧾' },
+    { id: 'groceries', label: 'Groceries / Shopping', icon: '🛒' },
     { id: 'liquor', label: 'Liquor & Smoke', icon: '🍷' },
-    { id: 'investment', label: 'Investment', icon: '📈' },
-    { id: 'other', label: 'Other', icon: '📦' },
-    { id: 'received', label: 'Received', icon: '💰' },
-    { id: 'income', label: 'Income', icon: '🏦' },
+    { id: 'food', label: 'Food / Tea / Snacks', icon: '☕' },
+    { id: 'restaurant', label: 'Restaurant / Hotel', icon: '🍽️' },
+    { id: 'health', label: 'Health / Medicine', icon: '💊' },
+    { id: 'fuel', label: 'Fuel / Servicing', icon: '⛽' },
+    { id: 'transport', label: 'Transport / Travel', icon: '🚌' },
+    { id: 'investment', label: 'Investment / Savings', icon: '📈' },
+    { id: 'received', label: 'Received / Income', icon: '💰' },
   ];
   const DEFAULT_SPEND_CATEGORY = 'spend';
   const DEFAULT_RECEIVE_CATEGORY = 'received';
-  const RECEIVE_CATEGORIES = ['received', 'income'];
+  const RECEIVE_CATEGORIES = ['received'];
+  // Older categories merged into the ones above. Stored entries keep their old id; it's read as the new one.
+  const CATEGORY_ALIASES = { rent: 'bills', income: 'received', shopping: 'groceries', other: 'spend', savings: 'investment' };
+  const canonicalCategory = (id) => CATEGORY_ALIASES[id] || id;
   // Categories from earlier versions: no longer offered, but old entries still show their icon/label.
-  const RETIRED_CATEGORIES = [
-    { id: 'fun', label: 'Fun', icon: '🎬' },
-    { id: 'savings', label: 'Savings', icon: '🏦' },
-  ];
-  const categoryOf = (id) =>
-    CATEGORIES.find((c) => c.id === id) || RETIRED_CATEGORIES.find((c) => c.id === id) || CATEGORIES[0];
+  const RETIRED_CATEGORIES = [{ id: 'fun', label: 'Fun', icon: '🎬' }];
+  function categoryOf(id) {
+    const key = canonicalCategory(id);
+    return CATEGORIES.find((c) => c.id === key) || RETIRED_CATEGORIES.find((c) => c.id === key) || CATEGORIES[0];
+  }
 
   // List types. The first one is the default; unknown/retired types show as the default.
   const KINDS = [
@@ -146,7 +145,26 @@
     return `${pad2(d.getHours())}:${pad2(d.getMinutes())}`;
   };
 
-  /** 'HH:MM' — saved time, or (older entries) the local time the entry was created. */
+  // Time of day for an entry. `spent_time` holds one of these ids, or an exact 'HH:MM' added by hand.
+  // Six 4-hour sections, starting at 4AM. A section sorts as the middle of its range.
+  const TIME_SLOTS = [
+    { id: 'early_morning', label: 'Early morning', icon: '🌅', range: '4–8AM', sortAs: '06:00' },
+    { id: 'morning', label: 'Morning', icon: '🌤️', range: '8AM–12PM', sortAs: '10:00' },
+    { id: 'afternoon', label: 'Afternoon', icon: '☀️', range: '12–4PM', sortAs: '14:00' },
+    { id: 'evening', label: 'Evening', icon: '🌇', range: '4–8PM', sortAs: '18:00' },
+    { id: 'night', label: 'Night', icon: '🌙', range: '8PM–12AM', sortAs: '22:00' },
+    { id: 'late_night', label: 'Late night', icon: '🌌', range: '12–4AM', sortAs: '02:00' },
+  ];
+  const timeSlotOf = (time) => TIME_SLOTS.find((t) => t.id === time) || null;
+  /** The section an 'HH:MM' falls in. */
+  function slotForTime(time) {
+    const h = Number(time.split(':')[0]);
+    return h < 4 ? 'late_night' : h < 8 ? 'early_morning' : h < 12 ? 'morning' : h < 16 ? 'afternoon' : h < 20 ? 'evening' : 'night';
+  }
+  /** 'HH:MM' to sort by: a section sorts as a typical time inside it. */
+  const timeSortKey = (e) => timeSlotOf(entryTime(e))?.sortAs || entryTime(e);
+
+  /** Section id or 'HH:MM' — saved value, or (older entries) the local time the entry was created. */
   function entryTime(e) {
     if (e.spent_time) return e.spent_time;
     const d = new Date(e.created_at);
@@ -175,8 +193,10 @@
     return `${weekday}, ${d.getDate()}/${pad2(d.getMonth() + 1)}/${String(d.getFullYear()).slice(-2)}`;
   }
 
-  /** "10:44AM" */
-  function formatTime(time) {
+  /** "10:44AM", or "🌅 Morning" for a time section (`icon: false` → "Morning"). */
+  function formatTime(time, { icon = true } = {}) {
+    const slot = timeSlotOf(time);
+    if (slot) return icon ? `${slot.icon} ${slot.label}` : slot.label;
     const [h, m] = time.split(':').map(Number);
     return `${h % 12 || 12}:${pad2(m)}${h >= 12 ? 'PM' : 'AM'}`;
   }
@@ -399,11 +419,13 @@
       .sort(
         (a, b) =>
           b.spent_on.localeCompare(a.spent_on) ||
-          entryTime(b).localeCompare(entryTime(a)) ||
+          timeSortKey(b).localeCompare(timeSortKey(a)) ||
           b.created_at.localeCompare(a.created_at),
       );
     // Notes live in the same store (and Supabase table) but are never money, so they're kept apart.
-    entries = liveEntries.filter((e) => e.kind !== 'note');
+    entries = liveEntries
+      .filter((e) => e.kind !== 'note')
+      .map((e) => (CATEGORY_ALIASES[e.category] ? { ...e, category: canonicalCategory(e.category) } : e));
     notes = liveEntries.filter((e) => e.kind === 'note');
 
     const month = currentMonth();
@@ -1215,7 +1237,7 @@
         const on = draftFilters.cats.has(c.id);
         const n = catCount.get(c.id) || 0;
         const sum = sumHtml(catSum.get(c.id), (x) => moneyWhole.format(x));
-        return `<button type="button" data-f-cat="${c.id}" aria-label="${c.label}${n ? `, ${n} entries` : ''}" aria-pressed="${on}" class="chip ${on ? 'chip-active' : ''}">
+        return `<button type="button" data-f-cat="${c.id}" aria-label="${c.label}${n ? `, ${n} entries` : ''}" aria-pressed="${on}" class="chip cat-${c.id} ${on ? 'chip-active' : ''}">
           ${n ? `<span class="chip-count" aria-hidden="true">${n}</span>` : ''}<span class="chip-icon" aria-hidden="true">${c.icon}</span>${chipLabel(c.label)}${sum ? `<span class="chip-sum">${sum}</span>` : ''}</button>`;
       })
       .join('');
@@ -1500,7 +1522,7 @@
       case 'date':
         return fullDate(e.spent_on);
       case 'time':
-        return formatTime(entryTime(e));
+        return formatTime(entryTime(e), { icon: false });
       case 'amount':
         return signed(e);
       case 'purpose':
@@ -1648,7 +1670,6 @@
   };
   // Words in a purpose that mean money came in (only for pasted text without signs or a header).
   const MONEY_IN_WORDS = /\b(received|receive|salary|refund(ed)?|cashback|credited|interest|bonus|reimburse(d|ment)?|dividend|income)\b/i;
-  const INCOME_WORDS = /\b(salary|interest|bonus|dividend|income)\b/i;
   const MONTH_NAMES = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
   const normHeader = (h) => String(h).toLowerCase().replace(/\(.*?\)/g, '').replace(/[^a-z0-9]+/g, ' ').trim();
 
@@ -1690,6 +1711,8 @@
 
   /** "10:44 AM", "10:44AM", "22:05", "10:44:00", or an Excel time fraction → 'HH:MM' ('' if none). */
   function parseImportTime(v) {
+    const slot = TIME_SLOTS.find((t) => t.id === String(v).trim().toLowerCase().replace(/[\s-]+/g, '_'));
+    if (slot) return slot.id;
     if (typeof v === 'number') {
       const frac = v % 1;
       if (!frac) return '';
@@ -1812,14 +1835,16 @@
       }
 
       const catName = normHeader(cell(row, 'category'));
-      const cat = catName && allCategories.find((c) => c.id === catName || normHeader(c.label) === catName || normHeader(c.label).split(' ')[0] === catName);
-      const category = cat
-        ? cat.id
-        : direction !== 'credit'
-          ? DEFAULT_SPEND_CATEGORY
-          : INCOME_WORDS.test(purposeText)
-            ? 'income'
-            : DEFAULT_RECEIVE_CATEGORY;
+      // Matches the id, the full label or any part of it ("Rent" → Bill / Rent / EMI / Due), or an old id.
+      const cat =
+        catName &&
+        allCategories.find(
+          (c) =>
+            c.id === canonicalCategory(catName) ||
+            normHeader(c.label) === catName ||
+            c.label.split(/\s*[/&]\s*/).some((part) => normHeader(part) === catName || normHeader(part).split(' ')[0] === catName),
+        );
+      const category = cat ? cat.id : direction !== 'credit' ? DEFAULT_SPEND_CATEGORY : DEFAULT_RECEIVE_CATEGORY;
       const text = (field) => String(cell(row, field)).replace(/\s+/g, ' ').trim();
       rows.push({
         spent_on,
@@ -2114,7 +2139,7 @@
     toast(`⟲ Back to ${SORT_LABELS[sortMode].toLowerCase()}`);
   }
 
-  const byDate = (a, b) => a.spent_on.localeCompare(b.spent_on) || entryTime(a).localeCompare(entryTime(b)) || a.created_at.localeCompare(b.created_at);
+  const byDate = (a, b) => a.spent_on.localeCompare(b.spent_on) || timeSortKey(a).localeCompare(timeSortKey(b)) || a.created_at.localeCompare(b.created_at);
   const byText = (get) => (a, b) => {
     const x = get(a);
     const y = get(b);
@@ -2296,7 +2321,7 @@
     };
     $('bulk-cats').innerHTML = CATEGORIES.map((c) => {
       const on = bulk.category === c.id;
-      return `<button type="button" class="chip ${on ? 'chip-active' : ''}" data-bulk-field="category" data-bulk-value="${c.id}" aria-label="${c.label}" aria-pressed="${on}">
+      return `<button type="button" class="chip cat-${c.id} ${on ? 'chip-active' : ''}" data-bulk-field="category" data-bulk-value="${c.id}" aria-label="${c.label}" aria-pressed="${on}">
         <span class="chip-icon" aria-hidden="true">${c.icon}</span>${chipLabel(c.label)}</button>`;
     }).join('');
     $('bulk-via').innerHTML = getOptions('pay').map((v) => pill('pay_via', v, escapeHtml(v))).join('');
@@ -3527,9 +3552,12 @@ Each spent entry counts in the part you pick for it (Need, Want or Saving) when 
   // ---------- entry form ----------
 
   /** Chip label: "Liquor & Smoke" → "Liquor" with a smaller "& Smoke" line underneath. */
+  /** "Food / Tea / Snacks" → big "Food", small "Tea / Snacks"; "Liquor & Smoke" → "Liquor", "& Smoke". */
   function chipLabel(label) {
-    const [main, rest] = label.split(' & ');
-    return rest ? `<span class="chip-name">${main}</span><span class="chip-sub">&amp; ${rest}</span>` : `<span class="chip-name">${label}</span>`;
+    const m = label.match(/^(.+?)\s*(\/|&)\s*(.+)$/);
+    if (!m) return `<span class="chip-name">${label}</span>`;
+    const [, main, sep, rest] = m;
+    return `<span class="chip-name">${main}</span><span class="chip-sub">${sep === '&' ? '&amp; ' : ''}${rest}</span>`;
   }
 
   function renderCategories() {
@@ -3537,7 +3565,7 @@ Each spent entry counts in the part you pick for it (Need, Want or Saving) when 
       (c) => `
         <button type="button" role="radio" data-category="${c.id}" aria-label="${c.label}"
           aria-checked="${c.id === selectedCategory}"
-          class="chip ${c.id === selectedCategory ? 'chip-active' : ''}">
+          class="chip cat-${c.id} ${c.id === selectedCategory ? 'chip-active' : ''}">
           <span class="chip-icon" aria-hidden="true">${c.icon}</span>${chipLabel(c.label)}
         </button>`,
     ).join('');
@@ -3558,10 +3586,26 @@ Each spent entry counts in the part you pick for it (Need, Want or Saving) when 
   }
 
   let selectedSpendType = '';
+  let selectedTimeSlot = 'morning'; // a TIME_SLOTS id, or 'custom' = exact time in #time
+
+  function renderTimeSlots() {
+    const btn = (id, icon, label, sub) => `
+      <button type="button" role="radio" data-time-slot="${id}" aria-checked="${id === selectedTimeSlot}"
+        class="time-slot time-${id} ${id === selectedTimeSlot ? 'is-on' : ''}">
+        <span class="time-slot-icon" aria-hidden="true">${icon}</span>
+        <span class="time-slot-text"><span class="time-slot-name">${label}</span><span class="time-slot-sub">${sub}</span></span>
+      </button>`;
+    const custom = selectedTimeSlot === 'custom';
+    $('time-slots').innerHTML =
+      TIME_SLOTS.map((t) => btn(t.id, t.icon, t.label, t.range)).join('') +
+      btn('custom', '🕐', custom ? formatTime($('time').value || nowTime()) : '+ Time', custom ? 'Change' : 'Exact time');
+    $('time-custom').hidden = !custom;
+  }
+
   function renderSpendType() {
     $('spend-type').innerHTML = SPEND_TYPES.map(
       (t) => `<button type="button" role="radio" data-spend-type="${t.id}" aria-checked="${t.id === selectedSpendType}"
-        class="pill stype-${t.id} ${t.id === selectedSpendType ? 'is-on' : ''}">${t.icon} ${t.label}</button>`,
+        class="pill stype-round stype-${t.id} ${t.id === selectedSpendType ? 'is-on' : ''}"><span class="stype-icon" aria-hidden="true">${t.icon}</span><span>${t.label}</span></button>`,
     ).join('');
   }
 
@@ -3809,7 +3853,11 @@ Each spent entry counts in the part you pick for it (Need, Want or Saving) when 
     $('purpose').value = entry ? entry.purpose || entry.note : '';
     $('note').value = entry ? entryNote(entry) : '';
     $('date').value = entry ? entry.spent_on : todayISO();
-    $('time').value = entry ? entryTime(entry) : nowTime();
+    // New entry: the section it is now. Editing: its section, or its exact time ("+ Time").
+    const time = entry ? entryTime(entry) : slotForTime(nowTime());
+    selectedTimeSlot = timeSlotOf(time) ? time : 'custom';
+    $('time').value = timeSlotOf(time) ? nowTime() : time;
+    renderTimeSlots();
     // Default "paid by": the first saved name (your name, or "Me" when signed out).
     const paidBy = entry ? entryPaidBy(entry) : getOptions('people')[0] || firstName();
     selectedPaidBy = paidBy === '—' ? '' : paidBy;
@@ -3827,7 +3875,7 @@ Each spent entry counts in the part you pick for it (Need, Want or Saving) when 
     event.preventDefault();
     const amount = Number($('amount').value);
     if (!Number.isFinite(amount) || amount <= 0) return setError('entry-error', 'Enter an amount greater than 0');
-    const purpose = $('purpose').value.trim();
+    const purpose = $('purpose').value.replace(/\s+/g, ' ').trim(); // one line in the list
     if (!purpose) return setError('entry-error', 'Enter the purpose');
     if (!$('date').value) return setError('entry-error', 'Pick a date');
 
@@ -3842,7 +3890,7 @@ Each spent entry counts in the part you pick for it (Need, Want or Saving) when 
       paid_by: selectedPaidBy || firstName(),
       spend_type: entryDirection === 'credit' ? '' : selectedSpendType,
       spent_on: $('date').value,
-      spent_time: $('time').value || nowTime(),
+      spent_time: selectedTimeSlot === 'custom' ? $('time').value || nowTime() : selectedTimeSlot,
     };
     storage((s) => s.setItem(PAY_VIA_KEY, selectedPayVia));
     $('entry-submit').disabled = true;
@@ -4013,6 +4061,27 @@ Each spent entry counts in the part you pick for it (Need, Want or Saving) when 
     });
 
     document.querySelector('main').addEventListener('click', onAction);
+    // Purpose is short one-line text: Enter moves on instead of adding a new line.
+    $('purpose').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) {
+        e.preventDefault();
+        $('date').focus();
+      }
+    });
+    $('time-slots').addEventListener('click', (e) => {
+      const btn = e.target.closest('[data-time-slot]');
+      if (!btn) return;
+      const wasCustom = selectedTimeSlot === 'custom';
+      selectedTimeSlot = btn.dataset.timeSlot;
+      renderTimeSlots();
+      if (selectedTimeSlot === 'custom') {
+        const input = $('time');
+        if (!wasCustom) input.value = nowTime();
+        input.focus();
+        try { input.showPicker?.(); } catch {} // opens the clock on browsers that support it
+      }
+    });
+    $('time').addEventListener('input', () => selectedTimeSlot === 'custom' && renderTimeSlots());
     $('categories').addEventListener('click', (e) => {
       const chip = e.target.closest('[data-category]');
       if (!chip) return;
@@ -4204,6 +4273,13 @@ Each spent entry counts in the part you pick for it (Need, Want or Saving) when 
     };
     window.addEventListener('online', onNetworkChange);
     window.addEventListener('offline', onNetworkChange);
+    // "⚠️ Sync failed": tap it to see why (the tooltip isn't reachable on phones) and retry.
+    $('status').addEventListener('click', (e) => {
+      if (!Cloud.user || !Cloud.state.error) return;
+      e.preventDefault(); // the badge sits inside the home link
+      info('Sync failed', Cloud.state.error);
+      Cloud.syncNow();
+    });
     document.addEventListener('visibilitychange', () => document.visibilityState === 'visible' && Cloud.syncNow());
     // Pick up friends' changes to shared lists while the app is open.
     setInterval(() => document.visibilityState === 'visible' && Cloud.syncNow(), 60_000);
