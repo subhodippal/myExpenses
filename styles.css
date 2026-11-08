@@ -478,6 +478,7 @@ button.avatar-wrap:focus-visible { outline: 2px solid var(--primary); outline-of
 .field-label { font-weight: 700; font-size: 0.9rem; }
 .field-label .required { color: var(--error); }
 .field-label .optional { font-weight: 500; font-size: 0.8rem; }
+.field-label .field-hint { font-weight: 400; font-size: 0.72rem; color: var(--muted); }
 .kind-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; }
 .kind-chip {
   display: flex; align-items: center; gap: 10px; padding: 10px 12px; min-height: 48px; text-align: left;
@@ -562,6 +563,12 @@ button.avatar-wrap:focus-visible { outline: 2px solid var(--primary); outline-of
 .chip[class*='cat-'].chip-active .chip-name { color: var(--cc); font-weight: 700; }
 @media (hover: hover) {
   .chip[class*='cat-']:hover { border-color: var(--cc); }
+}
+/* Entry form: keep the category tiles plain — one accent colour for the chosen tile. */
+#categories .chip[class*='cat-'].chip-active { border-color: var(--primary); background: var(--primary-soft); box-shadow: none; }
+#categories .chip[class*='cat-'].chip-active .chip-name { color: var(--primary); }
+@media (hover: hover) {
+  #categories .chip[class*='cat-']:hover { border-color: var(--primary); }
 }
 .input {
   border: 1px solid var(--border); background: var(--bg); border-radius: 10px;
@@ -1198,53 +1205,55 @@ body.list-mode .chart-card > .chart-legend { max-height: none; }
 .bucket-list { --er-cols: 6rem minmax(0, 1fr) 5.25rem; }
 .bucket-list .row-check { display: none; }
 
-/* ---------- Entry form: time of day ----------
-   Looks different from the category tiles on purpose: rounded pills, icon on the left,
-   each part of the day tinted with its own colour (sunrise → night). */
+/* ---------- Entry form: date & time of day ----------
+   Kept plain and neutral, like the category tiles: grey border, one accent (primary) for the chosen one. */
 .time-slots { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
 .time-slot {
-  --tc: var(--primary);
   display: flex; align-items: center; gap: 6px; min-width: 0; min-height: 44px;
-  padding: 5px 10px 5px 7px; border: 1.5px solid color-mix(in srgb, var(--tc) 35%, var(--border));
-  border-radius: 999px; background: color-mix(in srgb, var(--tc) 9%, var(--bg));
+  padding: 5px 12px 5px 8px; border: 1px solid var(--border);
+  border-radius: 999px; background: var(--bg);
   color: var(--muted); font-size: 0.7rem; line-height: 1.15; text-align: left; cursor: pointer;
+  transition: background-color 0.15s, border-color 0.15s;
 }
+.time-slot-icon { font-size: 1.05rem; flex-shrink: 0; }
+/* Each part of the day has its own colour. */
+.time-slot { --tc: var(--primary); }
 .time-early_morning { --tc: #f97316; }
 .time-morning { --tc: #eab308; }
 .time-afternoon { --tc: #f59e0b; }
 .time-evening { --tc: #e11d48; }
 .time-night { --tc: #6366f1; }
 .time-late_night { --tc: #7c3aed; }
-.time-slot-icon { font-size: 1.15rem; flex-shrink: 0; }
+/* Each part of the day: a light tint of its colour on the border and body; stronger when chosen. */
+.time-slots .time-slot { border-color: color-mix(in srgb, var(--tc) 30%, var(--border)); background: color-mix(in srgb, var(--tc) 6%, var(--bg)); }
+.time-slots .time-slot.is-on { border-color: var(--tc); background: color-mix(in srgb, var(--tc) 16%, var(--bg)); }
+.time-slots .time-slot.is-on .time-slot-name { color: var(--text); font-weight: 700; }
 .time-slot-text { display: flex; flex-direction: column; min-width: 0; }
 .time-slot-name { font-weight: 600; color: var(--text); }
-.time-slot-sub { font-size: 0.6rem; opacity: 0.85; white-space: nowrap; }
-/* "Exact time": a full-width dashed pill below the six parts of the day. */
-/* Exact time: a full-width pill under the six parts of the day, dashed until chosen. */
-.time-slot.time-custom { position: relative; width: 100%; margin-top: -2px; justify-content: center; border-style: dashed; border-color: var(--primary); background: var(--bg); }
-.time-slot.time-custom.is-on { border-style: solid; }
+.time-slot-sub { font-size: 0.6rem; opacity: 0.8; white-space: nowrap; }
+/* Exact time: a full-width tile under the six parts of the day. */
+.time-slot.time-custom { position: relative; width: 100%; justify-content: center; }
 .time-slot.time-custom .time-slot-text { flex-direction: row; align-items: baseline; gap: 6px; }
 .time-slot.time-custom .time-slot-name { font-size: 0.85rem; }
-/* Date: one full-width pill in the time-pill style; the invisible date input covers it. */
-.date-pill { --tc: #0ea5e9; position: relative; width: 100%; padding-right: 14px; }
+/* Date: one full-width tile; the invisible date input covers it. */
+.date-pill { position: relative; width: 100%; padding-right: 14px; }
 .date-pill .time-slot-text { flex: 1; }
 .date-pill .time-slot-name { font-size: 0.85rem; }
-.date-pill-change { font-size: 0.72rem; font-weight: 600; color: var(--tc); white-space: nowrap; }
+.date-pill-change { font-size: 0.72rem; font-weight: 600; color: var(--primary); white-space: nowrap; }
 .date-pill-input {
   position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; padding: 0; border: 0;
   opacity: 0; cursor: pointer; -webkit-appearance: none; appearance: none;
 }
 .date-pill-input::-webkit-calendar-picker-indicator { position: absolute; inset: 0; width: auto; height: auto; opacity: 0; cursor: pointer; }
-.time-slot.is-on {
-  border: 2px solid var(--tc); background: color-mix(in srgb, var(--tc) 20%, var(--bg));
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--tc) 18%, transparent);
-}
-.time-slot.is-on .time-slot-name { font-weight: 700; }
-/* Hover: light up in the pill's own colour (mouse only, so taps on phones don't leave it stuck). */
-.time-slot { transition: background-color 0.15s, border-color 0.15s, transform 0.15s; }
+.time-slot.is-on { border-color: var(--primary); background: var(--primary-soft); }
+.time-slot.is-on .time-slot-name { color: var(--primary); }
+/* The date tile is always "on" (a date is always set) — keep it neutral. */
+.date-pill.is-on { border-color: var(--border); background: var(--bg); }
+.date-pill.is-on .time-slot-name { color: var(--text); }
 @media (hover: hover) {
-  .time-slot:hover { border-color: var(--tc); background: color-mix(in srgb, var(--tc) 15%, var(--bg)); transform: translateY(-1px); }
-  .time-slot.is-on:hover { background: color-mix(in srgb, var(--tc) 26%, var(--bg)); }
+  .time-slot:hover { border-color: var(--tc); background: color-mix(in srgb, var(--tc) 12%, var(--bg)); }
+  .time-slots .time-slot:hover { border-color: var(--tc); background: color-mix(in srgb, var(--tc) 12%, var(--bg)); }
+  .time-slots .time-slot.is-on:hover { background: color-mix(in srgb, var(--tc) 20%, var(--bg)); }
+  .date-pill:hover { background: var(--bg); }
 }
-.time-slot:active { transform: scale(0.97); }
 
