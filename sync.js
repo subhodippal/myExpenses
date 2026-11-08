@@ -61,10 +61,13 @@ const Cloud = (() => {
       state.error = null;
       notify('sync');
       try {
-        const pushed = await push(user.id);
+        const rejected = [];
+        const pushed = await push(user.id, rejected);
+        // Download even if some rows were rejected: one bad local row must not block the other devices' changes.
         const pulled = await pull(user.id);
         const shared = await reconcileSharedAccess(user.id, user.email);
         if (pushed || pulled || shared) notify('data');
+        if (rejected.length) state.error = describeRejected(rejected);
       } catch (e) {
         state.error = e?.message || String(e);
       } finally {
@@ -89,6 +92,7 @@ const Cloud = (() => {
     spent_time: r.spent_time || '',
     author_name: r.author_name || '',
     direction: r.direction || 'debit',
+    kind: r.kind || 'entry',
     synced: 1,
   });
   const TABLES = [
@@ -140,10 +144,21 @@ const Cloud = (() => {
     return changed;
   }
 
-  async function push(userId) {
+  async function push(userId, rejected) {
     let pushed = false;
-    for (const t of TABLES) pushed = (await pushTable(t, userId)) || pushed;
+    for (const t of TABLES) pushed = (await pushTable(t, userId, rejected)) || pushed;
     return pushed;
+  }
+
+  /** Login/session problems (expired token etc.) affect every row: stop and report instead of retrying row by row. */
+  const isAuthError = (e) => e?.status === 401 || /^PGRST3/.test(e?.code || '') || /jwt|token|auth/i.test(e?.message || '');
+
+  function describeRejected(rejected) {
+    const label = ({ store, row }) =>
+      store === 'expenses' ? `entry "${row.purpose || row.category || row.id}" (${row.spent_on || ''})` : store === 'lists' ? `list "${row.name}"` : `sharing with ${row.email}`;
+    const first = rejected[0];
+    const more = rejected.length > 1 ? ` (+${rejected.length - 1} more)` : '';
+    return `Couldn't upload ${label(first)}${more}: ${first.message}. Everything else is synced.`;
   }
 
   async function pull(userId) {
@@ -152,16 +167,33 @@ const Cloud = (() => {
     return pulled;
   }
 
-  async function pushTable({ store, table, fromServer }, userId) {
+  async function pushTable({ store, table, fromServer }, userId, rejected) {
     const pending = (await DB.all(store)).filter((r) => r.user_id === userId && r.synced === 0);
     if (pending.length === 0) return false;
 
+    // The server sets updated_at itself (see schema.sql), so don't send ours.
+    // Entries saved without a `kind` (only notes set it) are plain entries. And defaultToNull: false makes a
+    // column missing from some rows of a batch take its database default instead of NULL.
+    const toServer = ({ synced, updated_at, ...row }) => (store === 'expenses' ? { ...row, kind: row.kind || 'entry' } : row);
+    const upload = (rows) => client.from(table).upsert(rows.map(toServer), { defaultToNull: false }).select();
+    let pushed = false;
+
     for (let i = 0; i < pending.length; i += PAGE) {
       const batch = pending.slice(i, i + PAGE);
-      // The server sets updated_at itself (see schema.sql), so don't send ours.
-      const payload = batch.map(({ synced, updated_at, ...row }) => row);
-      const { data, error } = await client.from(table).upsert(payload).select();
-      if (error) throw error;
+      let { data, error } = await upload(batch);
+      if (error) {
+        if (isAuthError(error)) throw error;
+        // One bad row fails the whole batch: retry one by one so the rest still upload.
+        data = [];
+        for (const row of batch) {
+          const one = await upload([row]);
+          if (one.error) {
+            if (isAuthError(one.error)) throw one.error;
+            console.warn(`Sync: ${table} row ${row.id} rejected`, one.error, row);
+            rejected.push({ store, row, message: one.error.message });
+          } else data.push(...(one.data || []));
+        }
+      }
 
       const sentVersion = new Map(batch.map((r) => [r.id, r.updated_at]));
       for (const remote of data || []) {
@@ -169,9 +201,10 @@ const Cloud = (() => {
         // Edited again while uploading? Leave it pending for the next sync.
         if (current && current.updated_at !== sentVersion.get(remote.id)) continue;
         await DB.put(store, fromServer(remote));
+        pushed = true;
       }
     }
-    return true;
+    return pushed;
   }
 
   async function pullTable({ store, table, fromServer }, userId) {
