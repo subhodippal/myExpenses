@@ -1257,3 +1257,165 @@ body.list-mode .chart-card > .chart-legend { max-height: none; }
   .date-pill:hover { background: var(--bg); }
 }
 
+/* ==========================================================================
+   Desktop & tablet: everything below only kicks in on wider screens, so the
+   phone layout above stays exactly as it is.
+   ========================================================================== */
+
+/* Mouse users: slim, themed scrollbars and a clear keyboard focus ring. */
+@media (hover: hover) and (pointer: fine) {
+  * { scrollbar-width: thin; scrollbar-color: color-mix(in srgb, var(--muted) 45%, transparent) transparent; }
+  *::-webkit-scrollbar { width: 10px; height: 10px; }
+  *::-webkit-scrollbar-track { background: transparent; }
+  *::-webkit-scrollbar-thumb {
+    background: color-mix(in srgb, var(--muted) 40%, transparent); border-radius: 999px;
+    border: 3px solid transparent; background-clip: content-box;
+  }
+  *::-webkit-scrollbar-thumb:hover { background-color: color-mix(in srgb, var(--muted) 65%, transparent); }
+  :focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+  .btn-gradient, .btn-danger { transition: filter 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease; }
+  .btn-gradient:hover { box-shadow: 0 6px 18px rgb(79 70 229 / 0.35); }
+  .tools-btn, .pill, .chip, .kind-chip, .tool-btn, .sort-icon { transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease; }
+  .pill:hover:not(.is-on):not(:disabled) { border-color: var(--primary); }
+  .kind-chip:hover { border-color: var(--primary); }
+  .tool-btn:hover { background: var(--primary-soft); color: var(--primary); filter: none; }
+  .tool-danger:hover { background: var(--error-bg); color: var(--error); filter: brightness(0.97); }
+  .list-card { transition: box-shadow 0.15s ease, transform 0.15s ease; }
+  .list-card:hover { transform: translateY(-2px); }
+}
+
+@media (min-width: 768px) {
+  /* One content width for header and page, so their edges line up. */
+  .hero-inner { max-width: 1200px; }
+  .hero.compact .hero-inner { max-width: 1200px; padding: 14px 32px; gap: 16px; }
+  .hero.compact .page-title { font-size: 1.3rem; }
+  .hero.compact .user-name { display: block; max-width: 220px; }
+  .hero.compact .hero-user { gap: 14px; }
+  .container { padding-top: 28px; }
+
+  /* All lists / shared lists: a grid of cards instead of one narrow column. */
+  #view-lists, #view-shared { max-width: none; }
+  .list-cards { grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; align-items: start; }
+
+  /* New / edit list form: a comfortable centred card. */
+  #view-list-form { max-width: 640px; }
+  #view-list-form .expense-form { padding: 28px; gap: 20px; }
+
+  /* ---------- One list ---------- */
+  #view-list { max-width: 1080px; }
+  body.list-mode .hero.compact .hero-inner { max-width: calc(1080px + 64px); padding-top: 10px; padding-bottom: 10px; }
+  body.list-mode .hero.compact .glass-btn.round,
+  body.list-mode .hero.compact #signin-btn { width: 38px; height: 38px; min-height: 38px; }
+  body.list-mode .hero.compact .user-avatar { width: 36px; height: 36px; }
+  body.list-mode .container { padding-top: 18px; padding-bottom: 20px; }
+
+  /* Toolbar and "+ Add entry" share one row; notes and filters sit under it; the entries fill the rest. */
+  body.list-mode #view-list {
+    display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-rows: auto auto auto minmax(0, 1fr);
+    column-gap: 12px; row-gap: 0;
+  }
+  body.list-mode #view-list:has(> #add-entry-btn[hidden]) { grid-template-columns: minmax(0, 1fr); }
+  body.list-mode .list-tools { grid-row: 1; grid-column: 1; }
+  body.list-mode #add-entry-btn { grid-row: 1; grid-column: 2; min-height: 0; height: auto; padding: 0 26px; white-space: nowrap; }
+  body.list-mode #list-access { grid-row: 2; grid-column: 1 / -1; margin-top: 12px; }
+  body.list-mode #filter-bar { grid-row: 3; grid-column: 1 / -1; margin-top: 12px; }
+  body.list-mode #entries { grid-row: 4; grid-column: 1 / -1; margin-top: 14px; min-height: 0; }
+
+  /* ◀ [month] ▶ on the left, the tool buttons on the right (the month button doesn't stretch across the page). */
+  .tools-row,
+  body.list-mode .tools-row { grid-template-columns: 40px minmax(200px, 280px) 40px minmax(0, 1fr) 40px 40px 40px; gap: 8px; }
+  .tools-sep { justify-self: end; height: 24px; }
+  body.list-mode .list-tools { padding: 8px; }
+  body.list-mode .tools-btn { height: 38px; font-size: 1rem; }
+  body.list-mode .month-btn { height: 38px; min-height: 38px; font-size: 0.98rem; }
+
+  /* Entries table: roomier columns and slightly larger text. */
+  .entry-table { --er-cols: 22px 8.5rem minmax(0, 1fr) 11rem; }
+  .bucket-list { --er-cols: 8.5rem minmax(0, 1fr) 11rem; }
+  .entry-head, .entry-row { column-gap: 16px; padding-left: 16px; padding-right: 18px; }
+  .entry-head { padding-top: 8px; padding-bottom: 8px; }
+  .entry-row { padding-top: 13px; padding-bottom: 13px; transition: background-color 0.12s ease; }
+  .er-amount { font-size: 1rem; }
+  .er-date { font-size: 0.78rem; }
+  .er-purpose { font-size: 0.92rem; }
+  .er-cat { font-size: 0.84rem; }
+  .er-via { font-size: 0.8rem; }
+  .paid-by, .spend-tag { font-size: 0.7rem; }
+  .sort-icon { max-width: 88px; height: 30px; }
+  .day-sep { padding: 7px 18px 7px 13px; font-size: 0.76rem; }
+  .day-check { width: 22px; }
+  .note-head { padding: 8px 18px 8px 13px; }
+  .note-meta { font-size: 0.68rem; }
+  .note-first, .note-text { font-size: 0.84rem; }
+  .note-more { padding-left: 43px; padding-right: 18px; }
+  .ef-cell { padding: 10px 8px; }
+  .ef-label { font-size: 0.7rem; }
+  .ef-cell strong { font-size: 1.02rem; }
+  .ef-split { font-size: 0.72rem; }
+  .month-chip { font-size: 0.78rem; }
+
+  /* Calendar & year tiles: bigger targets with room for the amounts. */
+  .cal-card { padding: 12px; }
+  .cal-grid { gap: 6px; }
+  .cal-wd { font-size: 0.68rem; padding: 4px 0; }
+  .cal-cell { min-height: 58px; padding: 5px 2px; border-radius: 10px; gap: 2px; }
+  .cal-num { font-size: 0.86rem; }
+  .cal-out, .cal-in { font-size: 0.64rem; }
+  .yr-grid { gap: 8px; }
+  .yr-cell { min-height: 76px; }
+  .yr-name { font-size: 0.86rem; }
+  .yr-out, .yr-in { font-size: 0.74rem; }
+  .yr-count { font-size: 0.64rem; }
+
+  /* Charts & budget */
+  .chart-card { padding: 18px 20px; gap: 16px; }
+  .chart-tabs .pill { font-size: 0.86rem; padding: 7px 14px; }
+  .chart-body { gap: 20px 40px; }
+  .cl-row { font-size: 0.86rem; padding: 7px 8px; }
+  .bp-row { font-size: 0.88rem; padding: 10px 8px; }
+  .bp-summary > div { padding: 12px 6px; }
+  .bp-summary strong { font-size: 1.05rem; }
+
+  /* ---------- Sheets become centred dialogs ---------- */
+  .dialog.sheet {
+    margin: auto; width: calc(100% - 64px); max-width: 600px; max-height: min(88dvh, 880px);
+    border-radius: 20px; padding: 24px 26px 22px;
+    box-shadow: 0 24px 64px rgb(15 13 26 / 0.35), var(--dialog-glow);
+  }
+  #confirm-sheet, #profile-sheet, #entry-sheet, #view-sheet, #month-sheet, #share-dialog, #install-dialog, #options-sheet { max-width: 480px; }
+  .sheet-handle { display: none; }
+  .sheet-footer {
+    bottom: -22px; margin: 0 -26px -22px; padding: 12px 26px 18px;
+    border-radius: 0 0 20px 20px;
+  }
+  .bs-body { max-height: calc(80dvh - 180px); }
+  .dialog::backdrop { background: rgb(15 13 26 / 0.5); backdrop-filter: blur(4px); }
+
+  .toast { bottom: 28px; }
+  body.list-mode .toast { bottom: 110px; }
+  .selection-bar { width: min(600px, calc(100% - 64px)); bottom: 20px; }
+}
+
+/* Dialogs pop in rather than sliding up from the bottom. (Closing still waits for this animation to end.) */
+@media (min-width: 768px) and (prefers-reduced-motion: no-preference) {
+  .sheet[open] { animation: sheet-pop-in 0.22s cubic-bezier(0.2, 0.8, 0.2, 1); }
+  .sheet.closing { animation: sheet-pop-out 0.16s ease-in forwards; }
+  .sheet.dragging, .sheet.drag-closing { animation: none; }
+}
+@keyframes sheet-pop-in { from { opacity: 0; transform: translateY(14px) scale(0.98); } to { opacity: 1; transform: none; } }
+@keyframes sheet-pop-out { from { opacity: 1; transform: none; } to { opacity: 0; transform: translateY(10px) scale(0.98); } }
+
+/* Wide screens: the calendar / year grid sits beside the entries instead of above them. */
+@media (min-width: 1024px) {
+  body.list-mode #entries:has(> .cal-card) {
+    display: grid; grid-template-columns: minmax(380px, 5fr) minmax(0, 6fr); grid-template-rows: minmax(0, 1fr);
+    gap: 18px; align-items: start;
+  }
+  body.list-mode #entries:has(> .cal-card) > .cal-card { max-height: 100%; overflow-y: auto; overscroll-behavior: contain; }
+  body.list-mode #entries:has(> .cal-card) > .entry-table { max-height: 100%; }
+  body.list-mode #entries:has(> .cal-card) > .empty { align-self: center; }
+  body.list-mode #entries:has(> .cal-card) .cal-cell { min-height: 64px; }
+  body.list-mode #entries:has(> .cal-card) .entry-table { --er-cols: 22px 7.5rem minmax(0, 1fr) 9rem; }
+  body.list-mode #view-list:has(.cal-card) { max-width: 1200px; }
+  body.list-mode:has(#view-list .cal-card) .hero.compact .hero-inner { max-width: calc(1200px + 64px); }
+}
